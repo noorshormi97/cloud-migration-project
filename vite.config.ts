@@ -12,9 +12,4 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  nitro: {
-    // Scan the root `server/` directory for Nitro server routes (e.g. the
-    // dynamic /sitemap.xml route).
-    scanDirs: ["server"],
-  },
 });
