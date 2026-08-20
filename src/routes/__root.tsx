@@ -11,6 +11,13 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import {
+  SITE_URL,
+  SITE_NAME,
+  OG_IMAGE,
+  orgSchema,
+  webSiteSchema,
+} from "../lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -77,20 +84,62 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      {
+        name: "google-site-verification",
+        content: "KGw3qfZaiWoYQn8Usl3oNkcEql-BvhAeRIMSx3hANCc",
+      },
+      { title: `${SITE_NAME} — Buy Authentic Collectible Banknotes & World Currency` },
+      {
+        name: "description",
+        content:
+          "Discovery of Coins — buy authentic collectible coins, banknotes and stamps from Bangladesh and around the world. Rare collectibles delivered across Bangladesh.",
+      },
+      { name: "author", content: SITE_NAME },
+      { name: "theme-color", content: "#f7d417" },
+      { property: "og:site_name", content: SITE_NAME },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:title", content: `${SITE_NAME} — Buy Authentic Collectible Banknotes & World Currency` },
+      {
+        property: "og:description",
+        content:
+          "Buy authentic collectible coins, banknotes and stamps from Bangladesh and around the world.",
+      },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:locale", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: `${SITE_NAME} — Buy Authentic Collectible Banknotes & World Currency` },
+      {
+        name: "twitter:description",
+        content:
+          "Buy authentic collectible coins, banknotes and stamps from Bangladesh and around the world.",
+      },
+      { name: "twitter:image", content: OG_IMAGE },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(orgSchema()),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(webSiteSchema()),
+      },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&display=swap",
+      },
+      { rel: "stylesheet", href: "https://fonts.cdnfonts.com/css/id-grotesk" },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
