@@ -63,11 +63,11 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
+  --background: oklch(0.925 0.117 96.5);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(0.99 0.015 96.5);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(0.99 0.015 96.5);
   --popover-foreground: oklch(0.129 0.042 264.695);
   --primary: oklch(0.208 0.042 265.755);
   --primary-foreground: oklch(0.984 0.003 247.858);
@@ -145,13 +145,15 @@
 
 /* ---- Discovery of Coins imported design system ---- */
 @theme {
-  --font-heading: 'ID Grotesk', sans-serif;
-  --font-sans: 'Archivo', sans-serif;
+  --font-heading: 'Times New Roman', Times, serif;
+  --font-sans: 'Times New Roman', Times, serif;
+  --font-serif: 'Times New Roman', Times, serif;
+  --font-mono: 'Times New Roman', Times, serif;
 
-  --color-brand: #f7d417;
-  --color-brand-dark: #e5c315;
+  --color-brand: #fae588;
+  --color-brand-dark: #efd766;
   --color-ink: #111111;
-  --color-paper: #fffef8;
+  --color-paper: #fffdf2;
 }
 
 @layer base {
@@ -161,6 +163,16 @@
 
   body {
     @apply bg-brand font-sans text-ink antialiased;
+  }
+
+  /* Times New Roman everywhere, including form controls which don't inherit by default */
+  *,
+  button,
+  input,
+  select,
+  textarea,
+  optgroup {
+    font-family: 'Times New Roman', Times, serif;
   }
 
   ::selection {
