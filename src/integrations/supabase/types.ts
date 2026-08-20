@@ -178,6 +178,65 @@ export type Database = {
         }
         Relationships: []
       }
+      new_arrivals: {
+        Row: {
+          category: string
+          condition: string
+          country: string
+          created_at: string
+          display_order: number
+          enabled: boolean
+          id: string
+          image: string
+          is_new: boolean
+          name: string
+          price: number
+          product_id: string | null
+          updated_at: string
+          year: string
+        }
+        Insert: {
+          category?: string
+          condition?: string
+          country?: string
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          id?: string
+          image?: string
+          is_new?: boolean
+          name?: string
+          price?: number
+          product_id?: string | null
+          updated_at?: string
+          year?: string
+        }
+        Update: {
+          category?: string
+          condition?: string
+          country?: string
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          id?: string
+          image?: string
+          is_new?: boolean
+          name?: string
+          price?: number
+          product_id?: string | null
+          updated_at?: string
+          year?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "new_arrivals_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           created_at: string
