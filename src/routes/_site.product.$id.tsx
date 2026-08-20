@@ -119,7 +119,7 @@ export const Route = createFileRoute("/_site/product/$id")({
                   category: p.category,
                   sku: p.id,
                   url,
-                  condition: p.condition || undefined,
+                  condition: p.condition || "",
                 }),
               ),
             },
