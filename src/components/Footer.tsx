@@ -1,0 +1,156 @@
+import { Link } from '@/lib/router-compat';
+import { useQuery } from '@tanstack/react-query';
+import { fetchContactDetails, socialUrl } from '@/lib/content';
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Shop', href: '/shop' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Combo', href: '/combo' },
+  { label: 'Terms & Policy', href: '/terms' },
+];
+
+const INSTAGRAM_URL = 'https://instagram.com/shohailmahmud09';
+
+export function Footer() {
+  const { data } = useQuery({
+    queryKey: ['contact-details'],
+    queryFn: fetchContactDetails,
+  });
+
+  // Contact details come from the `contact_details` table (editable in the
+  // admin dashboard). Fallbacks keep the footer sensible while loading or
+  // before an admin fills the fields in.
+  const instagram = (data?.instagram ?? '').trim() || '@discoveryofcoins';
+  const instagramHref = socialUrl(instagram, 'instagram') ?? '#';
+  const phone = (data?.phone ?? '').trim() || '01700000000';
+  const whatsapp = (data?.whatsapp_channel ?? '').trim();
+  const whatsappHref = socialUrl(whatsapp, 'whatsapp');
+
+  return (
+    <footer className="border-t border-ink/10 bg-brand px-6 pt-10 pb-8 md:pt-12 md:pb-10">
+      {/* 4 columns on desktop: Brand | Navigation | Contact | Designer (right) */}
+      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-4 md:gap-4">
+        <div>
+          <p className="font-heading text-xl tracking-tight text-ink md:text-2xl">
+            Discovery of Coins
+          </p>
+          <p className="mt-3 max-w-xs font-sans text-sm font-light leading-relaxed text-ink/70">
+            Authentic collectible banknotes, coins and stamps from Bangladesh
+            and around the world.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="mb-3 font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+            Navigation
+          </h3>
+          <ul className="space-y-1.5">
+            {navLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  to={link.href}
+                  className="font-sans text-sm font-light text-ink/80 transition-colors hover:text-ink"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="mb-3 font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+            Contact
+          </h3>
+          <div className="space-y-2 font-sans text-sm font-light text-ink/80">
+            <p>
+              <span className="text-ink/50">Instagram</span>
+              <br />
+              <a
+                href={instagramHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-ink"
+              >
+                {instagram}
+              </a>
+            </p>
+            <p>
+              <span className="text-ink/50">Phone</span>
+              <br />
+              <a href={`tel:${phone}`} className="transition-colors hover:text-ink">
+                {phone}
+              </a>
+            </p>
+            {whatsappHref ? (
+              <p>
+                <span className="text-ink/50">WhatsApp</span>
+                <br />
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-ink"
+                >
+                  Join our channel
+                </a>
+              </p>
+            ) : null}
+          </div>
+        </div>
+
+        {/* Designer credit — desktop only, sits in the right-side space */}
+        <div className="hidden md:flex md:flex-col md:items-center">
+          <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+            A web by
+          </p>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Designer Instagram profile"
+            className="mt-3 block transition-opacity hover:opacity-80"
+          >
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-14 w-14 object-contain"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-8 max-w-6xl border-t border-ink/10 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+          <p className="whitespace-nowrap font-sans text-[8px] font-light uppercase tracking-normal text-ink/40 md:text-xs md:tracking-widest">
+            © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
+          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/admin/login"
+              className="font-sans text-[10px] font-light uppercase tracking-widest text-ink/40 transition-colors hover:text-ink md:text-xs"
+            >
+              Admin
+            </Link>
+            {/* Logo only — mobile bottom-right */}
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Designer Instagram profile"
+              className="block h-8 w-8 shrink-0 transition-opacity hover:opacity-80 md:hidden"
+            >
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-full w-full object-contain"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

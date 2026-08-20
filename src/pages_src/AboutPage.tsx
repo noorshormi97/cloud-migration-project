@@ -1,0 +1,75 @@
+import { Link } from '@/lib/router-compat';
+import { motion } from 'framer-motion';
+
+export function AboutPage() {
+  return (
+    <section className="bg-brand px-6 py-6 md:py-10">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-3 md:mb-4">
+          <Link
+            to="/"
+            className="inline-block font-sans text-xs font-medium uppercase tracking-widest text-ink/60 transition-colors hover:text-ink"
+          >
+            Home
+          </Link>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h1 className="font-heading text-4xl tracking-tight text-ink md:text-5xl lg:text-6xl">
+            About Discovery of Coins
+          </h1>
+
+          <div className="mt-4 space-y-3.5 font-sans text-base font-light leading-relaxed tracking-wide text-ink/80 md:text-lg">
+            <p>
+              Discovery of Coins is an authentic collectible banknote seller
+              based in Dhaka, Bangladesh. We sell banknotes from countries all
+              over the world, with thousands of varieties available for
+              collectors to discover.
+            </p>
+            <p>
+              Our focus is on authentic collectible banknotes and world
+              currency, giving collectors a reliable place to explore notes from
+              different nations, eras, and designs.
+            </p>
+            <p>
+              From Bangladeshi banknotes and commemorative issues to foreign
+              currency notes from Asia, Europe, Africa, the Americas and beyond —
+              every note in our catalogue is carefully verified for authenticity
+              before it is listed for sale.
+            </p>
+            <p>
+              Collectors across Bangladesh order from us online and receive
+              delivery through trusted couriers (Steadfast and Shundarban). We
+              also welcome collectors abroad — reach out through our{' '}
+              <Link
+                to="/contact"
+                className="text-ink underline underline-offset-4 transition-colors hover:text-ink/70"
+              >
+                contact page
+              </Link>{' '}
+              or on{' '}
+              <a
+                href="https://instagram.com/discoveryofcoins"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ink underline underline-offset-4 transition-colors hover:text-ink/70"
+              >
+                Instagram
+              </a>{' '}
+              to ask about international shipping.
+            </p>
+            <p>
+              Whether you are building a world currency collection, hunting for a
+              rare Bangladeshi note, or just starting out in numismatics, we are
+              here to help you find authentic pieces you will be proud to own.
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
