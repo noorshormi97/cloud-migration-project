@@ -27,7 +27,7 @@ export function useLocation() {
 }
 
 export function useParams<T extends Record<string, string | undefined>>(): T {
-  return useRouterParams({ strict: false }) as T;
+  return (useRouterParams as unknown as (o: unknown) => unknown)({ strict: false }) as T;
 }
 
 /** Minimal react-router-dom useSearchParams shim. */

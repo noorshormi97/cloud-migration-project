@@ -62,10 +62,10 @@ function iconFor(name: string): ReactNode {
     );
   }
   // Fallback: Flaticon icons
-  if (name.includes('Stamp')) return <IconImage src={ICON_IMAGES.accessory} />;
-  if (name.includes('Banknote')) return <IconImage src={ICON_IMAGES.banknote} />;
-  if (name.includes('Coin')) return <IconImage src={ICON_IMAGES.coin} />;
-  return <IconImage src={ICON_IMAGES.accessory} />;
+  if (name.includes('Stamp')) return <IconImage src={ICON_IMAGES['accessory']!} />;
+  if (name.includes('Banknote')) return <IconImage src={ICON_IMAGES['banknote']!} />;
+  if (name.includes('Coin')) return <IconImage src={ICON_IMAGES['coin']!} />;
+  return <IconImage src={ICON_IMAGES['accessory']!} />;
 }
 
 export function CategoryGrid() {

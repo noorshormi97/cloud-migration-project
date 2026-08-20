@@ -44,7 +44,7 @@ export function ProductImage({
     );
   }
 
-  const iconSrc = ICONS[iconType] ?? ICONS.generic;
+  const iconSrc = ICONS[iconType] ?? ICONS['generic']!;
 
   return (
     <div className="flex flex-col items-center gap-2 text-ink/30">

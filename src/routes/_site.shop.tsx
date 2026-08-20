@@ -12,9 +12,9 @@ interface ProductRow {
 // so the shop page can render an ItemList schema in the <head>.
 async function fetchProductsSsr(): Promise<ProductRow[]> {
   try {
-    const url = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const url = import.meta.env['VITE_SUPABASE_URL'] || process.env['SUPABASE_URL'];
     const key =
-      import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+      import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || process.env['SUPABASE_PUBLISHABLE_KEY'];
     if (!url || !key) return [];
     const res = await fetch(
       `${url}/rest/v1/products?select=id,name,price&limit=100`,

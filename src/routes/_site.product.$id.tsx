@@ -29,9 +29,9 @@ interface ProductRow {
 // any Node runtime during SSR, without initialising a realtime client.
 async function fetchProductSsr(id: string): Promise<ProductRow | null> {
   try {
-    const url = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const url = import.meta.env['VITE_SUPABASE_URL'] || process.env['SUPABASE_URL'];
     const key =
-      import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+      import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || process.env['SUPABASE_PUBLISHABLE_KEY'];
     if (!url || !key) return null;
     const res = await fetch(
       `${url}/rest/v1/products?select=*&id=eq.${encodeURIComponent(id)}&limit=1`,
