@@ -34,7 +34,9 @@ export function ShopPage() {
       (product) => categoryNames.length === 0 || categoryNames.includes(product.category),
     );
     const categoryFiltered =
-      activeCategory === 'All' ? inVisible : inVisible.filter((product) => product.category === activeCategory);
+      activeCategory === 'All'
+        ? inVisible
+        : inVisible.filter((product) => product.category === activeCategory);
 
     const q = searchQuery.trim().toLowerCase();
     if (!q) return categoryFiltered;
@@ -128,4 +130,3 @@ export function ShopPage() {
       </div>
     </section>
   );
-}
