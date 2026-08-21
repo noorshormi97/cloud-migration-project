@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from '@/lib/router-compat';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductImage } from './products/ProductImage';
 import { useVisibleNewArrivals } from '@/hooks/useNewArrivals';
 import { formatPrice } from '@/lib/store';
@@ -60,9 +59,15 @@ function ArrivalCard({ item }: { item: NewArrival }) {
     </article>
   );
 
+  // Card widths: one full card on mobile (no partial peek), then 2 / 3 / 4
+  // across sm / lg / xl — each width subtracts its share of the 24px gap so
+  // every snap point lands exactly on one card.
+  const liClass =
+    'w-full shrink-0 snap-start sm:w-[calc(50%_-_12px)] lg:w-[calc(33.333%_-_16px)] xl:w-[calc(25%_-_18px)]';
+
   if (item.product_id) {
     return (
-      <li className="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%] xl:w-[24%]">
+      <li className={liClass}>
         <Link to={`/product/${item.product_id}`} className="block h-full">
           {card}
         </Link>
@@ -70,9 +75,7 @@ function ArrivalCard({ item }: { item: NewArrival }) {
     );
   }
 
-  return (
-    <li className="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%] xl:w-[24%]">{card}</li>
-  );
+  return <li className={liClass}>{card}</li>;
 }
 
 export function NewArrivals() {
@@ -80,6 +83,11 @@ export function NewArrivals() {
   const trackRef = useRef<HTMLUListElement | null>(null);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+
+  // Mouse drag state (touch uses the native scroll + CSS snap instead).
+  const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
+  // Set after a drag so the click that follows a drag doesn't navigate.
+  const suppressClick = useRef(false);
 
   const scrollByCard = useCallback((direction: 1 | -1) => {
     const track = trackRef.current;
@@ -98,6 +106,50 @@ export function NewArrivals() {
     const id = window.setInterval(() => scrollByCard(1), 4200);
     return () => window.clearInterval(id);
   }, [paused, reducedMotion, items.length, scrollByCard]);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
+    // Mouse-only manual drag. Touch/trackpad use native scrolling + CSS snap.
+    if (e.pointerType !== 'mouse') return;
+    drag.current = {
+      down: true,
+      startX: e.clientX,
+      startScroll: trackRef.current?.scrollLeft ?? 0,
+      moved: false,
+    };
+    suppressClick.current = false;
+    setPaused(true);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // ignore capture errors
+    }
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLUListElement>) => {
+    const d = drag.current;
+    const track = trackRef.current;
+    if (!d.down || !track || e.pointerType !== 'mouse') return;
+    const dx = e.clientX - d.startX;
+    if (!d.moved && Math.abs(dx) > 6) d.moved = true;
+    if (d.moved) {
+      // Drag left (dx negative) → next product; drag right → previous.
+      track.scrollLeft = d.startScroll - dx;
+    }
+  };
+
+  const handlePointerEnd = () => {
+    const d = drag.current;
+    if (d.down && d.moved) suppressClick.current = true;
+    drag.current.down = false;
+  };
+
+  const handleClickCapture = (e: React.MouseEvent<HTMLUListElement>) => {
+    if (suppressClick.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClick.current = false;
+    }
+  };
 
   if (items.length === 0) return null;
 
@@ -123,25 +175,6 @@ export function NewArrivals() {
               Recently acquired pieces, photographed and graded this week.
             </p>
           </div>
-
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              aria-label="Previous new arrivals"
-              className="border border-ink/25 p-2.5 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-            >
-              <ChevronLeft size={18} strokeWidth={1.5} />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              aria-label="Next new arrivals"
-              className="border border-ink/25 p-2.5 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-            >
-              <ChevronRight size={18} strokeWidth={1.5} />
-            </button>
-          </div>
         </div>
 
         <ul
@@ -163,7 +196,13 @@ export function NewArrivals() {
               scrollByCard(-1);
             }
           }}
-          className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 [&::-webkit-scrollbar]:hidden"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerEnd}
+          onPointerCancel={handlePointerEnd}
+          onClickCapture={handleClickCapture}
+          onDragStart={(e) => e.preventDefault()}
+          className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [overscroll-behavior-x:contain] [user-select:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 [&::-webkit-scrollbar]:hidden"
         >
           {items.map((item) => (
             <ArrivalCard key={item.id} item={item} />
