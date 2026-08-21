@@ -1,10 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from '@/lib/router-compat';
-import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
 import { ProductGrid } from '../components/products/ProductGrid';
 import { useProducts } from '../hooks/useProducts';
 import { useVisibleCategories } from '../hooks/useContent';
+import { Search } from 'lucide-react';
 
 export function ShopPage() {
   const { data: products = [], isLoading } = useProducts();
@@ -64,12 +63,7 @@ export function ShopPage() {
           </Link>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-4 text-center md:mb-5"
-        >
+        <div className="mb-4 text-center md:mb-5">
           <h1 className="font-heading text-3xl tracking-tight text-ink md:text-4xl">
             Shop
           </h1>
@@ -77,7 +71,7 @@ export function ShopPage() {
             Authentic banknotes, coins and stamps collected from around the
             world.
           </p>
-        </motion.div>
+        </div>
 
         {/* Search by name */}
         <div className="mx-auto mb-5 max-w-md">
