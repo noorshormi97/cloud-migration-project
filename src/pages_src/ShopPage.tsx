@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
+import { Search } from 'lucide-react';
 import { ProductGrid } from '../components/products/ProductGrid';
 import { useProducts } from '../hooks/useProducts';
 import { useVisibleCategories } from '../hooks/useContent';
@@ -18,6 +19,7 @@ export function ShopPage() {
   const filters = useMemo(() => ['All', ...categoryNames], [categoryNames]);
 
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (categoryParam && categoryNames.includes(categoryParam)) {
@@ -31,9 +33,13 @@ export function ShopPage() {
     const inVisible = products.filter(
       (product) => categoryNames.length === 0 || categoryNames.includes(product.category),
     );
-    if (activeCategory === 'All') return inVisible;
-    return inVisible.filter((product) => product.category === activeCategory);
-  }, [activeCategory, products, categoryNames]);
+    const categoryFiltered =
+      activeCategory === 'All' ? inVisible : inVisible.filter((product) => product.category === activeCategory);
+
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return categoryFiltered;
+    return categoryFiltered.filter((product) => product.name.toLowerCase().includes(q));
+  }, [activeCategory, products, categoryNames, searchQuery]);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -71,6 +77,24 @@ export function ShopPage() {
           </p>
         </motion.div>
 
+        {/* Search by name */}
+        <div className="mx-auto mb-5 max-w-md">
+          <div className="relative">
+            <Search
+              size={16}
+              strokeWidth={1.5}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/40"
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name…"
+              className="w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none transition-colors focus:border-ink/50"
+            />
+          </div>
+        </div>
+
         <div className="-mx-6 mb-5 overflow-x-auto px-6 md:mx-0 md:px-0">
           <div className="flex w-max min-w-full flex-nowrap items-center justify-start gap-1.5 md:w-auto md:flex-wrap md:justify-center">
             {filters.map((category) => (
@@ -90,7 +114,6 @@ export function ShopPage() {
           </div>
         </div>
 
-
         {isLoading ? (
           <p className="text-center font-sans text-sm font-light text-ink/60">
             Loading collectibles…
@@ -99,7 +122,7 @@ export function ShopPage() {
           <ProductGrid products={filteredProducts} />
         ) : (
           <p className="text-center font-sans text-sm font-light text-ink/60">
-            No collectibles found in this category yet.
+            No collectibles found{searchQuery ? ` for "${searchQuery.trim()}"` : ''}.
           </p>
         )}
       </div>
