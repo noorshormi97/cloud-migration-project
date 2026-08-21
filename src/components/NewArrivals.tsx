@@ -26,14 +26,13 @@ function iconTypeFor(item: NewArrival): 'banknote' | 'coin' | 'accessory' {
 
 function ArrivalCard({ item }: { item: NewArrival }) {
   const card = (
-    <article className="group flex h-full snap-start flex-col border border-ink/10 bg-paper transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_18px_40px_-24px_rgba(17,17,17,0.55)]">
+    <article className="group flex h-full snap-start flex-col border border-ink/10 bg-paper">
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
         <ProductImage
           path={item.image}
           alt={item.name}
           label="Image"
           iconType={iconTypeFor(item)}
-          className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
         />
         {item.is_new ? (
           <span className="absolute left-0 top-0 bg-ink px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
@@ -208,6 +207,10 @@ export function NewArrivals() {
             <ArrivalCard key={item.id} item={item} />
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
       </div>
     </section>
   );
