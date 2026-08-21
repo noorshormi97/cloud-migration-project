@@ -1,4 +1,3 @@
-import { Link } from '@/lib/router-compat';
 import type { ReactNode } from 'react';
 import { CategoryCube } from './CategoryCube';
 import { useVisibleCategories } from '@/hooks/useContent';
@@ -89,15 +88,6 @@ export function CategoryGrid() {
               to={`/shop?category=${encodeURIComponent(category.name)}`}
             />
           ))}
-        </div>
-
-        <div className="mt-6 text-center md:mt-8">
-          <Link
-            to="/shop"
-            className="inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
-          >
-            Shop All Products
-          </Link>
         </div>
       </div>
     </section>
