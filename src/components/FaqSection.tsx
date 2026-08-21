@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 import { useFaqs } from '@/hooks/useContent';
 
@@ -18,16 +17,10 @@ export function FaqSection() {
         </h2>
 
         <div className="divide-y divide-ink/10 border-y border-ink/10">
-          {visible.map((faq, index) => {
+          {visible.map((faq) => {
             const isOpen = openId === faq.id;
             return (
-              <motion.div
-                key={faq.id}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.45, delay: index * 0.05 }}
-              >
+              <div key={faq.id}>
                 <button
                   type="button"
                   onClick={() => setOpenId(isOpen ? null : faq.id)}
@@ -48,7 +41,7 @@ export function FaqSection() {
                     {faq.answer}
                   </p>
                 ) : null}
-              </motion.div>
+              </div>
             );
           })}
         </div>
