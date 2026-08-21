@@ -211,6 +211,3 @@ export function NewArrivals() {
     </section>
   );
 }
-      </div>
-    </section>
-  );
