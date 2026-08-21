@@ -39,8 +39,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           delay: index * 0.05,
           ease: [0.22, 1, 0.36, 1],
         }}
-        whileHover={{ y: -3 }}
-        className="flex h-full flex-col border border-ink/10 bg-paper transition-shadow duration-300 hover:shadow-md"
+        className="flex h-full flex-col border border-ink/10 bg-paper"
       >
         <div className="relative flex aspect-square items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
           <ProductImage
@@ -54,18 +53,13 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                   : 'accessory'
             }
           />
-          {!inStock ? (
-            <span className="absolute left-0 top-0 bg-ink/85 px-2 py-0.5 font-sans text-[9px] font-medium uppercase tracking-widest text-brand">
-              Out of Stock
-            </span>
-          ) : null}
         </div>
 
-        <div className="flex flex-1 flex-col gap-1 p-2.5 md:p-3">
-          <p className="font-sans text-[9px] font-medium uppercase tracking-widest text-ink/50">
+        <div className="flex flex-1 flex-col gap-0.5 p-2.5 md:p-3">
+          <p className="truncate font-sans text-[9px] font-medium uppercase tracking-widest text-ink/50">
             {product.country}
           </p>
-          <h3 className="font-heading text-sm leading-snug tracking-tight text-ink md:text-base">
+          <h3 className="truncate font-heading text-sm leading-snug tracking-tight text-ink md:text-base">
             {product.name}
           </h3>
           <p className="font-sans text-[10px] font-light text-ink/60">
@@ -73,7 +67,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               .filter(Boolean)
               .join(' · ')}
           </p>
-          <p className="mt-auto pt-1.5 font-heading text-sm font-medium text-ink md:text-base">
+          <p className="mt-1 font-heading text-sm font-medium text-ink md:text-base">
             {formatPrice(product.price)}
           </p>
 
