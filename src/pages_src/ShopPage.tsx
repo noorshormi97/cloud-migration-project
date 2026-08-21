@@ -130,3 +130,4 @@ export function ShopPage() {
       </div>
     </section>
   );
+}
