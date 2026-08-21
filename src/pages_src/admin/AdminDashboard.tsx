@@ -9,10 +9,12 @@ import { AdminContact } from './AdminContact';
 import { AdminCategories } from './AdminCategories';
 import { AdminFaqs } from './AdminFaqs';
 import { AdminCombos } from './AdminCombos';
+import { AdminNewArrivals } from './AdminNewArrivals';
 
 const TABS = [
   'Orders',
   'Products',
+  'New Arrivals',
   'Categories',
   'Combos',
   'FAQs',
@@ -76,6 +78,7 @@ export function AdminDashboard() {
         <div className="mt-8">
           {tab === 'Orders' ? <AdminOrders /> : null}
           {tab === 'Products' ? <AdminProducts /> : null}
+          {tab === 'New Arrivals' ? <AdminNewArrivals /> : null}
           {tab === 'Categories' ? <AdminCategories /> : null}
           {tab === 'Combos' ? <AdminCombos /> : null}
           {tab === 'FAQs' ? <AdminFaqs /> : null}

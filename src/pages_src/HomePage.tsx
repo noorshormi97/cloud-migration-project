@@ -1,5 +1,6 @@
 import { Hero } from '../components/Hero';
 import { CategoryGrid } from '../components/CategoryGrid';
+import { NewArrivals } from '../components/NewArrivals';
 import { FaqSection } from '../components/FaqSection';
 
 export function HomePage() {
@@ -7,6 +8,7 @@ export function HomePage() {
     <>
       <Hero />
       <CategoryGrid />
+      <NewArrivals />
       <FaqSection />
     </>
   );
