@@ -58,9 +58,11 @@ export function ProductPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="grid gap-5 md:grid-cols-2 md:gap-8 lg:gap-10"
+          className="grid gap-5 md:grid-cols-[minmax(0,5fr)_7fr] md:gap-8 lg:gap-10"
         >
-          <ProductGallery productName={product.name} images={product.images} />
+          <div className="md:max-w-[440px]">
+            <ProductGallery productName={product.name} images={product.images} />
+          </div>
           <ProductInfo product={product} />
         </motion.div>
 
