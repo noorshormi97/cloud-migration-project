@@ -381,6 +381,50 @@ export type Database = {
         }
         Relationships: []
       }
+      start_collecting: {
+        Row: {
+          created_at: string
+          display_order: number
+          enabled: boolean
+          id: string
+          image: string
+          name: string
+          price: number
+          product_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          id?: string
+          image?: string
+          name?: string
+          price?: number
+          product_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          enabled?: boolean
+          id?: string
+          image?: string
+          name?: string
+          price?: number
+          product_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "start_collecting_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
