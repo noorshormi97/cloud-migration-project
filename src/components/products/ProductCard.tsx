@@ -1,6 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
+import { toast } from 'sonner';
 import { ProductImage } from './ProductImage';
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../data/products';
@@ -26,6 +27,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
     e.stopPropagation();
     if (!inStock) return;
     addToCart(product.id, 1);
+    toast.success(`${product.name} added to the cart.`, {
+      duration: 2500,
+    });
   };
 
   return (

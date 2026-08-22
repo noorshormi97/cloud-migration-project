@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Minus, Plus, ShoppingBag } from 'lucide-react';
+import { toast } from 'sonner';
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../data/products';
 import { isInStock } from '@/lib/store';
@@ -23,6 +24,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const handleAddToCart = () => {
     if (!inStock) return;
     addToCart(product.id, Math.min(quantity, product.stock));
+    toast.success(`${product.name} added to the cart.`, {
+      duration: 2500,
+    });
   };
 
   return (
