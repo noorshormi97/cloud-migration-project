@@ -1,6 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
+import { toast } from 'sonner';
 import { useCombos } from '@/hooks/useContent';
 import { formatPrice } from '@/lib/store';
 import { useCart } from '@/context/CartContext';
@@ -115,7 +116,12 @@ export function ComboPage() {
                   <button
                     type="button"
                     disabled={!combo.available}
-                    onClick={() => addToCart(combo.id, 1, 'combo')}
+                    onClick={() => {
+                      addToCart(combo.id, 1, 'combo');
+                      toast.success(`${combo.name} added to the cart.`, {
+                        duration: 2500,
+                      });
+                    }}
                     className="mt-3.5 flex items-center justify-center gap-2 bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ShoppingBag size={14} strokeWidth={1.5} />
