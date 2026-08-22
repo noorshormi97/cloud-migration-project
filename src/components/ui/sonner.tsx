@@ -7,15 +7,21 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       className="toaster group"
       position="top-center"
+      style={
+        {
+          "--normal-bg": "#fae588",
+          "--normal-text": "#111111",
+          "--normal-border": "rgba(17, 17, 17, 0.10)",
+        } as React.CSSProperties
+      }
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-brand group-[.toaster]:text-ink group-[.toaster]:border-ink/10 group-[.toaster]:shadow-lg group-[.toaster]:font-sans",
-          title: "group-[.toast]:font-sans group-[.toast]:text-sm group-[.toast]:font-medium group-[.toast]:tracking-wide",
-          description: "group-[.toast]:text-ink/70 group-[.toast]:font-sans",
-          actionButton: "group-[.toast]:bg-ink group-[.toast]:text-brand",
-          cancelButton: "group-[.toast]:bg-paper group-[.toast]:text-ink",
-          success: "group-[.toast]:[&[data-sonner-toast]]:border-l-4 group-[.toast]:[&[data-sonner-toast]]:border-l-ink",
+            "group toast !bg-brand !text-ink !border-ink/10 !shadow-lg font-sans",
+          title: "font-sans text-sm font-medium tracking-wide text-ink",
+          description: "text-ink/70 font-sans",
+          actionButton: "bg-ink text-brand",
+          cancelButton: "bg-paper text-ink",
         },
       }}
       {...props}
