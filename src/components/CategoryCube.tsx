@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from '@/lib/router-compat';
 
 interface CategoryCubeProps {
@@ -17,7 +18,17 @@ export function CategoryCube({ title, description, icon, index, to }: CategoryCu
       to={to}
       className="group block aspect-square w-full max-w-[180px] md:max-w-[200px]"
     >
-      <article className="flex h-full w-full flex-col items-center justify-center gap-3 border border-ink/10 bg-paper p-4 text-center transition-shadow duration-300 hover:shadow-lg">
+      <motion.article
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{
+          duration: 0.45,
+          delay: Math.min(index, 8) * 0.06,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="flex h-full w-full flex-col items-center justify-center gap-3 border border-ink/10 bg-paper p-4 text-center transition-shadow duration-300 hover:shadow-lg"
+      >
         <div className="flex h-20 w-20 items-center justify-center text-ink/90 transition-transform duration-300 group-hover:scale-105">
           {icon}
         </div>
@@ -30,7 +41,7 @@ export function CategoryCube({ title, description, icon, index, to }: CategoryCu
             {description}
           </p>
         </div>
-      </article>
+      </motion.article>
     </Link>
   );
 }
