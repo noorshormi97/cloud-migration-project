@@ -2,6 +2,7 @@ import { Link } from '@/lib/router-compat';
 import { Hero } from '../components/Hero';
 import { CategoryGrid } from '../components/CategoryGrid';
 import { NewArrivals } from '../components/NewArrivals';
+import { StartCollecting } from '../components/StartCollecting';
 import { FaqSection } from '../components/FaqSection';
 
 export function HomePage() {
@@ -23,6 +24,7 @@ export function HomePage() {
 
       <CategoryGrid />
       <NewArrivals />
+      <StartCollecting />
       <FaqSection />
     </>
   );
