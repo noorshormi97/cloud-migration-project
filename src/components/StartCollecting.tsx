@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { Link } from '@/lib/router-compat';
 import { ProductImage } from './products/ProductImage';
 import { useVisibleStartCollecting } from '@/hooks/useStartCollecting';
@@ -61,10 +62,20 @@ export function StartCollecting() {
         </div>
 
         <ul className="mt-10 grid grid-cols-2 gap-4 md:gap-6">
-          {items.map((item) => (
-            <li key={item.id}>
+          {items.map((item, index) => (
+            <motion.li
+              key={item.id}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{
+                duration: 0.45,
+                delay: Math.min(index, 8) * 0.06,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
               <Card item={item} />
-            </li>
+            </motion.li>
           ))}
         </ul>
 
