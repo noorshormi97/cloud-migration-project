@@ -35,12 +35,12 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   return (
     <Link to={`/product/${product.id}`} className="group block h-full w-full">
       <motion.article
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{
-          duration: 0.5,
-          delay: index * 0.05,
+          duration: 0.45,
+          delay: Math.min(index % 8, 8) * 0.06,
           ease: [0.22, 1, 0.36, 1],
         }}
         className="flex h-full flex-col border border-ink/10 bg-paper"
