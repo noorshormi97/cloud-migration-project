@@ -19,11 +19,11 @@ export function CategoryCube({ title, description, icon, index, to }: CategoryCu
       className="group block aspect-square w-full max-w-[180px] md:max-w-[200px]"
     >
       <motion.article
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
-          duration: 0.32,
-          delay: Math.min(index, 6) * 0.05,
+          duration: 0.4,
+          delay: Math.min(index, 8) * 0.07,
           ease: [0.22, 1, 0.36, 1],
         }}
         className="flex h-full w-full flex-col items-center justify-center gap-3 border border-ink/10 bg-paper p-4 text-center transition-shadow duration-300 hover:shadow-lg"
