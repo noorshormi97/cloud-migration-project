@@ -23,10 +23,9 @@ export function FaqSection() {
             return (
               <motion.div
                 key={faq.id}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.45, delay: index * 0.05 }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: Math.min(index, 6) * 0.04 }}
               >
                 <button
                   type="button"
