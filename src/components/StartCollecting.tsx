@@ -66,7 +66,8 @@ export function StartCollecting() {
             <motion.li
               key={item.id}
               initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{
                 duration: 0.4,
                 delay: Math.min(index, 8) * 0.07,
