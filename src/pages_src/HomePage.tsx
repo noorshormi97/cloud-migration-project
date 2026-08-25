@@ -9,9 +9,10 @@ export function HomePage() {
   return (
     <>
       <Hero />
+      <CategoryGrid />
 
-      {/* Shop All Products — moved before "Shop by Category" (same button as before) */}
-      <section className="bg-brand px-6 pt-10 pb-2 md:pt-14 md:pb-2">
+      {/* Shop All Products — centered below "Shop by Category" */}
+      <section className="bg-brand px-6 pt-8 pb-12 md:pt-10 md:pb-16">
         <div className="mx-auto max-w-4xl text-center">
           <Link
             to="/shop"
@@ -22,7 +23,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <CategoryGrid />
       <NewArrivals />
       <StartCollecting />
       <FaqSection />
