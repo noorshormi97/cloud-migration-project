@@ -80,10 +80,7 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
             />
 
             {/* Title */}
-            <p className="mt-4 text-center font-sans text-[10px] font-medium uppercase tracking-[0.25em] text-ink/50">
-              A Web By
-            </p>
-            <DialogPrimitive.Title className="mt-1 text-center font-heading text-3xl tracking-tight text-ink">
+            <DialogPrimitive.Title className="mt-4 text-center font-heading text-3xl tracking-tight text-ink">
               Shohail Mahmud
             </DialogPrimitive.Title>
 
@@ -93,7 +90,8 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
                 <p className="text-center font-sans text-xs font-light leading-relaxed text-ink/80">
                   Note: I left this project on 20 August 2026. Any changes after
                   that were made by the owner — I don&apos;t know about the
-                  current design.
+                  current design. Still, I&apos;d love to know about the
+                  current state of the web!
                 </p>
               </div>
             </DialogPrimitive.Description>
@@ -124,4 +122,4 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );
-      }
+    }
