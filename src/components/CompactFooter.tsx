@@ -1,4 +1,4 @@
-const INSTAGRAM_URL = 'https://instagram.com/shohailmahmud09';
+import { DesignerCredit } from './DesignerCredit';
 
 export function CompactFooter() {
   return (
@@ -15,15 +15,8 @@ export function CompactFooter() {
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
         </div>
-        <a
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Designer Instagram profile"
-          className="block h-8 w-8 shrink-0 transition-opacity hover:opacity-80 md:h-9 md:w-9"
-        >
-          <img src="/logo.png" alt="Logo" className="h-full w-full object-contain" />
-        </a>
+        {/* Designer logo — opens the designer note popup */}
+        <DesignerCredit className="h-8 w-8 shrink-0 md:h-9 md:w-9" logoClassName="h-full w-full" />
       </div>
     </footer>
   );
