@@ -30,8 +30,8 @@ function GithubIcon({ className = '' }: { className?: string }) {
 }
 
 // Designer credit — clicking the "A web by" logo opens a popup styled like
-// the Instagram "ask me a question" sticker: logo on top, then the title,
-// then a rounded answer box with the handover note, then the two links.
+// the Instagram "ask me a question" sticker: logo on top, then the name,
+// then the social links, then the handover note as a footnote at the bottom.
 // Colors and typography match the rest of the site (brand yellow / ink).
 
 const INSTAGRAM_URL = 'https://instagram.com/shohailmahmud09';
@@ -84,20 +84,8 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
               Shohail Mahmud
             </DialogPrimitive.Title>
 
-            {/* Answer box — the handover note */}
-            <DialogPrimitive.Description asChild>
-              <div className="mt-4 rounded-2xl bg-paper px-4 py-3.5">
-                <p className="text-center font-sans text-xs font-light leading-relaxed text-ink/80">
-                  Note: I left this project on 20 August 2026. Any changes after
-                  that were made by the owner — I don&apos;t know about the
-                  current design. Still, I&apos;d love to know about the
-                  current state of the web!
-                </p>
-              </div>
-            </DialogPrimitive.Description>
-
             {/* Links */}
-            <div className="mt-3 grid gap-2">
+            <div className="mt-4 grid gap-2">
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
@@ -117,9 +105,21 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
                 <span className="normal-case tracking-normal">GitHub · {GH_HANDLE}</span>
               </a>
             </div>
+
+            {/* Handover note — footnote at the bottom */}
+            <DialogPrimitive.Description asChild>
+              <div className="mt-3 rounded-2xl bg-paper px-4 py-3">
+                <p className="text-center font-sans text-[11px] font-light leading-relaxed text-ink/70">
+                  Note: I left this project on 20 August 2026. Any changes after
+                  that were made by the owner — I don&apos;t know about the
+                  current design. Still, I&apos;d love to know about the
+                  current state of the web!
+                </p>
+              </div>
+            </DialogPrimitive.Description>
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );
-    }
+                     }
