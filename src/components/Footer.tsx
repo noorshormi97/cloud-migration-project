@@ -1,6 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContactDetails, socialUrl } from '@/lib/content';
+import { DesignerCredit } from './DesignerCredit';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -10,8 +11,6 @@ const navLinks = [
   { label: 'Combo', href: '/combo' },
   { label: 'Terms & Policy', href: '/terms' },
 ];
-
-const INSTAGRAM_URL = 'https://instagram.com/shohailmahmud09';
 
 export function Footer() {
   const { data } = useQuery({
@@ -106,19 +105,7 @@ export function Footer() {
           <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
             A web by
           </p>
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Designer Instagram profile"
-            className="mt-3 block transition-opacity hover:opacity-80"
-          >
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="h-14 w-14 object-contain"
-            />
-          </a>
+          <DesignerCredit className="mt-3" logoClassName="h-14 w-14" />
         </div>
       </div>
 
@@ -134,23 +121,11 @@ export function Footer() {
             >
               Admin
             </Link>
-            {/* Logo only — mobile bottom-right */}
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Designer Instagram profile"
-              className="block h-8 w-8 shrink-0 transition-opacity hover:opacity-80 md:hidden"
-            >
-              <img
-                src="/logo.png"
-                alt="Logo"
-                className="h-full w-full object-contain"
-              />
-            </a>
+            {/* Logo only — mobile bottom-right, opens designer note */}
+            <DesignerCredit className="h-8 w-8 shrink-0 md:hidden" logoClassName="h-full w-full" />
           </div>
         </div>
       </div>
     </footer>
   );
-}
+          }
