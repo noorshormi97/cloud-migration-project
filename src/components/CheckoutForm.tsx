@@ -80,11 +80,13 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
         _note: form.note.trim(),
         _courier: courier,
         _delivery_charge: deliveryCharge,
-        _items: lines.map((line) =>
-          line.kind === 'combo'
-            ? { combo_id: line.id, quantity: line.quantity }
-            : { product_id: line.id, quantity: line.quantity }
-        ),
+        // The place_order() RPC reads each item as { id, kind, quantity } —
+        // kind 'combo' routes to the combos table, anything else to products.
+        _items: lines.map((line) => ({
+          id: line.id,
+          kind: line.kind,
+          quantity: line.quantity,
+        })),
       });
       if (rpcError) throw rpcError;
 
@@ -210,4 +212,4 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
       </button>
     </form>
   );
-}
+    }
