@@ -8,6 +8,7 @@ interface ContactRow {
   instagram: string;
   admin_instagram: string;
   whatsapp_channel: string;
+  whatsapp_number: string;
   phone: string;
 }
 
@@ -16,6 +17,7 @@ const FIELDS: { key: keyof Omit<ContactRow, 'id'>; label: string }[] = [
   { key: 'instagram', label: 'Instagram' },
   { key: 'admin_instagram', label: "Admin's Instagram" },
   { key: 'whatsapp_channel', label: 'WhatsApp Channel' },
+  { key: 'whatsapp_number', label: 'WhatsApp Number (with country code, e.g. 8801XXXXXXXXX)' },
   { key: 'phone', label: 'Phone' },
 ];
 
@@ -39,6 +41,7 @@ export function AdminContact() {
     instagram: '',
     admin_instagram: '',
     whatsapp_channel: '',
+    whatsapp_number: '',
     phone: '',
   });
   const [saved, setSaved] = useState(false);
@@ -50,6 +53,7 @@ export function AdminContact() {
         instagram: data.instagram,
         admin_instagram: data.admin_instagram,
         whatsapp_channel: data.whatsapp_channel,
+        whatsapp_number: data.whatsapp_number ?? '',
         phone: data.phone,
       });
     }
