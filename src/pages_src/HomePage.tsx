@@ -4,6 +4,7 @@ import { CategoryGrid } from '../components/CategoryGrid';
 import { NewArrivals } from '../components/NewArrivals';
 import { StartCollecting } from '../components/StartCollecting';
 import { AboutUsSection } from '../components/AboutUsSection';
+import { SendMessageSection } from '../components/SendMessageSection';
 import { FaqSection } from '../components/FaqSection';
 
 export function HomePage() {
