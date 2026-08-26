@@ -127,6 +127,7 @@ export type Database = {
           phone: string
           updated_at: string
           whatsapp_channel: string
+          whatsapp_number: string
         }
         Insert: {
           admin_instagram?: string
@@ -136,6 +137,7 @@ export type Database = {
           phone?: string
           updated_at?: string
           whatsapp_channel?: string
+          whatsapp_number?: string
         }
         Update: {
           admin_instagram?: string
@@ -145,6 +147,7 @@ export type Database = {
           phone?: string
           updated_at?: string
           whatsapp_channel?: string
+          whatsapp_number?: string
         }
         Relationships: []
       }
