@@ -41,6 +41,7 @@ export interface ContactDetails {
   instagram: string;
   admin_instagram: string;
   whatsapp_channel: string;
+  whatsapp_number: string;
   phone: string;
 }
 
