@@ -100,19 +100,21 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Designer credit — desktop only */}
+        {/* Designer credit — desktop only, sits in the right-side space */}
         <div className="hidden md:flex md:flex-col md:items-center">
           <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
             A web by
           </p>
+          {/* Visual logo button that opens your popup card */}
           <DesignerCredit className="mt-3" logoClassName="h-14 w-14" />
+          {/* Smart crawlable link for Googlebot: completely invisible to users via sr-only */}
           <a
             href="https://github.com/shohail-mahmud"
             target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 font-sans text-[11px] font-medium text-ink/70 transition-colors hover:text-ink"
+            rel="author external noopener"
+            className="sr-only"
           >
-            Shohail Mahmud
+            Shohail Mahmud on GitHub
           </a>
         </div>
       </div>
@@ -123,14 +125,6 @@ export function Footer() {
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/shohail-mahmud"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans text-[10px] font-light uppercase tracking-widest text-ink/40 transition-colors hover:text-ink md:text-xs"
-            >
-              GitHub
-            </a>
             <Link
               to="/admin/login"
               className="font-sans text-[10px] font-light uppercase tracking-widest text-ink/40 transition-colors hover:text-ink md:text-xs"
