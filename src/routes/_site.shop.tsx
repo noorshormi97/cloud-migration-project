@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
 import { ShopPage } from "@/pages_src/ShopPage";
+import { fetchProducts } from "@/lib/store";
+import { fetchCategories } from "@/lib/content";
 import { canonicalUrl, OG_IMAGE, SITE_NAME, itemListSchema } from "@/lib/seo";
 
 interface ProductRow {
