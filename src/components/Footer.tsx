@@ -1,4 +1,4 @@
-iimport { Link } from '@/lib/router-compat';
+import { Link } from '@/lib/router-compat';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContactDetails, socialUrl } from '@/lib/content';
 import { DesignerCredit } from './DesignerCredit';
