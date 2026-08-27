@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
 import { ShopPage } from "@/pages_src/ShopPage";
+import { fetchProducts } from "@/lib/store";
+import { fetchCategories } from "@/lib/content";
 import { canonicalUrl, OG_IMAGE, SITE_NAME, itemListSchema } from "@/lib/seo";
 
 interface ProductRow {
@@ -33,9 +36,24 @@ async function fetchProductsSsr(): Promise<ProductRow[]> {
   }
 }
 
+// The ItemList schema only needs to exist in the server-rendered HTML. On the
+// client we reuse the hydrated/cached list instead of blocking navigation on a
+// second REST round-trip.
+let cachedSsrProducts: ProductRow[] | null = null;
+
 export const Route = createFileRoute("/_site/shop")({
-  loader: async () => {
+  staleTime: 5 * 60 * 1000,
+  loader: async ({ context }) => {
+    // Warm the product/category caches the page itself uses (fire-and-forget,
+    // also runs on hover thanks to router preloading).
+    if (typeof window !== "undefined") {
+      const qc = (context as { queryClient?: QueryClient }).queryClient;
+      void qc?.prefetchQuery({ queryKey: ["products"], queryFn: fetchProducts });
+      void qc?.prefetchQuery({ queryKey: ["categories"], queryFn: fetchCategories });
+      return { products: cachedSsrProducts ?? [] };
+    }
     const products = await fetchProductsSsr();
+    cachedSsrProducts = products;
     return { products };
   },
   component: ShopPage,
