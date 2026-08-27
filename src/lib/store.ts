@@ -48,14 +48,42 @@ export async function fetchProducts(): Promise<Product[]> {
   return (data ?? []).map((row) => mapProduct(row as unknown as ProductRow));
 }
 
+// Signing every image with its own request means one round-trip per card.
+// Requests made in the same tick are batched into a single createSignedUrls call.
+const SIGN_EXPIRY = 60 * 60 * 24 * 7;
+let pendingPaths: string[] = [];
+let pendingBatch: Promise<Map<string, string | null>> | null = null;
+
+function signBatch(): Promise<Map<string, string | null>> {
+  if (!pendingBatch) {
+    pendingBatch = new Promise((resolve) => {
+      setTimeout(async () => {
+        const paths = Array.from(new Set(pendingPaths));
+        pendingPaths = [];
+        pendingBatch = null;
+        const result = new Map<string, string | null>();
+        if (paths.length === 0) return resolve(result);
+        const { data, error } = await supabase.storage
+          .from(PRODUCT_BUCKET)
+          .createSignedUrls(paths, SIGN_EXPIRY);
+        if (!error) {
+          for (const entry of data ?? []) {
+            if (entry.path) result.set(entry.path, entry.signedUrl ?? null);
+          }
+        }
+        resolve(result);
+      }, 0);
+    });
+  }
+  return pendingBatch;
+}
+
 export async function fetchImageUrl(path: string): Promise<string | null> {
   if (!path) return null;
   if (path.startsWith('http')) return path;
-  const { data, error } = await supabase.storage
-    .from(PRODUCT_BUCKET)
-    .createSignedUrl(path, 60 * 60 * 24 * 7);
-  if (error) return null;
-  return data?.signedUrl ?? null;
+  pendingPaths.push(path);
+  const batch = await signBatch();
+  return batch.get(path) ?? null;
 }
 
 export function formatPrice(price: number) {
