@@ -37,6 +37,15 @@ export function webSiteSchema() {
     "@type": "WebSite",
     name: SITE_NAME,
     url: SITE_URL,
+    creator: {
+      "@type": "Person",
+      name: "Shohail Mahmud",
+      url: "https://github.com/shohail-mahmud",
+      sameAs: [
+        "https://github.com/shohail-mahmud",
+        "https://instagram.com/shohailmahmud09",
+      ],
+    },
   };
 }
 
