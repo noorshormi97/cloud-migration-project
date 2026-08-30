@@ -107,14 +107,24 @@ export function Footer() {
           </p>
           {/* Visual logo button that opens your popup card */}
           <DesignerCredit className="mt-3" logoClassName="h-14 w-14" />
-          {/* Smart crawlable link for Googlebot: completely invisible to users via sr-only */}
+          {/* Smart crawlable links for Googlebot: completely invisible to
+              users via sr-only. rel="me" tells Google these profiles belong to
+              the same author (helps GitHub AND Instagram get associated). */}
           <a
             href="https://github.com/shohail-mahmud"
             target="_blank"
-            rel="author external noopener"
+            rel="author external me noopener"
             className="sr-only"
           >
             Shohail Mahmud on GitHub
+          </a>
+          <a
+            href="https://instagram.com/shohailmahmud09"
+            target="_blank"
+            rel="author external me noopener"
+            className="sr-only"
+          >
+            Shohail Mahmud on Instagram
           </a>
         </div>
       </div>
