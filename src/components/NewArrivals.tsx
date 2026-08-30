@@ -117,14 +117,15 @@ export function NewArrivals() {
     };
     suppressClick.current = false;
     setPaused(true);
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {
-      // ignore capture errors
-    }
+    // Track the drag on `window` (instead of setPointerCapture) so the click
+    // that closes a drag still reaches the card's <Link>. setPointerCapture
+    // retargets the click to the <ul>, which swallows the link's navigation.
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerEnd);
+    window.addEventListener('pointercancel', handlePointerEnd);
   };
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLUListElement>) => {
+  const handlePointerMove = (e: PointerEvent) => {
     const d = drag.current;
     const track = trackRef.current;
     if (!d.down || !track || e.pointerType !== 'mouse') return;
@@ -140,6 +141,9 @@ export function NewArrivals() {
     const d = drag.current;
     if (d.down && d.moved) suppressClick.current = true;
     drag.current.down = false;
+    window.removeEventListener('pointermove', handlePointerMove);
+    window.removeEventListener('pointerup', handlePointerEnd);
+    window.removeEventListener('pointercancel', handlePointerEnd);
   };
 
   const handleClickCapture = (e: React.MouseEvent<HTMLUListElement>) => {
@@ -196,9 +200,6 @@ export function NewArrivals() {
             }
           }}
           onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerEnd}
-          onPointerCancel={handlePointerEnd}
           onClickCapture={handleClickCapture}
           onDragStart={(e) => e.preventDefault()}
           className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [overscroll-behavior-x:contain] [user-select:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 [&::-webkit-scrollbar]:hidden"
