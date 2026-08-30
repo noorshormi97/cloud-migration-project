@@ -72,15 +72,20 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
               <X className="h-4 w-4" />
             </DialogPrimitive.Close>
 
-            {/* Logo on top */}
+            {/* "The Dev" eyebrow — on top of the logo */}
+            <p className="text-center font-sans text-[10px] font-medium uppercase tracking-[0.28em] text-ink/50">
+              The Dev
+            </p>
+
+            {/* Logo */}
             <img
               src="/logo.png"
               alt="Shohail Mahmud logo"
-              className="mx-auto h-16 w-16 object-contain"
+              className="mx-auto mt-2 h-16 w-16 object-contain"
             />
 
             {/* Title */}
-            <DialogPrimitive.Title className="mt-4 text-center font-heading text-3xl tracking-tight text-ink">
+            <DialogPrimitive.Title className="mt-3 text-center font-heading text-3xl tracking-tight text-ink">
               Shohail Mahmud
             </DialogPrimitive.Title>
 
@@ -110,10 +115,8 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
             <DialogPrimitive.Description asChild>
               <div className="mt-3 rounded-2xl bg-paper px-4 py-3">
                 <p className="text-center font-sans text-[11px] font-light leading-relaxed text-ink/70">
-                  Note: I left this project on 20 August 2026. Any changes after
-                  that were made by the owner — I don&apos;t know about the
-                  current design. Still, I&apos;d love to know about the
-                  current state of the web!
+                  I handed over this project on 20 August 2026. If you&apos;d
+                  like a website for yourself, feel free to reach out!
                 </p>
               </div>
             </DialogPrimitive.Description>
@@ -122,4 +125,4 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );
-                     }
+}
