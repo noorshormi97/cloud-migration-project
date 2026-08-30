@@ -125,12 +125,6 @@ export function Footer() {
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <Link
-              to="/admin/login"
-              className="font-sans text-[10px] font-light uppercase tracking-widest text-ink/40 transition-colors hover:text-ink md:text-xs"
-            >
-              Admin
-            </Link>
             {/* Logo only — mobile bottom-right, opens designer note */}
             <DesignerCredit className="h-8 w-8 shrink-0 md:hidden" logoClassName="h-full w-full" />
           </div>
