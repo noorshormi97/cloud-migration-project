@@ -54,7 +54,12 @@ async function fetchProductSsr(id: string): Promise<ProductRow | null> {
 export const Route = createFileRoute("/_site/product/$id")({
   // Load the product server-side (SSR) so the <head> can render a unique
   // title, description, canonical URL and Product schema per collectible.
+  // NOTE: this blocking Supabase fetch only runs during SSR. On client-side
+  // navigation (clicking a product card) it's skipped, so navigation stays
+  // instant — the page component renders from the already-cached products
+  // instead. SEO head only matters on the first SSR load, so this is safe.
   loader: async ({ params }) => {
+    if (!import.meta.env.SSR) return null;
     const product = await fetchProductSsr(params.id);
     return product
       ? {
