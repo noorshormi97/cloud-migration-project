@@ -2,15 +2,16 @@ import { motion } from 'framer-motion';
 import { Link } from '@/lib/router-compat';
 import { ProductImage } from './products/ProductImage';
 import { useVisibleStartCollecting } from '@/hooks/useStartCollecting';
+import { useProducts } from '@/hooks/useProducts';
 import { formatPrice } from '@/lib/store';
 import type { StartCollectingItem } from '@/lib/startCollecting';
 
-function Card({ item }: { item: StartCollectingItem }) {
+function Card({ item, image }: { item: StartCollectingItem; image?: string }) {
   const body = (
     <article className="group flex h-full flex-col border border-ink/10 bg-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(17,17,17,0.5)]">
       <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
         <ProductImage
-          path={item.image}
+          path={image || item.image}
           alt={item.name}
           iconType="coin"
           className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
@@ -38,8 +39,17 @@ function Card({ item }: { item: StartCollectingItem }) {
 
 export function StartCollecting() {
   const { data: items } = useVisibleStartCollecting();
+  const { data: products = [] } = useProducts();
 
   if (items.length === 0) return null;
+
+  // Look up the linked product's image so the card matches the shop page.
+  // Fall back to the item's own admin-added image when not linked to a product.
+  const imageFor = (item: StartCollectingItem) => {
+    if (!item.product_id) return undefined;
+    const product = products.find((p) => p.id === item.product_id);
+    return product?.images?.[0] ?? undefined;
+  };
 
   return (
     <section
@@ -74,7 +84,7 @@ export function StartCollecting() {
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <Card item={item} />
+              <Card item={item} image={imageFor(item)} />
             </motion.li>
           ))}
         </ul>
