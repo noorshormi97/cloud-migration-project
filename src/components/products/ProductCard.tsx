@@ -56,6 +56,20 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                   : 'accessory'
             }
           />
+
+          {/* Small "add to cart" icon in the image corner — keeps the card
+              body as the one-tap navigation target (so the card opens on a
+              single click anywhere except this small button). */}
+          {inStock && (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              aria-label={`Add ${product.name} to cart`}
+              className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-brand/90 text-ink shadow-sm transition-colors hover:bg-ink hover:text-brand"
+            >
+              <ShoppingBag size={14} strokeWidth={1.5} />
+            </button>
+          )}
         </div>
 
         <div className="flex flex-1 flex-col gap-0.5 p-2.5 md:p-3">
@@ -73,16 +87,6 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           <p className="mt-1 font-heading text-sm font-medium text-ink md:text-base">
             {formatPrice(product.price)}
           </p>
-
-          <button
-            type="button"
-            disabled={!inStock}
-            onClick={handleAddToCart}
-            className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            <ShoppingBag size={12} strokeWidth={1.5} />
-            {inStock ? 'Add to Cart' : 'Out of Stock'}
-          </button>
         </div>
       </motion.article>
     </Link>
