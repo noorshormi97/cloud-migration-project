@@ -89,9 +89,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
           type="button"
           disabled={!inStock}
           onClick={handleAddToCart}
-          className="flex flex-1 items-center justify-center gap-2 bg-ink px-8 py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40 md:flex-none"
+          className="flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          <ShoppingBag size={16} strokeWidth={1.5} />
+          <ShoppingBag size={15} strokeWidth={1.5} />
           {inStock ? 'Add to Cart' : 'Out of Stock'}
         </button>
       </div>
