@@ -8,7 +8,7 @@ import type { StartCollectingItem } from '@/lib/startCollecting';
 function Card({ item }: { item: StartCollectingItem }) {
   const body = (
     <article className="group flex h-full flex-col border border-ink/10 bg-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(17,17,17,0.5)]">
-      <div className="flex aspect-square items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
+      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
         <ProductImage
           path={item.image}
           alt={item.name}
@@ -16,11 +16,11 @@ function Card({ item }: { item: StartCollectingItem }) {
           className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-3 md:p-4">
+      <div className="flex flex-1 flex-col gap-1 p-4 md:p-5">
         <h3 className="line-clamp-2 font-heading text-base leading-snug tracking-tight text-ink md:text-lg">
           {item.name}
         </h3>
-        <p className="mt-auto pt-2 font-sans text-sm font-medium text-ink">
+        <p className="mt-auto pt-3 font-sans text-sm font-medium text-ink">
           {formatPrice(item.price)}
         </p>
       </div>
@@ -47,7 +47,7 @@ export function StartCollecting() {
       aria-labelledby="start-collecting-heading"
       className="bg-brand px-6 py-14 md:py-20"
     >
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <h2
             id="start-collecting-heading"
@@ -61,7 +61,7 @@ export function StartCollecting() {
           </p>
         </div>
 
-        <ul className="mt-10 grid grid-cols-2 gap-4 md:gap-6">
+        <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {items.map((item, index) => (
             <motion.li
               key={item.id}
