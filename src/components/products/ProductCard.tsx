@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, PackageX } from 'lucide-react';
 import { toast } from 'sonner';
 import { ProductImage } from './ProductImage';
 import { useCart } from '../../context/CartContext';
@@ -57,18 +57,14 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             }
           />
 
-          {/* Small "add to cart" icon in the image corner — keeps the card
-              body as the one-tap navigation target (so the card opens on a
-              single click anywhere except this small button). */}
-          {inStock && (
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              aria-label={`Add ${product.name} to cart`}
-              className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-brand/90 text-ink shadow-sm transition-colors hover:bg-ink hover:text-brand"
-            >
-              <ShoppingBag size={14} strokeWidth={1.5} />
-            </button>
+          {/* Out-of-stock icon badge — shown on the image when the product is unavailable */}
+          {!inStock && (
+            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-full border border-ink/10 bg-brand/90 px-3 py-2 text-ink shadow-sm">
+              <PackageX size={16} strokeWidth={1.5} />
+              <span className="font-sans text-[8px] font-medium uppercase tracking-widest">
+                Out of stock
+              </span>
+            </div>
           )}
         </div>
 
@@ -84,9 +80,20 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               .filter(Boolean)
               .join(' · ')}
           </p>
-          <p className="mt-1 font-heading text-sm font-medium text-ink md:text-base">
+          <p className="mt-1 flex items-center gap-1 font-heading text-sm font-medium text-ink md:text-base">
+            <ShoppingBag size={12} strokeWidth={1.5} className="shrink-0 text-ink/60" />
             {formatPrice(product.price)}
           </p>
+
+          <button
+            type="button"
+            disabled={!inStock}
+            onClick={handleAddToCart}
+            className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <ShoppingBag size={12} strokeWidth={1.5} />
+            {inStock ? 'Add to Cart' : 'Out of Stock'}
+          </button>
         </div>
       </motion.article>
     </Link>
