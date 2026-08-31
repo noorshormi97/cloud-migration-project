@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
-import { ShoppingBag, PackageX } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { ProductImage } from './ProductImage';
 import { useCart } from '../../context/CartContext';
@@ -56,16 +56,6 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                   : 'accessory'
             }
           />
-
-          {/* Out-of-stock icon badge — shown on the image when the product is unavailable */}
-          {!inStock && (
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-full border border-ink/10 bg-brand/90 px-3 py-2 text-ink shadow-sm">
-              <PackageX size={16} strokeWidth={1.5} />
-              <span className="font-sans text-[8px] font-medium uppercase tracking-widest">
-                Out of stock
-              </span>
-            </div>
-          )}
         </div>
 
         <div className="flex flex-1 flex-col gap-0.5 p-2.5 md:p-3">
