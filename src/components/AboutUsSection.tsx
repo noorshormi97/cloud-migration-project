@@ -19,7 +19,7 @@ function StatCard({ value, label, index }: { value: string; label: string; index
         ease: [0.22, 1, 0.36, 1],
       }}
       whileHover={{ y: -4 }}
-      className="group border border-ink/10 bg-paper p-5 transition-shadow duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_12px_32px_-10px_rgba(17,17,17,0.14)] md:p-6"
+      className="group rounded-[10px] border border-ink/10 bg-paper p-5 transition-shadow duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_12px_32px_-10px_rgba(17,17,17,0.14)] md:p-6"
     >
       <p className="font-heading text-2xl tracking-tight text-ink md:text-3xl">
         {value}
@@ -33,7 +33,7 @@ function StatCard({ value, label, index }: { value: string; label: string; index
 
 export function AboutUsSection() {
   return (
-    <section className="bg-brand px-6 py-14 md:py-20">
+    <section className="bg-brand px-6 py-12 md:py-[4.25rem]">
       <div className="mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
