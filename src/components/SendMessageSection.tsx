@@ -243,7 +243,7 @@ export function SendMessageSection() {
   };
 
   return (
-    <section className="bg-brand px-6 py-14 md:py-20">
+    <section className="bg-brand px-6 py-12 md:py-[4.25rem]">
       <div className="mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -275,7 +275,7 @@ export function SendMessageSection() {
             <CabinetCat state={catState} />
           </div>
 
-          <div className="border border-ink/10 bg-paper p-5 md:p-8">
+          <div className="rounded-[10px] border border-ink/10 bg-paper p-5 md:p-8">
             <AnimatePresence mode="wait">
               {sent ? (
                 <motion.div
