@@ -343,7 +343,7 @@ export function SendMessageSection() {
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.25, ease: EASE }}
-                      className="w-full rounded-full border border-ink bg-ink px-8 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors duration-300 hover:bg-transparent hover:text-ink sm:w-auto"
+                      className="w-full rounded border border-ink bg-ink px-8 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors duration-300 hover:bg-transparent hover:text-ink sm:w-auto"
                     >
                       Send Message
                     </motion.button>

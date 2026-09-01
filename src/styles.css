@@ -167,6 +167,17 @@
     @apply bg-brand font-sans text-ink antialiased;
   }
 
+  /* Slightly soften every button/CTA corner (~95% sharp) site-wide.
+     Utilities like rounded-full/rounded-md still win, so this only
+     affects buttons with no explicit radius. */
+  button,
+  [type='button'],
+  [type='submit'],
+  a[class~='border'],
+  a[class~='border-ink'] {
+    border-radius: 4px;
+  }
+
   /* Modern sans body text; form controls don't inherit by default */
   button,
   input,
