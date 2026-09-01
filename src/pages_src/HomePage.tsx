@@ -28,6 +28,7 @@ export function HomePage() {
       <NewArrivals />
       <StartCollecting />
       <AboutUsSection />
+      <SendMessageSection />
       <FaqSection />
     </>
   );
