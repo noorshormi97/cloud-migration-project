@@ -11,7 +11,7 @@ export function FaqSection() {
   if (visible.length === 0) return null;
 
   return (
-    <section id="faq" className="bg-brand px-6 pb-10 pt-2 md:pb-12 md:pt-4">
+    <section id="faq" className="bg-brand px-6 pb-8 pt-2 md:pb-10 md:pt-4">
       <div className="mx-auto max-w-2xl">
         <h2 className="mb-5 text-center font-sans text-sm font-medium uppercase tracking-[0.2em] text-ink/70 md:mb-6">
           Frequently Asked Questions
