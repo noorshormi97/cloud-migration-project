@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Minus, Plus, ShoppingBag } from 'lucide-react';
+import { MessageCircle, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../data/products';
 import { isInStock } from '@/lib/store';
+import { askForPriceUrl, useWhatsAppNumber } from '@/hooks/useWhatsApp';
 
 function formatPrice(price: number) {
   return `৳${price.toLocaleString('en-BD')}`;
@@ -17,6 +18,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const inStock = isInStock(product);
+  const whatsappNumber = useWhatsAppNumber();
+  const askPrice = product.price <= 0 && whatsappNumber.length > 0;
+
+  const handleAskForPrice = () => {
+    window.open(askForPriceUrl(whatsappNumber, product.name), '_blank', 'noopener,noreferrer');
+  };
 
   const increase = () => setQuantity((q) => Math.min(product.stock, q + 1));
   const decrease = () => setQuantity((q) => Math.max(1, q - 1));
@@ -59,9 +66,21 @@ export function ProductInfo({ product }: ProductInfoProps) {
       </p>
 
       <p className="font-heading text-2xl text-ink md:text-3xl">
-        {formatPrice(product.price)}
+        {product.price > 0 ? formatPrice(product.price) : 'Ask for Price'}
       </p>
 
+      {askPrice ? (
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <button
+            type="button"
+            onClick={handleAskForPrice}
+            className="flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85"
+          >
+            <MessageCircle size={15} strokeWidth={1.5} />
+            Ask for Price
+          </button>
+        </div>
+      ) : (
       <div className="flex flex-wrap items-center gap-3 pt-1">
         <div className="flex items-center border border-ink/20 bg-paper">
           <button
@@ -95,6 +114,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           {inStock ? 'Add to Cart' : 'Out of Stock'}
         </button>
       </div>
+      )}
     </div>
   );
 }
