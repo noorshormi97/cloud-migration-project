@@ -14,7 +14,7 @@ export function HomePage() {
       <CategoryGrid />
 
       {/* Shop All Products — centered below "Shop by Category" */}
-      <section className="bg-brand px-6 pt-8 pb-12 md:pt-10 md:pb-16">
+      <section className="bg-brand px-6 pt-7 pb-10 md:pt-8 md:pb-14">
         <div className="mx-auto max-w-4xl text-center">
           <Link
             to="/shop"
