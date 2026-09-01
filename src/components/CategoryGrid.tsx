@@ -71,7 +71,7 @@ export function CategoryGrid() {
   const { data: categories } = useVisibleCategories();
 
   return (
-    <section id="categories" className="bg-brand px-6 pb-8 pt-8 md:pb-10 md:pt-10">
+    <section id="categories" className="bg-brand px-6 pb-7 pt-7 md:pb-8 md:pt-8">
       <div className="mx-auto max-w-4xl">
         <h2 className="mb-6 text-center font-sans text-sm font-medium uppercase tracking-[0.2em] text-ink/70 md:mb-8">
           Shop by Category
