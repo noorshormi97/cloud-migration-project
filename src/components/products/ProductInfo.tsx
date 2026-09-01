@@ -114,6 +114,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           {inStock ? 'Add to Cart' : 'Out of Stock'}
         </button>
       </div>
+      )}
     </div>
   );
 }
