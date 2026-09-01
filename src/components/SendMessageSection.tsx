@@ -243,7 +243,7 @@ export function SendMessageSection() {
   };
 
   return (
-    <section className="bg-sand px-6 py-14 md:py-20">
+    <section className="bg-brand px-6 py-14 md:py-20">
       <div className="mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -269,7 +269,7 @@ export function SendMessageSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
-          className="relative mt-10 md:mt-14"
+          <div className="border border-ink/10 bg-paper p-5 md:p-8">
         >
           <div className="flex justify-center overflow-hidden pb-1 md:justify-end md:pr-6">
             <CabinetCat state={catState} />
