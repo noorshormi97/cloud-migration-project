@@ -1,11 +1,12 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
-import { ShoppingBag } from 'lucide-react';
+import { MessageCircle, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { ProductImage } from './ProductImage';
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../data/products';
 import { isInStock } from '@/lib/store';
+import { askForPriceUrl, useWhatsAppNumber } from '@/hooks/useWhatsApp';
 
 function formatPrice(price: number) {
   return `৳${price.toLocaleString('en-BD')}`;
@@ -21,6 +22,14 @@ interface ProductCardProps {
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addToCart } = useCart();
   const inStock = isInStock(product);
+  const whatsappNumber = useWhatsAppNumber();
+  const askPrice = product.price <= 0 && whatsappNumber.length > 0;
+
+  const handleAskForPrice = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(askForPriceUrl(whatsappNumber, product.name), '_blank', 'noopener,noreferrer');
+  };
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
