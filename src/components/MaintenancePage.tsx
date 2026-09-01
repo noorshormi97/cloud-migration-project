@@ -1,7 +1,54 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchContactDetails } from '@/lib/content';
 import { SITE_NAME } from '@/lib/seo';
-import { Cat } from './Cat';
+
+// Construction-style "Under Construction" sign, drawn inline so it stays crisp
+// and matches the site's minimal editorial aesthetic (no external assets).
+function ConstructionSign() {
+  return (
+    <svg
+      viewBox="0 0 220 180"
+      className="mx-auto h-28 w-36 drop-shadow-[0_12px_24px_rgba(17,17,17,0.18)] sm:h-36 sm:w-44"
+      role="img"
+      aria-label="Under construction"
+    >
+      {/* ground shadow */}
+      <ellipse cx="110" cy="168" rx="70" ry="8" fill="#111111" opacity="0.12" />
+      {/* two legs */}
+      <line x1="70" y1="118" x2="60" y2="170" stroke="#111111" strokeWidth="9" strokeLinecap="round" />
+      <line x1="150" y1="118" x2="160" y2="170" stroke="#111111" strokeWidth="9" strokeLinecap="round" />
+      {/* plank / sign face */}
+      <rect
+        x="18"
+        y="18"
+        width="184"
+        height="102"
+        rx="6"
+        fill="#111111"
+        stroke="#111111"
+        strokeWidth="3"
+      />
+      {/* hazard stripes */}
+      <g stroke="#fae588" strokeWidth="10">
+        <line x1="30" y1="34" x2="50" y2="16" />
+        <line x1="52" y1="34" x2="72" y2="16" />
+        <line x1="74" y1="34" x2="94" y2="16" />
+      </g>
+      {/* gear symbol */}
+      <g transform="translate(110 68)">
+        <circle cx="0" cy="0" r="9" fill="none" stroke="#fae588" strokeWidth="4" />
+        <g stroke="#fae588" strokeWidth="4" strokeLinecap="round">
+          <line x1="0" y1="-16" x2="0" y2="-11" />
+          <line x1="14" y1="-8" x2="9.9" y2="-5.5" />
+          <line x1="14" y1="8" x2="9.9" y2="5.5" />
+          <line x1="0" y1="16" x2="0" y2="11" />
+          <line x1="-14" y1="8" x2="-9.9" y2="5.5" />
+          <line x1="-14" y1="-8" x2="-9.9" y2="-5.5" />
+        </g>
+      </g>
+    </svg>
+  );
+}
 
 export function MaintenancePage() {
   const { data } = useQuery({
@@ -22,11 +69,9 @@ export function MaintenancePage() {
     <div className="flex min-h-screen flex-col bg-brand">
       <div className="flex flex-1 items-center justify-center px-6 py-16">
         <div className="mx-auto max-w-xl text-center">
-          <div className="mx-auto flex justify-center">
-            <Cat state="sleeping" />
-          </div>
+          <ConstructionSign />
 
-          <h1 className="mt-8 font-heading text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] tracking-tight text-ink">
+          <h1 className="mt-10 font-heading text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] tracking-tight text-ink">
             The Website is
             <br />
             Under Maintenance
