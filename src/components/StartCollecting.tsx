@@ -6,7 +6,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { formatPrice } from '@/lib/store';
 import type { StartCollectingItem } from '@/lib/startCollecting';
 
-function Card({ item, image }: { item: StartCollectingItem; image?: string }) {
+function Card({ item, image }: { item: StartCollectingItem; image: string | undefined }) {
   const body = (
     <article className="group flex h-full flex-col border border-ink/10 bg-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(17,17,17,0.5)]">
       <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
