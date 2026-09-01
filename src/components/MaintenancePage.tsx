@@ -104,17 +104,17 @@ export function MaintenancePage() {
         </div>
       </div>
 
-      {/* Dev credit footer — small, unobtrusive */}
-      <footer className="border-t border-ink/10 px-6 py-5">
-        <p className="mx-auto flex max-w-xl items-center justify-center gap-1.5 text-center font-sans text-[10px] font-light uppercase tracking-[0.18em] text-ink/40">
-          <span>Website monitored &amp; maintained by</span>
+      {/* Dev credit footer — small, unobtrusive, single line on mobile */}
+      <footer className="border-t border-ink/10 px-4 py-4 sm:px-6">
+        <p className="flex flex-nowrap items-center justify-center gap-1 text-center font-sans text-[9px] font-light uppercase tracking-[0.12em] text-ink/40 sm:text-[10px]">
+          <span className="whitespace-nowrap">Website monitored &amp; maintained by</span>
           <a
             href="https://www.instagram.com/shohailmahmud09"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-medium text-ink/60 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink"
+            className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap font-medium text-ink/60 underline decoration-ink/25 underline-offset-2 transition-colors hover:text-ink"
           >
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.3.07 1.7.07 4.9s-.01 3.6-.07 4.9c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.3.06-1.7.07-4.9.07s-3.6-.01-4.9-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.6 2.2 15.2 2.2 12s.01-3.6.07-4.9c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.4 2.21 8.8 2.2 12 2.2m0 1.8c-3.1 0-3.5 0-4.7.07-1.1.05-1.7.23-2.1.39-.53.2-.9.44-1.3.84-.4.4-.64.77-.84 1.3-.16.4-.34 1-.39 2.1-.06 1.2-.07 1.6-.07 4.7s.01 3.5.07 4.7c.05 1.1.23 1.7.39 2.1.2.53.44.9.84 1.3.4.4.77.64 1.3.84.4.16 1 .34 2.1.39 1.2.06 1.6.07 4.7.07s3.5-.01 4.7-.07c1.1-.05 1.7-.23 2.1-.39.53-.2.9-.44 1.3-.84.4-.4.64-.77.84-1.3.16-.4.34-1 .39-2.1.06-1.2.07-1.6.07-4.7s-.01-3.5-.07-4.7c-.05-1.1-.23-1.7-.39-2.1-.2-.53-.44-.9-.84-1.3a3.6 3.6 0 0 0-1.3-.84c-.4-.16-1-.34-2.1-.39C15.5 4.01 15.1 4 12 4m0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8m0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2m5.9-3.1a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3" />
             </svg>
             @shohailmahmud09
