@@ -66,9 +66,21 @@ export function ProductInfo({ product }: ProductInfoProps) {
       </p>
 
       <p className="font-heading text-2xl text-ink md:text-3xl">
-        {formatPrice(product.price)}
+        {product.price > 0 ? formatPrice(product.price) : 'Ask for Price'}
       </p>
 
+      {askPrice ? (
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <button
+            type="button"
+            onClick={handleAskForPrice}
+            className="flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85"
+          >
+            <MessageCircle size={15} strokeWidth={1.5} />
+            Ask for Price
+          </button>
+        </div>
+      ) : (
       <div className="flex flex-wrap items-center gap-3 pt-1">
         <div className="flex items-center border border-ink/20 bg-paper">
           <button
