@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Minus, Plus, ShoppingBag } from 'lucide-react';
+import { MessageCircle, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../data/products';
 import { isInStock } from '@/lib/store';
+import { askForPriceUrl, useWhatsAppNumber } from '@/hooks/useWhatsApp';
 
 function formatPrice(price: number) {
   return `৳${price.toLocaleString('en-BD')}`;
@@ -17,6 +18,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const inStock = isInStock(product);
+  const whatsappNumber = useWhatsAppNumber();
+  const askPrice = product.price <= 0 && whatsappNumber.length > 0;
+
+  const handleAskForPrice = () => {
+    window.open(askForPriceUrl(whatsappNumber, product.name), '_blank', 'noopener,noreferrer');
+  };
 
   const increase = () => setQuantity((q) => Math.min(product.stock, q + 1));
   const decrease = () => setQuantity((q) => Math.max(1, q - 1));
