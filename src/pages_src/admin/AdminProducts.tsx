@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Trash2, Pencil, Plus, X } from 'lucide-react';
+import { Trash2, Pencil, Plus, X, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useContent';
@@ -68,9 +68,22 @@ export function AdminProducts() {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['products'] });
+
+  // Search filter — matches against the product name, category, country, year,
+  // and denomination so the admin can find a product to edit quickly.
+  const filteredProducts = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return products;
+    return products.filter((product) =>
+      [product.name, product.category, product.country, product.year, product.denomination, product.type]
+        .filter(Boolean)
+        .some((field) => String(field).toLowerCase().includes(q)),
+    );
+  }, [products, search]);
 
   // When the editor opens (add or edit), scroll it into view so you don't have
   // to hunt for it at the top of a long product list.
@@ -343,8 +356,29 @@ export function AdminProducts() {
       {isLoading ? (
         <p className="font-sans text-sm font-light text-ink/60">Loading products…</p>
       ) : (
-        <div className="divide-y divide-ink/10 border border-ink/10 bg-paper">
-          {products.map((product) => (
+        <>
+          {/* Search bar to quickly find a product to edit */}
+          <div className="relative mb-3">
+            <Search
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/40"
+            />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={`Search ${products.length} products by name, category, country, year…`}
+              className="w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none focus:border-ink/50"
+            />
+          </div>
+
+          {filteredProducts.length === 0 ? (
+            <p className="border border-ink/10 bg-paper p-4 font-sans text-sm font-light text-ink/60">
+              No products match “{search.trim()}”.
+            </p>
+          ) : (
+          <div className="divide-y divide-ink/10 border border-ink/10 bg-paper">
+            {filteredProducts.map((product) => (
             <div
               key={product.id}
               className="flex flex-wrap items-center justify-between gap-3 p-4"
@@ -392,7 +426,9 @@ export function AdminProducts() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+          )}
+        </>
       )}
     </div>
   );
