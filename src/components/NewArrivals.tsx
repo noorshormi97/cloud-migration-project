@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from '@/lib/router-compat';
 import { ProductImage } from './products/ProductImage';
 import { useVisibleNewArrivals } from '@/hooks/useNewArrivals';
+import { useProducts } from '@/hooks/useProducts';
 import { formatPrice } from '@/lib/store';
 import type { NewArrival } from '@/lib/newArrivals';
 
@@ -24,12 +25,12 @@ function iconTypeFor(item: NewArrival): 'banknote' | 'coin' | 'accessory' {
   return 'accessory';
 }
 
-function ArrivalCard({ item }: { item: NewArrival }) {
+function ArrivalCard({ item, image }: { item: NewArrival; image?: string }) {
   const card = (
     <article className="group flex h-full snap-start flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-paper">
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
+      <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
         <ProductImage
-          path={item.image}
+          path={image || item.image}
           alt={item.name}
           label="Image"
           iconType={iconTypeFor(item)}
@@ -41,17 +42,17 @@ function ArrivalCard({ item }: { item: NewArrival }) {
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-4 md:p-5">
+      <div className="flex flex-1 flex-col gap-1 p-3 md:p-4">
         <p className="font-sans text-[10px] font-medium uppercase tracking-[0.22em] text-ink/50">
           {item.category}
         </p>
-        <h3 className="font-heading text-xl leading-snug tracking-tight text-ink">
+        <h3 className="font-heading text-lg leading-snug tracking-tight text-ink">
           {item.name}
         </h3>
         <p className="font-sans text-xs font-light text-ink/60">
           {[item.country, item.year, item.condition].filter(Boolean).join(' · ')}
         </p>
-        <p className="mt-auto pt-3 font-sans text-base font-medium text-ink">
+        <p className="mt-auto pt-2 font-sans text-sm font-medium text-ink">
           {formatPrice(item.price)}
         </p>
       </div>
@@ -79,9 +80,20 @@ function ArrivalCard({ item }: { item: NewArrival }) {
 
 export function NewArrivals() {
   const { data: items } = useVisibleNewArrivals();
+  const { data: products = [] } = useProducts();
   const trackRef = useRef<HTMLUListElement | null>(null);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+
+  // If a New Arrivals item is linked to a product, reuse that product's photo
+  // so the admin doesn't have to upload the same image twice. Only falls back
+  // to the item's own admin-added image when not linked (or the product has no
+  // photo).
+  const imageFor = (item: NewArrival) => {
+    if (!item.product_id) return undefined;
+    const product = products.find((p) => p.id === item.product_id);
+    return product?.images?.[0] ?? undefined;
+  };
 
   // Mouse drag state (touch uses the native scroll + CSS snap instead).
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
@@ -160,7 +172,7 @@ export function NewArrivals() {
     <section
       id="new-arrivals"
       aria-labelledby="new-arrivals-heading"
-      className="bg-brand px-6 pb-10 pt-8 md:pb-14 md:pt-12"
+      className="bg-brand px-6 pb-8 pt-8 md:pb-10 md:pt-10"
     >
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -205,7 +217,7 @@ export function NewArrivals() {
           className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [overscroll-behavior-x:contain] [user-select:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 [&::-webkit-scrollbar]:hidden"
         >
           {items.map((item) => (
-            <ArrivalCard key={item.id} item={item} />
+            <ArrivalCard key={item.id} item={item} image={imageFor(item)} />
           ))}
         </ul>
       </div>
