@@ -269,13 +269,13 @@ export function SendMessageSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
-         <div className="border border-ink/10 bg-paper p-5 md:p-8">
+          className="relative mt-10 md:mt-14"
         >
           <div className="flex justify-center overflow-hidden pb-1 md:justify-end md:pr-6">
             <CabinetCat state={catState} />
           </div>
 
-          <div className="rounded-3xl bg-paper/90 p-5 shadow-[0_2px_16px_-6px_rgba(17,17,17,0.12)] ring-1 ring-ink/5 md:p-8">
+          <div className="border border-ink/10 bg-paper p-5 md:p-8">
             <AnimatePresence mode="wait">
               {sent ? (
                 <motion.div
@@ -343,7 +343,7 @@ export function SendMessageSection() {
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.25, ease: EASE }}
-                      className="w-full rounded border border-ink bg-ink px-8 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors duration-300 hover:bg-transparent hover:text-ink sm:w-auto"
+                      className="w-full rounded-full border border-ink bg-ink px-8 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors duration-300 hover:bg-transparent hover:text-ink sm:w-auto"
                     >
                       Send Message
                     </motion.button>
