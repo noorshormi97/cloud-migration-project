@@ -8,13 +8,12 @@ import type { StartCollectingItem } from '@/lib/startCollecting';
 
 function Card({ item, image }: { item: StartCollectingItem; image?: string }) {
   const body = (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(17,17,17,0.5)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-white">
       <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
         <ProductImage
           path={image || item.image}
           alt={item.name}
           iconType="coin"
-          className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4 md:p-5">
@@ -55,7 +54,7 @@ export function StartCollecting() {
     <section
       id="start-collecting"
       aria-labelledby="start-collecting-heading"
-      className="bg-brand px-6 py-12 md:py-[4.25rem]"
+      className="bg-brand px-6 py-8 md:py-10"
     >
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
@@ -71,7 +70,7 @@ export function StartCollecting() {
           </p>
         </div>
 
-        <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {items.map((item, index) => (
             <motion.li
               key={item.id}
@@ -89,7 +88,7 @@ export function StartCollecting() {
           ))}
         </ul>
 
-        <div className="mt-10 text-center">
+        <div className="mt-8 text-center">
           <Link
             to="/shop"
             className="inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
