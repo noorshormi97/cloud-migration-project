@@ -26,7 +26,7 @@ function iconTypeFor(item: NewArrival): 'banknote' | 'coin' | 'accessory' {
 
 function ArrivalCard({ item }: { item: NewArrival }) {
   const card = (
-    <article className="group flex h-full snap-start flex-col border border-ink/10 bg-paper">
+    <article className="group flex h-full snap-start flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-paper">
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
         <ProductImage
           path={item.image}
@@ -160,7 +160,7 @@ export function NewArrivals() {
     <section
       id="new-arrivals"
       aria-labelledby="new-arrivals-heading"
-      className="bg-brand px-6 pb-12 pt-10 md:pb-16 md:pt-14"
+      className="bg-brand px-6 pb-10 pt-8 md:pb-14 md:pt-12"
     >
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
