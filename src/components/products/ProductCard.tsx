@@ -24,6 +24,8 @@ interface ProductCardProps {
 export function ProductCard({ product, index = 0, priority = false }: ProductCardProps) {
   const { addToCart } = useCart();
   const inStock = isInStock(product);
+  const whatsappNumber = useWhatsAppNumber();
+  const askPrice = product.price <= 0 && whatsappNumber.length > 0;
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -33,6 +35,12 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
     toast.success(`${product.name} added to the cart.`, {
       duration: 2500,
     });
+  };
+
+  const handleAskForPrice = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(askForPriceUrl(whatsappNumber, product.name), '_blank', 'noopener,noreferrer');
   };
 
   return (
