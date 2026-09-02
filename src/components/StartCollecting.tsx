@@ -6,7 +6,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { formatPrice } from '@/lib/store';
 import type { StartCollectingItem } from '@/lib/startCollecting';
 
-function Card({ item, image }: { item: StartCollectingItem; image?: string }) {
+function Card({ item, image }: { item: StartCollectingItem; image?: string | undefined }) {
   const body = (
     <article className="group flex h-full flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-white">
       <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
