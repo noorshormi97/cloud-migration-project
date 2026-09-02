@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'Shop', href: '/shop' },
   { label: 'Contact', href: '/contact' },
   { label: 'Combo', href: '/combo' },
-  { label: 'Terms & Policy', href: '/terms' },
+  { label: 'Terms & Privacy Policy', href: '/terms' },
 ];
 
 export function Footer() {
