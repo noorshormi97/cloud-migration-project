@@ -1,14 +1,14 @@
-import { Link } from '@/lib/router-compat';
-import { ProductImage } from './products/ProductImage';
-import { useVisibleNewArrivals } from '@/hooks/useNewArrivals';
-import { formatPrice } from '@/lib/store';
-import type { NewArrival } from '@/lib/newArrivals';
+import { Link } from "@/lib/router-compat";
+import { ProductImage } from "./products/ProductImage";
+import { useVisibleNewArrivals } from "@/hooks/useNewArrivals";
+import { formatPrice } from "@/lib/store";
+import { newArrivalImages, type NewArrival } from "@/lib/newArrivals";
 
-function iconTypeFor(item: NewArrival): 'banknote' | 'coin' | 'accessory' {
+function iconTypeFor(item: NewArrival): "banknote" | "coin" | "accessory" {
   const text = `${item.category} ${item.name}`.toLowerCase();
-  if (text.includes('note')) return 'banknote';
-  if (text.includes('coin')) return 'coin';
-  return 'accessory';
+  if (text.includes("note")) return "banknote";
+  if (text.includes("coin")) return "coin";
+  return "accessory";
 }
 
 function Card({ item }: { item: NewArrival }) {
@@ -16,7 +16,7 @@ function Card({ item }: { item: NewArrival }) {
     <article className="group flex h-full flex-col border border-ink/10 bg-white shadow-[0_1px_0_rgba(17,17,17,0.04)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_20px_44px_-28px_rgba(17,17,17,0.5)]">
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
         <ProductImage
-          path={item.image}
+          path={newArrivalImages(item)[0]}
           alt={item.name}
           label="Image"
           iconType={iconTypeFor(item)}
@@ -33,31 +33,24 @@ function Card({ item }: { item: NewArrival }) {
         <p className="font-sans text-[10px] font-medium uppercase tracking-[0.22em] text-ink/45">
           {item.category}
         </p>
-        <h3 className="font-heading text-xl leading-snug tracking-tight text-ink">
-          {item.name}
-        </h3>
+        <h3 className="font-heading text-xl leading-snug tracking-tight text-ink">{item.name}</h3>
         <p className="font-sans text-xs font-light text-ink/60">
-          {[item.country, item.year, item.condition].filter(Boolean).join(' · ')}
+          {[item.country, item.year, item.condition].filter(Boolean).join(" · ")}
         </p>
         <p className="mt-auto pt-3 font-sans text-base font-medium text-ink">
-          {formatPrice(item.price)}
+          {item.price > 0 ? formatPrice(item.price) : "Ask for Price"}
         </p>
       </div>
     </article>
   );
 
+  // Every card opens the item's own detail page — New Arrivals is a
+  // standalone section, separate from the shop.
   return (
-    <li
-      aria-hidden={undefined}
-      className="w-[74vw] shrink-0 sm:w-[300px] lg:w-[320px]"
-    >
-      {item.product_id ? (
-        <Link to={`/product/${item.product_id}`} className="block h-full">
-          {body}
-        </Link>
-      ) : (
-        body
-      )}
+    <li aria-hidden={undefined} className="w-[74vw] shrink-0 sm:w-[300px] lg:w-[320px]">
+      <Link to={`/new-arrival/${item.id}`} className="block h-full">
+        {body}
+      </Link>
     </li>
   );
 }
@@ -93,13 +86,9 @@ export function NewArrivalsMarquee() {
 
       <div
         className="na-marquee relative mt-9 overflow-hidden"
-        style={{ ['--na-duration' as string]: `${duration}s` }}
+        style={{ ["--na-duration" as string]: `${duration}s` }}
       >
-        <ul
-          role="list"
-          aria-label="New arrivals"
-          className="na-marquee-track flex w-max gap-6"
-        >
+        <ul role="list" aria-label="New arrivals" className="na-marquee-track flex w-max gap-6">
           {loop.map((item, index) => (
             <Card key={`${item.id}-${index}`} item={item} />
           ))}
