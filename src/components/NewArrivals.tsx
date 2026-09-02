@@ -1,43 +1,45 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from '@/lib/router-compat';
-import { ProductImage } from './products/ProductImage';
-import { useVisibleNewArrivals } from '@/hooks/useNewArrivals';
-import { useProducts } from '@/hooks/useProducts';
-import { formatPrice } from '@/lib/store';
-import type { NewArrival } from '@/lib/newArrivals';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "@/lib/router-compat";
+import { ProductImage } from "./products/ProductImage";
+import { useVisibleNewArrivals } from "@/hooks/useNewArrivals";
+import { formatPrice } from "@/lib/store";
+import { newArrivalImages, type NewArrival } from "@/lib/newArrivals";
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setReduced(mq.matches);
     update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
   return reduced;
 }
 
-function iconTypeFor(item: NewArrival): 'banknote' | 'coin' | 'accessory' {
+function iconTypeFor(item: NewArrival): "banknote" | "coin" | "accessory" {
   const text = `${item.category} ${item.name}`.toLowerCase();
-  if (text.includes('note')) return 'banknote';
-  if (text.includes('coin')) return 'coin';
-  return 'accessory';
+  if (text.includes("note")) return "banknote";
+  if (text.includes("coin")) return "coin";
+  return "accessory";
 }
 
-function ArrivalCard({ item, image }: { item: NewArrival; image?: string | undefined }) {
+function ArrivalCard({ item }: { item: NewArrival }) {
+  const image = newArrivalImages(item)[0];
+  const outOfStock = item.price > 0 && (!item.available || item.stock <= 0);
+
   const card = (
     <article className="group flex h-full snap-start flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-paper">
       <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
-        <ProductImage
-          path={image || item.image}
-          alt={item.name}
-          label="Image"
-          iconType={iconTypeFor(item)}
-        />
+        <ProductImage path={image} alt={item.name} label="Image" iconType={iconTypeFor(item)} />
         {item.is_new ? (
           <span className="absolute left-0 top-0 bg-ink px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
             New
+          </span>
+        ) : null}
+        {outOfStock ? (
+          <span className="absolute right-0 top-0 bg-ink/80 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+            Out of stock
           </span>
         ) : null}
       </div>
@@ -46,14 +48,12 @@ function ArrivalCard({ item, image }: { item: NewArrival; image?: string | undef
         <p className="font-sans text-[10px] font-medium uppercase tracking-[0.22em] text-ink/50">
           {item.category}
         </p>
-        <h3 className="font-heading text-lg leading-snug tracking-tight text-ink">
-          {item.name}
-        </h3>
+        <h3 className="font-heading text-lg leading-snug tracking-tight text-ink">{item.name}</h3>
         <p className="font-sans text-xs font-light text-ink/60">
-          {[item.country, item.year, item.condition].filter(Boolean).join(' · ')}
+          {[item.country, item.year, item.condition].filter(Boolean).join(" · ")}
         </p>
         <p className="mt-auto pt-2 font-sans text-sm font-medium text-ink">
-          {formatPrice(item.price)}
+          {item.price > 0 ? formatPrice(item.price) : "Ask for Price"}
         </p>
       </div>
     </article>
@@ -63,37 +63,24 @@ function ArrivalCard({ item, image }: { item: NewArrival; image?: string | undef
   // across sm / lg / xl — each width subtracts its share of the 24px gap so
   // every snap point lands exactly on one card.
   const liClass =
-    'w-full shrink-0 snap-start sm:w-[calc(50%_-_12px)] lg:w-[calc(33.333%_-_16px)] xl:w-[calc(25%_-_18px)]';
+    "w-full shrink-0 snap-start sm:w-[calc(50%_-_12px)] lg:w-[calc(33.333%_-_16px)] xl:w-[calc(25%_-_18px)]";
 
-  if (item.product_id) {
-    return (
-      <li className={liClass}>
-        <Link to={`/product/${item.product_id}`} className="block h-full">
-          {card}
-        </Link>
-      </li>
-    );
-  }
-
-  return <li className={liClass}>{card}</li>;
+  // Every card opens the item's own detail page — New Arrivals is a
+  // standalone section with its own stock, separate from the shop.
+  return (
+    <li className={liClass}>
+      <Link to={`/new-arrival/${item.id}`} className="block h-full">
+        {card}
+      </Link>
+    </li>
+  );
 }
 
 export function NewArrivals() {
   const { data: items } = useVisibleNewArrivals();
-  const { data: products = [] } = useProducts();
   const trackRef = useRef<HTMLUListElement | null>(null);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
-
-  // If a New Arrivals item is linked to a product, reuse that product's photo
-  // so the admin doesn't have to upload the same image twice. Only falls back
-  // to the item's own admin-added image when not linked (or the product has no
-  // photo).
-  const imageFor = (item: NewArrival) => {
-    if (!item.product_id) return undefined;
-    const product = products.find((p) => p.id === item.product_id);
-    return product?.images?.[0] ?? undefined;
-  };
 
   // Mouse drag state (touch uses the native scroll + CSS snap instead).
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
@@ -109,7 +96,7 @@ export function NewArrivals() {
     let next = track.scrollLeft + direction * step;
     if (next > maxScroll - 4) next = direction === 1 ? 0 : maxScroll;
     if (next < 0) next = maxScroll;
-    track.scrollTo({ left: next, behavior: 'smooth' });
+    track.scrollTo({ left: next, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
@@ -120,7 +107,7 @@ export function NewArrivals() {
 
   const handlePointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
     // Mouse-only manual drag. Touch/trackpad use native scrolling + CSS snap.
-    if (e.pointerType !== 'mouse') return;
+    if (e.pointerType !== "mouse") return;
     drag.current = {
       down: true,
       startX: e.clientX,
@@ -132,15 +119,15 @@ export function NewArrivals() {
     // Track the drag on `window` (instead of setPointerCapture) so the click
     // that closes a drag still reaches the card's <Link>. setPointerCapture
     // retargets the click to the <ul>, which swallows the link's navigation.
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', handlePointerEnd);
-    window.addEventListener('pointercancel', handlePointerEnd);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerEnd);
+    window.addEventListener("pointercancel", handlePointerEnd);
   };
 
   const handlePointerMove = (e: PointerEvent) => {
     const d = drag.current;
     const track = trackRef.current;
-    if (!d.down || !track || e.pointerType !== 'mouse') return;
+    if (!d.down || !track || e.pointerType !== "mouse") return;
     const dx = e.clientX - d.startX;
     if (!d.moved && Math.abs(dx) > 6) d.moved = true;
     if (d.moved) {
@@ -153,9 +140,9 @@ export function NewArrivals() {
     const d = drag.current;
     if (d.down && d.moved) suppressClick.current = true;
     drag.current.down = false;
-    window.removeEventListener('pointermove', handlePointerMove);
-    window.removeEventListener('pointerup', handlePointerEnd);
-    window.removeEventListener('pointercancel', handlePointerEnd);
+    window.removeEventListener("pointermove", handlePointerMove);
+    window.removeEventListener("pointerup", handlePointerEnd);
+    window.removeEventListener("pointercancel", handlePointerEnd);
   };
 
   const handleClickCapture = (e: React.MouseEvent<HTMLUListElement>) => {
@@ -203,10 +190,10 @@ export function NewArrivals() {
           onBlur={() => setPaused(false)}
           onTouchStart={() => setPaused(true)}
           onKeyDown={(e) => {
-            if (e.key === 'ArrowRight') {
+            if (e.key === "ArrowRight") {
               e.preventDefault();
               scrollByCard(1);
-            } else if (e.key === 'ArrowLeft') {
+            } else if (e.key === "ArrowLeft") {
               e.preventDefault();
               scrollByCard(-1);
             }
@@ -217,7 +204,7 @@ export function NewArrivals() {
           className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [overscroll-behavior-x:contain] [user-select:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 [&::-webkit-scrollbar]:hidden"
         >
           {items.map((item) => (
-            <ArrivalCard key={item.id} item={item} image={imageFor(item)} />
+            <ArrivalCard key={item.id} item={item} />
           ))}
         </ul>
       </div>
