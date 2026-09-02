@@ -29,6 +29,14 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+type CartActions = Pick<
+  CartContextValue,
+  'addToCart' | 'removeFromCart' | 'updateQuantity' | 'clearCart'
+>;
+
+const CartActionsContext = createContext<CartActions | null>(null);
+
+
 const STORAGE_KEY = 'doc-cart';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
