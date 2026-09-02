@@ -1,7 +1,7 @@
-import { supabase } from '@/integrations/supabase/client';
-import type { Category, Product } from '@/data/products';
+import { supabase } from "@/integrations/supabase/client";
+import type { Category, Product } from "@/data/products";
 
-export const PRODUCT_BUCKET = 'product-images';
+export const PRODUCT_BUCKET = "product-images";
 
 type ProductRow = {
   id: string;
@@ -30,7 +30,7 @@ export function mapProduct(row: ProductRow): Product {
     currency: row.currency,
     year: row.year,
     condition: row.condition,
-    type: (row.type as Product['type']) ?? 'Coin',
+    type: (row.type as Product["type"]) ?? "Coin",
     description: row.description,
     price: Number(row.price),
     available: row.available,
@@ -41,9 +41,9 @@ export function mapProduct(row: ProductRow): Product {
 
 export async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: true });
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: true });
   if (error) throw error;
   return (data ?? []).map((row) => mapProduct(row as unknown as ProductRow));
 }
@@ -80,19 +80,19 @@ function signBatch(): Promise<Map<string, string | null>> {
 
 export async function fetchImageUrl(path: string): Promise<string | null> {
   if (!path) return null;
-  if (path.startsWith('http')) return path;
+  if (path.startsWith("http")) return path;
   pendingPaths.push(path);
   const batch = await signBatch();
   return batch.get(path) ?? null;
 }
 
 export function formatPrice(price: number) {
-  return `৳${price.toLocaleString('en-BD')}`;
+  return `৳${price.toLocaleString("en-BD")}`;
 }
 
 export const COURIERS = [
-  { name: 'Steadfast', charge: 120 },
-  { name: 'Shundarban', charge: 50 },
+  { name: "Steadfast", charge: 120 },
+  { name: "Shundarban", charge: 50 },
 ] as const;
 
 export function isInStock(product: { available: boolean; stock: number }) {
@@ -101,7 +101,7 @@ export function isInStock(product: { available: boolean; stock: number }) {
 
 export interface CartLine {
   id: string;
-  kind: 'product' | 'combo';
+  kind: "product" | "combo" | "new_arrival" | "start_collecting";
   name: string;
   image?: string | undefined;
   meta?: string;
