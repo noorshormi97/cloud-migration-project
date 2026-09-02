@@ -88,7 +88,7 @@ const privacySections = [
   {
     title: 'Data Retention & Security',
     body: [
-      'Order records are kept as long as needed for order fulfilment, customer support and basic business record-keeping.',
+      'We keep your order information only as long as it is needed to fulfil and deliver your order. Once your order has been successfully delivered and confirmed, we remove your personal information (name, phone number and address) from our database.',
       'We take reasonable technical measures to protect your information, including encrypted connections (HTTPS) and access controls on our systems. No method of transmission over the Internet is 100% secure, but we work to protect your data appropriately.',
     ],
   },
@@ -103,6 +103,13 @@ const privacySections = [
     body: [
       'You may contact us at any time to ask what information we hold about you, to correct it, or to request deletion of your order information (subject to legitimate record-keeping needs).',
       'You can opt out of personalised advertising using the links in the Advertising section above.',
+    ],
+  },
+  {
+    title: 'Website Monitoring & Developer',
+    body: [
+      'This website is actively monitored and maintained by its developer, Shohail Mahmud (Instagram: https://instagram.com/shohailmahmud09), to keep it secure, fast and reliable.',
+      'Monitoring is strictly technical — keeping the Site online, fixing bugs and protecting it against abuse. It does not involve reading, collecting or using your personal information for any other purpose.',
     ],
   },
   {
