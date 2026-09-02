@@ -83,19 +83,39 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
               .join(' · ')}
           </p>
           <p className="mt-1 flex items-center gap-1 font-heading text-sm font-medium text-ink md:text-base">
-            <ShoppingBag size={12} strokeWidth={1.5} className="shrink-0 text-ink/60" />
-            {formatPrice(product.price)}
+            {askPrice ? (
+              <>
+                <MessageCircle size={12} strokeWidth={1.5} className="shrink-0 text-ink/60" />
+                Ask for Price
+              </>
+            ) : (
+              <>
+                <ShoppingBag size={12} strokeWidth={1.5} className="shrink-0 text-ink/60" />
+                {formatPrice(product.price)}
+              </>
+            )}
           </p>
 
-          <button
-            type="button"
-            disabled={!inStock}
-            onClick={handleAddToCart}
-            className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            <ShoppingBag size={12} strokeWidth={1.5} />
-            {inStock ? 'Add to Cart' : 'Out of Stock'}
-          </button>
+          {askPrice ? (
+            <button
+              type="button"
+              onClick={handleAskForPrice}
+              className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+            >
+              <MessageCircle size={12} strokeWidth={1.5} />
+              Ask for Price
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={!inStock}
+              onClick={handleAddToCart}
+              className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ShoppingBag size={12} strokeWidth={1.5} />
+              {inStock ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+          )}
         </div>
       </motion.article>
     </Link>
