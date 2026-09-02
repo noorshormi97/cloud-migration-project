@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Trash2, Pencil, Plus, X } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useNewArrivals } from '@/hooks/useNewArrivals';
-import { useCategories } from '@/hooks/useContent';
-import { formatPrice, PRODUCT_BUCKET } from '@/lib/store';
-import { productCategories } from '@/data/products';
-import { ProductImage } from '@/components/products/ProductImage';
-import type { NewArrival } from '@/lib/newArrivals';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash2, Pencil, Plus, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNewArrivals } from "@/hooks/useNewArrivals";
+import { useCategories } from "@/hooks/useContent";
+import { formatPrice, PRODUCT_BUCKET } from "@/lib/store";
+import { productCategories, productTypes } from "@/data/products";
+import { ProductImage } from "@/components/products/ProductImage";
+import { newArrivalImages, type NewArrival } from "@/lib/newArrivals";
 
 type Draft = {
   name: string;
@@ -15,24 +15,36 @@ type Draft = {
   country: string;
   year: string;
   condition: string;
+  denomination: string;
+  currency: string;
+  type: string;
+  description: string;
   price: string;
+  stock: string;
+  available: boolean;
   is_new: boolean;
   enabled: boolean;
   display_order: string;
-  image: string;
+  images: string[];
 };
 
 const emptyDraft: Draft = {
-  name: '',
+  name: "",
   category: productCategories[0] as string,
-  country: '',
-  year: '',
-  condition: '',
-  price: '0',
+  country: "",
+  year: "",
+  condition: "",
+  denomination: "",
+  currency: "",
+  type: productTypes[0],
+  description: "",
+  price: "0",
+  stock: "0",
+  available: true,
   is_new: true,
   enabled: true,
-  display_order: '0',
-  image: '',
+  display_order: "0",
+  images: [],
 };
 
 function toDraft(item: NewArrival): Draft {
@@ -42,16 +54,22 @@ function toDraft(item: NewArrival): Draft {
     country: item.country,
     year: item.year,
     condition: item.condition,
+    denomination: item.denomination,
+    currency: item.currency,
+    type: item.type || (productTypes[0] as string),
+    description: item.description,
     price: String(item.price),
+    stock: String(item.stock),
+    available: item.available,
     is_new: item.is_new,
     enabled: item.enabled,
     display_order: String(item.display_order),
-    image: item.image,
+    images: newArrivalImages(item),
   };
 }
 
 const inputClass =
-  'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+  "w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50";
 
 export function AdminNewArrivals() {
   const queryClient = useQueryClient();
@@ -62,11 +80,11 @@ export function AdminNewArrivals() {
   const [error, setError] = useState<string | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['new-arrivals'] });
+  const invalidate = () => queryClient.invalidateQueries({ queryKey: ["new-arrivals"] });
 
   useEffect(() => {
     if (draft && editorRef.current) {
-      editorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      editorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [draft]);
 
@@ -74,7 +92,7 @@ export function AdminNewArrivals() {
   const categoryOptions = useMemo(() => {
     const names = new Set<string>();
     [...dbCategories.map((c) => c.name), ...productCategories].forEach((name) => {
-      if (name && name !== 'All') names.add(name);
+      if (name && name !== "All") names.add(name);
     });
     return Array.from(names);
   }, [dbCategories]);
@@ -83,18 +101,33 @@ export function AdminNewArrivals() {
     mutationFn: async () => {
       if (!draft) return;
       const payload = {
-        ...draft,
+        name: draft.name,
+        category: draft.category,
+        country: draft.country,
+        year: draft.year,
+        condition: draft.condition,
+        denomination: draft.denomination,
+        currency: draft.currency,
+        type: draft.type,
+        description: draft.description,
+        is_new: draft.is_new,
+        enabled: draft.enabled,
+        available: draft.available,
         price: Number(draft.price) || 0,
+        stock: Math.max(0, Math.floor(Number(draft.stock) || 0)),
         display_order: Math.floor(Number(draft.display_order) || 0),
+        images: draft.images,
+        // Keep the legacy single-image column in sync for older UI bits.
+        image: draft.images[0] ?? "",
       };
-      if (editingId === 'new') {
-        const { error: insertError } = await supabase.from('new_arrivals').insert(payload);
+      if (editingId === "new") {
+        const { error: insertError } = await supabase.from("new_arrivals").insert(payload);
         if (insertError) throw insertError;
       } else if (editingId) {
         const { error: updateError } = await supabase
-          .from('new_arrivals')
+          .from("new_arrivals")
           .update(payload)
-          .eq('id', editingId);
+          .eq("id", editingId);
         if (updateError) throw updateError;
       }
     },
@@ -103,18 +136,18 @@ export function AdminNewArrivals() {
       setDraft(null);
       void invalidate();
     },
-    onError: (err) => setError(err instanceof Error ? err.message : 'Save failed'),
+    onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
   });
 
   const remove = useMutation({
     mutationFn: async (item: NewArrival) => {
-      if (item.image && !item.image.startsWith('http')) {
-        await supabase.storage.from(PRODUCT_BUCKET).remove([item.image]);
+      const storagePaths = newArrivalImages(item).filter(
+        (path) => path && !path.startsWith("http"),
+      );
+      if (storagePaths.length > 0) {
+        await supabase.storage.from(PRODUCT_BUCKET).remove(storagePaths);
       }
-      const { error: deleteError } = await supabase
-        .from('new_arrivals')
-        .delete()
-        .eq('id', item.id);
+      const { error: deleteError } = await supabase.from("new_arrivals").delete().eq("id", item.id);
       if (deleteError) throw deleteError;
     },
     onSuccess: invalidate,
@@ -123,40 +156,56 @@ export function AdminNewArrivals() {
   const toggle = useMutation({
     mutationFn: async ({ id, enabled }: { id: string; enabled: boolean }) => {
       const { error: updateError } = await supabase
-        .from('new_arrivals')
+        .from("new_arrivals")
         .update({ enabled })
-        .eq('id', id);
+        .eq("id", id);
       if (updateError) throw updateError;
     },
     onSuccess: invalidate,
   });
 
   const handleUpload = async (files: FileList | null) => {
-    const file = files?.[0];
-    if (!file || !draft) return;
+    if (!files || files.length === 0 || !draft) return;
     setUploading(true);
     setError(null);
     try {
-      const ext = file.name.split('.').pop() ?? 'jpg';
-      const path = `new-arrivals/${crypto.randomUUID()}.${ext}`;
-      const { error: uploadError } = await supabase.storage
-        .from(PRODUCT_BUCKET)
-        .upload(path, file, { upsert: false });
-      if (uploadError) throw uploadError;
-      setDraft({ ...draft, image: path });
+      const uploaded: string[] = [];
+      for (const file of Array.from(files)) {
+        const ext = file.name.split(".").pop() ?? "jpg";
+        const path = `new-arrivals/${crypto.randomUUID()}.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from(PRODUCT_BUCKET)
+          .upload(path, file, { upsert: false });
+        if (uploadError) throw uploadError;
+        uploaded.push(path);
+      }
+      setDraft((current) =>
+        current ? { ...current, images: [...current.images, ...uploaded] } : current,
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setUploading(false);
     }
   };
 
+  const removeImage = (index: number) => {
+    setDraft((current) =>
+      current ? { ...current, images: current.images.filter((_, i) => i !== index) } : current,
+    );
+  };
+
   return (
     <div className="space-y-6">
+      <p className="font-sans text-sm font-light text-ink/60">
+        New Arrivals is its own catalogue, separate from the shop — each item has its own stock,
+        images and product page.
+      </p>
+
       <button
         type="button"
         onClick={() => {
-          setEditingId('new');
+          setEditingId("new");
           setDraft({
             ...emptyDraft,
             category: categoryOptions[0] ?? emptyDraft.category,
@@ -173,7 +222,7 @@ export function AdminNewArrivals() {
         <div ref={editorRef} className="space-y-3 border-2 border-ink/40 bg-paper p-5">
           <div className="flex items-center justify-between">
             <h3 className="font-heading text-lg tracking-tight text-ink">
-              {editingId === 'new' ? 'New arrival' : 'Edit arrival'}
+              {editingId === "new" ? "New arrival" : "Edit arrival"}
             </h3>
             <button
               type="button"
@@ -226,10 +275,41 @@ export function AdminNewArrivals() {
             />
             <input
               className={inputClass}
+              placeholder="Denomination (e.g. 10 Taka)"
+              value={draft.denomination}
+              onChange={(e) => setDraft({ ...draft, denomination: e.target.value })}
+            />
+            <input
+              className={inputClass}
+              placeholder="Currency (e.g. BDT)"
+              value={draft.currency}
+              onChange={(e) => setDraft({ ...draft, currency: e.target.value })}
+            />
+            <select
+              className={inputClass}
+              value={draft.type}
+              onChange={(e) => setDraft({ ...draft, type: e.target.value })}
+            >
+              {productTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            <input
+              className={inputClass}
               placeholder="Price"
               type="number"
               value={draft.price}
               onChange={(e) => setDraft({ ...draft, price: e.target.value })}
+            />
+            <input
+              className={inputClass}
+              placeholder="Stock"
+              type="number"
+              min="0"
+              value={draft.stock}
+              onChange={(e) => setDraft({ ...draft, stock: e.target.value })}
             />
             <input
               className={inputClass}
@@ -255,37 +335,59 @@ export function AdminNewArrivals() {
                 />
                 Show in section
               </label>
+              <label className="flex items-center gap-2 font-sans text-sm text-ink">
+                <input
+                  type="checkbox"
+                  checked={draft.available}
+                  onChange={(e) => setDraft({ ...draft, available: e.target.checked })}
+                />
+                Available for sale
+              </label>
             </div>
           </div>
 
+          <textarea
+            className={`${inputClass} min-h-[88px]`}
+            placeholder="Description (shown on the product page)"
+            value={draft.description}
+            onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+          />
+
           <div>
             <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
-              Image
+              Images
             </p>
-            <div className="mt-2 flex items-center gap-3">
-              <div className="flex aspect-square w-24 items-center justify-center overflow-hidden border border-ink/10 bg-paper">
-                <ProductImage path={draft.image} alt="Arrival image" iconSize={18} />
-              </div>
-              {draft.image ? (
-                <button
-                  type="button"
-                  onClick={() => setDraft({ ...draft, image: '' })}
-                  className="border border-ink/20 px-3 py-1.5 font-sans text-xs uppercase tracking-widest text-ink/70 hover:border-ink hover:text-ink"
-                >
-                  Remove
-                </button>
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              {draft.images.map((path, index) => (
+                <div key={`${path}-${index}`} className="relative">
+                  <div className="flex aspect-square w-24 items-center justify-center overflow-hidden border border-ink/10 bg-paper">
+                    <ProductImage path={path} alt={`Image ${index + 1}`} iconSize={18} />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border border-ink/20 bg-paper text-ink/60 hover:text-ink"
+                    aria-label={`Remove image ${index + 1}`}
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+              {draft.images.length === 0 ? (
+                <div className="flex aspect-square w-24 items-center justify-center overflow-hidden border border-ink/10 bg-paper">
+                  <ProductImage path="" alt="No image" iconSize={18} />
+                </div>
               ) : null}
             </div>
             <input
               type="file"
               accept="image/*"
+              multiple
               disabled={uploading}
               onChange={(e) => void handleUpload(e.target.files)}
               className="mt-3 font-sans text-xs text-ink/70"
             />
-            {uploading ? (
-              <p className="mt-1 font-sans text-xs text-ink/60">Uploading…</p>
-            ) : null}
+            {uploading ? <p className="mt-1 font-sans text-xs text-ink/60">Uploading…</p> : null}
           </div>
 
           {error ? <p className="font-sans text-xs text-red-700">{error}</p> : null}
@@ -296,7 +398,7 @@ export function AdminNewArrivals() {
             disabled={save.isPending}
             className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60 sm:w-auto sm:px-8"
           >
-            {save.isPending ? 'Saving…' : 'Save arrival'}
+            {save.isPending ? "Saving…" : "Save arrival"}
           </button>
         </div>
       ) : null}
@@ -306,23 +408,19 @@ export function AdminNewArrivals() {
       ) : (
         <div className="divide-y divide-ink/10 border border-ink/10 bg-paper">
           {arrivals.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-wrap items-center justify-between gap-3 p-4"
-            >
+            <div key={item.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div className="flex items-center gap-3">
                 <div className="flex aspect-square w-14 items-center justify-center overflow-hidden border border-ink/10">
-                  <ProductImage path={item.image} alt={item.name} iconSize={16} />
+                  <ProductImage path={newArrivalImages(item)[0]} alt={item.name} iconSize={16} />
                 </div>
                 <div>
-                  <p className="font-heading text-base tracking-tight text-ink">
-                    {item.name}
-                  </p>
+                  <p className="font-heading text-base tracking-tight text-ink">{item.name}</p>
                   <p className="font-sans text-xs font-light text-ink/60">
-                    #{item.display_order} · {item.category} · {item.country} · {item.year} ·{' '}
-                    {formatPrice(item.price)}
-                    {item.is_new ? ' · New badge' : ''}
-                    {item.enabled ? '' : ' · Hidden'}
+                    #{item.display_order} · {item.category} · {item.country} · {item.year} ·{" "}
+                    {formatPrice(item.price)} · Stock: {item.stock}
+                    {item.is_new ? " · New badge" : ""}
+                    {item.enabled ? "" : " · Hidden"}
+                    {item.available ? "" : " · Unavailable"}
                   </p>
                 </div>
               </div>
@@ -332,7 +430,7 @@ export function AdminNewArrivals() {
                   onClick={() => toggle.mutate({ id: item.id, enabled: !item.enabled })}
                   className="border border-ink/20 px-3 py-2 font-sans text-[10px] uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
                 >
-                  {item.enabled ? 'Disable' : 'Enable'}
+                  {item.enabled ? "Disable" : "Enable"}
                 </button>
                 <button
                   type="button"
