@@ -1,11 +1,12 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
-import { ShoppingBag } from 'lucide-react';
+import { MessageCircle, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { ProductImage } from './ProductImage';
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../data/products';
 import { isInStock } from '@/lib/store';
+import { askForPriceUrl, useWhatsAppNumber } from '@/hooks/useWhatsApp';
 
 function formatPrice(price: number) {
   return `৳${price.toLocaleString('en-BD')}`;
