@@ -1,15 +1,10 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-} from 'react';
-import { useProducts } from '../hooks/useProducts';
-import { useCombos } from '../hooks/useContent';
+import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import { useProducts } from "../hooks/useProducts";
+import { useCombos } from "../hooks/useContent";
+import { useNewArrivals } from "../hooks/useNewArrivals";
+import { useStartCollecting } from "../hooks/useStartCollecting";
 
-export type CartItemKind = 'product' | 'combo';
+export type CartItemKind = "product" | "combo" | "new_arrival" | "start_collecting";
 
 interface CartItem {
   productId: string;
@@ -31,19 +26,20 @@ const CartContext = createContext<CartContextValue | null>(null);
 
 type CartActions = Pick<
   CartContextValue,
-  'addToCart' | 'removeFromCart' | 'updateQuantity' | 'clearCart'
+  "addToCart" | "removeFromCart" | "updateQuantity" | "clearCart"
 >;
 
 const CartActionsContext = createContext<CartActions | null>(null);
 
-
-const STORAGE_KEY = 'doc-cart';
+const STORAGE_KEY = "doc-cart";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { data: products = [] } = useProducts();
   const { data: combos = [] } = useCombos();
+  const { data: newArrivals = [] } = useNewArrivals();
+  const { data: startCollecting = [] } = useStartCollecting();
   const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
@@ -65,7 +61,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const addToCart = useCallback(
-    (productId: string, quantity = 1, kind: CartItemKind = 'product') => {
+    (productId: string, quantity = 1, kind: CartItemKind = "product") => {
       if (quantity < 1) return;
       setItems((current) => {
         const existing = current.find((item) => item.productId === productId);
@@ -73,50 +69,54 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           return current.map((item) =>
             item.productId === productId
               ? { ...item, quantity: item.quantity + quantity, kind }
-              : item
+              : item,
           );
         }
         return [...current, { productId, quantity, kind }];
       });
     },
-    []
+    [],
   );
 
   const removeFromCart = useCallback((productId: string) => {
-    setItems((current) =>
-      current.filter((item) => item.productId !== productId)
-    );
+    setItems((current) => current.filter((item) => item.productId !== productId));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
-    if (quantity < 1) {
-      removeFromCart(productId);
-      return;
-    }
-    setItems((current) =>
-      current.map((item) =>
-        item.productId === productId ? { ...item, quantity } : item
-      )
-    );
-  }, [removeFromCart]);
+  const updateQuantity = useCallback(
+    (productId: string, quantity: number) => {
+      if (quantity < 1) {
+        removeFromCart(productId);
+        return;
+      }
+      setItems((current) =>
+        current.map((item) => (item.productId === productId ? { ...item, quantity } : item)),
+      );
+    },
+    [removeFromCart],
+  );
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const totalItems = useMemo(
-    () => items.reduce((sum, item) => sum + item.quantity, 0),
-    [items]
-  );
+  const totalItems = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
 
   const subtotal = useMemo(() => {
     return items.reduce((sum, item) => {
-      if (item.kind === 'combo') {
+      if (item.kind === "combo") {
         const combo = combos.find((c) => c.id === item.productId);
         return sum + (combo ? combo.price * item.quantity : 0);
+      }
+      if (item.kind === "new_arrival") {
+        const arrival = newArrivals.find((a) => a.id === item.productId);
+        return sum + (arrival ? arrival.price * item.quantity : 0);
+      }
+      if (item.kind === "start_collecting") {
+        const collecting = startCollecting.find((s) => s.id === item.productId);
+        return sum + (collecting ? collecting.price * item.quantity : 0);
       }
       const product = products.find((p) => p.id === item.productId);
       return sum + (product ? product.price * item.quantity : 0);
     }, 0);
-  }, [items, products, combos]);
+  }, [items, products, combos, newArrivals, startCollecting]);
 
   // Stable identity: action handlers never change, so components that only
   // need them (e.g. product cards) don't re-render when the cart changes.
@@ -140,7 +140,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 }
@@ -149,8 +149,7 @@ export function useCart() {
 export function useCartActions() {
   const context = useContext(CartActionsContext);
   if (!context) {
-    throw new Error('useCartActions must be used within a CartProvider');
+    throw new Error("useCartActions must be used within a CartProvider");
   }
   return context;
 }
-
