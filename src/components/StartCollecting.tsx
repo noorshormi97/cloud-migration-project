@@ -1,54 +1,44 @@
-import { motion } from 'framer-motion';
-import { Link } from '@/lib/router-compat';
-import { ProductImage } from './products/ProductImage';
-import { useVisibleStartCollecting } from '@/hooks/useStartCollecting';
-import { useProducts } from '@/hooks/useProducts';
-import { formatPrice } from '@/lib/store';
-import type { StartCollectingItem } from '@/lib/startCollecting';
+import { motion } from "framer-motion";
+import { Link } from "@/lib/router-compat";
+import { ProductImage } from "./products/ProductImage";
+import { useVisibleStartCollecting } from "@/hooks/useStartCollecting";
+import { formatPrice } from "@/lib/store";
+import { startCollectingImages, type StartCollectingItem } from "@/lib/startCollecting";
 
-function Card({ item, image }: { item: StartCollectingItem; image?: string | undefined }) {
-  const body = (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-white">
-      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
-        <ProductImage
-          path={image || item.image}
-          alt={item.name}
-          iconType="coin"
-        />
-      </div>
-      <div className="flex flex-1 flex-col gap-1 p-4 md:p-5">
-        <h3 className="line-clamp-2 font-heading text-base leading-snug tracking-tight text-ink md:text-lg">
-          {item.name}
-        </h3>
-        <p className="mt-auto pt-3 font-sans text-sm font-medium text-ink">
-          {formatPrice(item.price)}
-        </p>
-      </div>
-    </article>
-  );
+function Card({ item }: { item: StartCollectingItem }) {
+  const image = startCollectingImages(item)[0];
+  const outOfStock = item.price > 0 && (!item.available || item.stock <= 0);
 
-  return item.product_id ? (
-    <Link to={`/product/${item.product_id}`} className="block h-full">
-      {body}
+  return (
+    // Every card opens the item's own detail page — Start Collecting is a
+    // standalone section with its own stock, separate from the shop.
+    <Link to={`/start-collecting/${item.id}`} className="block h-full">
+      <article className="group flex h-full flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-white">
+        <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
+          <ProductImage path={image} alt={item.name} iconType="coin" />
+          {outOfStock ? (
+            <span className="absolute left-0 top-0 bg-ink/80 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+              Out of stock
+            </span>
+          ) : null}
+        </div>
+        <div className="flex flex-1 flex-col gap-1 p-4 md:p-5">
+          <h3 className="line-clamp-2 font-heading text-base leading-snug tracking-tight text-ink md:text-lg">
+            {item.name}
+          </h3>
+          <p className="mt-auto pt-3 font-sans text-sm font-medium text-ink">
+            {item.price > 0 ? formatPrice(item.price) : "Ask for Price"}
+          </p>
+        </div>
+      </article>
     </Link>
-  ) : (
-    body
   );
 }
 
 export function StartCollecting() {
   const { data: items } = useVisibleStartCollecting();
-  const { data: products = [] } = useProducts();
 
   if (items.length === 0) return null;
-
-  // Look up the linked product's image so the card matches the shop page.
-  // Fall back to the item's own admin-added image when not linked to a product.
-  const imageFor = (item: StartCollectingItem) => {
-    if (!item.product_id) return undefined;
-    const product = products.find((p) => p.id === item.product_id);
-    return product?.images?.[0] ?? undefined;
-  };
 
   return (
     <section
@@ -65,8 +55,7 @@ export function StartCollecting() {
             Start Collecting
           </h2>
           <p className="mx-auto mt-3 max-w-xl font-sans text-sm font-light leading-relaxed text-ink/65">
-            New collector? Here are some affordable collectible items to start your
-            collection.
+            New collector? Here are some affordable collectible items to start your collection.
           </p>
         </div>
 
@@ -83,7 +72,7 @@ export function StartCollecting() {
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <Card item={item} image={imageFor(item)} />
+              <Card item={item} />
             </motion.li>
           ))}
         </ul>
