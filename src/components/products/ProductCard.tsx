@@ -1,15 +1,15 @@
-import { Link } from '@/lib/router-compat';
-import { motion } from 'framer-motion';
-import { MessageCircle, ShoppingBag } from 'lucide-react';
-import { toast } from 'sonner';
-import { ProductImage } from './ProductImage';
-import { useCart } from '../../context/CartContext';
-import type { Product } from '../../data/products';
-import { isInStock } from '@/lib/store';
-import { askForPriceUrl, useWhatsAppNumber } from '@/hooks/useWhatsApp';
+import { Link } from "@/lib/router-compat";
+import { motion } from "framer-motion";
+import { MessageCircle, ShoppingBag } from "lucide-react";
+import { toast } from "sonner";
+import { ProductImage } from "./ProductImage";
+import { useCart, type CartItemKind } from "../../context/CartContext";
+import type { Product } from "../../data/products";
+import { isInStock } from "@/lib/store";
+import { askForPriceUrl, useWhatsAppNumber } from "@/hooks/useWhatsApp";
 
 function formatPrice(price: number) {
-  return `৳${price.toLocaleString('en-BD')}`;
+  return `৳${price.toLocaleString("en-BD")}`;
 }
 
 interface ProductCardProps {
@@ -17,11 +17,22 @@ interface ProductCardProps {
   index?: number;
   // First visible cards should load their image eagerly/high-priority.
   priority?: boolean;
+  // Where the card links to (defaults to the shop product page) and which
+  // cart bucket "Add to Cart" uses — lets New Arrivals / Start Collecting
+  // reuse this card for their own standalone pages.
+  href?: string;
+  cartKind?: CartItemKind;
 }
 
 // Compact product card — small square image, tight text, small button so many
 // cards fit in the grid (2 columns on mobile). Keeps link + add-to-cart.
-export function ProductCard({ product, index = 0, priority = false }: ProductCardProps) {
+export function ProductCard({
+  product,
+  index = 0,
+  priority = false,
+  href,
+  cartKind = "product",
+}: ProductCardProps) {
   const { addToCart } = useCart();
   const inStock = isInStock(product);
   const whatsappNumber = useWhatsAppNumber();
@@ -31,7 +42,7 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
     e.preventDefault();
     e.stopPropagation();
     if (!inStock) return;
-    addToCart(product.id, 1);
+    addToCart(product.id, 1, cartKind);
     toast.success(`${product.name} added to the cart.`, {
       duration: 2500,
     });
@@ -40,11 +51,11 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
   const handleAskForPrice = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    window.open(askForPriceUrl(whatsappNumber, product.name), '_blank', 'noopener,noreferrer');
+    window.open(askForPriceUrl(whatsappNumber, product.name), "_blank", "noopener,noreferrer");
   };
 
   return (
-    <Link to={`/product/${product.id}`} className="group block h-full w-full">
+    <Link to={href ?? `/product/${product.id}`} className="group block h-full w-full">
       <motion.article
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -60,11 +71,11 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
             path={product.images[0]}
             alt={product.name}
             iconType={
-              product.type === 'Banknote'
-                ? 'banknote'
-                : product.type === 'Coin'
-                  ? 'coin'
-                  : 'accessory'
+              product.type === "Banknote"
+                ? "banknote"
+                : product.type === "Coin"
+                  ? "coin"
+                  : "accessory"
             }
           />
         </div>
@@ -77,9 +88,7 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
             {product.name}
           </h3>
           <p className="font-sans text-[10px] font-light text-ink/60">
-            {[product.denomination, product.year, product.condition]
-              .filter(Boolean)
-              .join(' · ')}
+            {[product.denomination, product.year, product.condition].filter(Boolean).join(" · ")}
           </p>
           <p className="mt-1 flex items-center gap-1 font-heading text-sm font-medium text-ink md:text-base">
             {askPrice ? (
@@ -112,7 +121,7 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
               className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ShoppingBag size={12} strokeWidth={1.5} />
-              {inStock ? 'Add to Cart' : 'Out of Stock'}
+              {inStock ? "Add to Cart" : "Out of Stock"}
             </button>
           )}
         </div>
