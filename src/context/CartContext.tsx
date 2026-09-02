@@ -29,6 +29,14 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+type CartActions = Pick<
+  CartContextValue,
+  'addToCart' | 'removeFromCart' | 'updateQuantity' | 'clearCart'
+>;
+
+const CartActionsContext = createContext<CartActions | null>(null);
+
+
 const STORAGE_KEY = 'doc-cart';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -110,20 +118,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }, 0);
   }, [items, products, combos]);
 
+  // Stable identity: action handlers never change, so components that only
+  // need them (e.g. product cards) don't re-render when the cart changes.
+  const actions = useMemo(
+    () => ({ addToCart, removeFromCart, updateQuantity, clearCart }),
+    [addToCart, removeFromCart, updateQuantity, clearCart],
+  );
+
+  const value = useMemo(
+    () => ({ items, ...actions, totalItems, subtotal }),
+    [items, actions, totalItems, subtotal],
+  );
+
   return (
-    <CartContext.Provider
-      value={{
-        items,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        subtotal,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+    <CartActionsContext.Provider value={actions}>
+      <CartContext.Provider value={value}>{children}</CartContext.Provider>
+    </CartActionsContext.Provider>
   );
 }
 
@@ -134,3 +144,13 @@ export function useCart() {
   }
   return context;
 }
+
+// Actions-only accessor with a stable reference across cart updates.
+export function useCartActions() {
+  const context = useContext(CartActionsContext);
+  if (!context) {
+    throw new Error('useCartActions must be used within a CartProvider');
+  }
+  return context;
+}
+
