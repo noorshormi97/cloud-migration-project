@@ -59,7 +59,6 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
           <ProductImage
             path={product.images[0]}
             alt={product.name}
-            priority={priority}
             iconType={
               product.type === 'Banknote'
                 ? 'banknote'
