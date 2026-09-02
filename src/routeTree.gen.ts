@@ -21,7 +21,9 @@ import { Route as SiteShopRouteImport } from './routes/_site.shop'
 import { Route as SiteTermsRouteImport } from './routes/_site.terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as SiteNewArrivalIdRouteImport } from './routes/_site.new-arrival.$id'
 import { Route as SiteProductIdRouteImport } from './routes/_site.product.$id'
+import { Route as SiteStartCollectingIdRouteImport } from './routes/_site.start-collecting.$id'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -82,9 +84,19 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SiteNewArrivalIdRoute = SiteNewArrivalIdRouteImport.update({
+  id: '/new-arrival/$id',
+  path: '/new-arrival/$id',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SiteProductIdRoute = SiteProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteStartCollectingIdRoute = SiteStartCollectingIdRouteImport.update({
+  id: '/start-collecting/$id',
+  path: '/start-collecting/$id',
   getParentRoute: () => SiteRoute,
 } as any)
 
@@ -100,7 +112,9 @@ export interface FileRoutesByFullPath {
   '/terms': typeof SiteTermsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/new-arrival/$id': typeof SiteNewArrivalIdRoute
   '/product/$id': typeof SiteProductIdRoute
+  '/start-collecting/$id': typeof SiteStartCollectingIdRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -114,7 +128,9 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/': typeof SiteIndexRoute
   '/admin': typeof AdminIndexRoute
+  '/new-arrival/$id': typeof SiteNewArrivalIdRoute
   '/product/$id': typeof SiteProductIdRoute
+  '/start-collecting/$id': typeof SiteStartCollectingIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -130,7 +146,9 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/_site/': typeof SiteIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/_site/new-arrival/$id': typeof SiteNewArrivalIdRoute
   '/_site/product/$id': typeof SiteProductIdRoute
+  '/_site/start-collecting/$id': typeof SiteStartCollectingIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,7 +164,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/login'
     | '/admin/'
+    | '/new-arrival/$id'
     | '/product/$id'
+    | '/start-collecting/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
@@ -160,7 +180,9 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/'
     | '/admin'
+    | '/new-arrival/$id'
     | '/product/$id'
+    | '/start-collecting/$id'
   id:
     | '__root__'
     | '/_site'
@@ -175,7 +197,9 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/_site/'
     | '/admin/'
+    | '/_site/new-arrival/$id'
     | '/_site/product/$id'
+    | '/_site/start-collecting/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -271,11 +295,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_site/new-arrival/$id': {
+      id: '/_site/new-arrival/$id'
+      path: '/new-arrival/$id'
+      fullPath: '/new-arrival/$id'
+      preLoaderRoute: typeof SiteNewArrivalIdRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/product/$id': {
       id: '/_site/product/$id'
       path: '/product/$id'
       fullPath: '/product/$id'
       preLoaderRoute: typeof SiteProductIdRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/start-collecting/$id': {
+      id: '/_site/start-collecting/$id'
+      path: '/start-collecting/$id'
+      fullPath: '/start-collecting/$id'
+      preLoaderRoute: typeof SiteStartCollectingIdRouteImport
       parentRoute: typeof SiteRoute
     }
   }
@@ -290,7 +328,9 @@ interface SiteRouteChildren {
   SiteShopRoute: typeof SiteShopRoute
   SiteTermsRoute: typeof SiteTermsRoute
   SiteIndexRoute: typeof SiteIndexRoute
+  SiteNewArrivalIdRoute: typeof SiteNewArrivalIdRoute
   SiteProductIdRoute: typeof SiteProductIdRoute
+  SiteStartCollectingIdRoute: typeof SiteStartCollectingIdRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
@@ -302,7 +342,9 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteShopRoute: SiteShopRoute,
   SiteTermsRoute: SiteTermsRoute,
   SiteIndexRoute: SiteIndexRoute,
+  SiteNewArrivalIdRoute: SiteNewArrivalIdRoute,
   SiteProductIdRoute: SiteProductIdRoute,
+  SiteStartCollectingIdRoute: SiteStartCollectingIdRoute,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
