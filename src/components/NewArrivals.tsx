@@ -25,7 +25,7 @@ function iconTypeFor(item: NewArrival): 'banknote' | 'coin' | 'accessory' {
   return 'accessory';
 }
 
-function ArrivalCard({ item, image }: { item: NewArrival; image?: string }) {
+function ArrivalCard({ item, image }: { item: NewArrival; image?: string | undefined }) {
   const card = (
     <article className="group flex h-full snap-start flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-paper">
       <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
