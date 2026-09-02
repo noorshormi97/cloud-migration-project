@@ -1,40 +1,76 @@
-import { Link } from '@/lib/router-compat';
-import { motion } from 'framer-motion';
-import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import { useProducts } from '../hooks/useProducts';
-import { useCombos } from '../hooks/useContent';
-import { ProductImage } from '../components/products/ProductImage';
-import { CheckoutForm } from '../components/CheckoutForm';
-import { formatPrice, type CartLine } from '@/lib/store';
+import { Link } from "@/lib/router-compat";
+import { motion } from "framer-motion";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import { useCart } from "../context/CartContext";
+import { useProducts } from "../hooks/useProducts";
+import { useCombos } from "../hooks/useContent";
+import { useNewArrivals } from "../hooks/useNewArrivals";
+import { useStartCollecting } from "../hooks/useStartCollecting";
+import { newArrivalImages } from "@/lib/newArrivals";
+import { startCollectingImages } from "@/lib/startCollecting";
+import { ProductImage } from "../components/products/ProductImage";
+import { CheckoutForm } from "../components/CheckoutForm";
+import { formatPrice, type CartLine } from "@/lib/store";
 
 export function CartPage() {
   const { items, updateQuantity, removeFromCart, subtotal, totalItems } = useCart();
   const { data: products = [] } = useProducts();
   const { data: combos = [] } = useCombos();
+  const { data: newArrivals = [] } = useNewArrivals();
+  const { data: startCollecting = [] } = useStartCollecting();
 
   const lines: CartLine[] = items
     .map((item): CartLine | null => {
-      if (item.kind === 'combo') {
+      if (item.kind === "combo") {
         const combo = combos.find((c) => c.id === item.productId);
         if (!combo) return null;
         return {
           id: combo.id,
-          kind: 'combo',
+          kind: "combo",
           name: combo.name,
           image: combo.images[0],
           meta: `Combo set · ${combo.item_count} items`,
           price: combo.price,
           quantity: item.quantity,
           maxQuantity: combo.available ? 99 : 0,
-          href: '/combo',
+          href: "/combo",
+        };
+      }
+      if (item.kind === "new_arrival") {
+        const arrival = newArrivals.find((a) => a.id === item.productId);
+        if (!arrival) return null;
+        return {
+          id: arrival.id,
+          kind: "new_arrival",
+          name: arrival.name,
+          image: newArrivalImages(arrival)[0],
+          meta: arrival.country || "New Arrival",
+          price: arrival.price,
+          quantity: item.quantity,
+          maxQuantity: arrival.available && arrival.enabled ? arrival.stock : 0,
+          href: `/new-arrival/${arrival.id}`,
+        };
+      }
+      if (item.kind === "start_collecting") {
+        const collecting = startCollecting.find((s) => s.id === item.productId);
+        if (!collecting) return null;
+        return {
+          id: collecting.id,
+          kind: "start_collecting",
+          name: collecting.name,
+          image: startCollectingImages(collecting)[0],
+          meta: collecting.country || "Start Collecting",
+          price: collecting.price,
+          quantity: item.quantity,
+          maxQuantity: collecting.available && collecting.enabled ? collecting.stock : 0,
+          href: `/start-collecting/${collecting.id}`,
         };
       }
       const product = products.find((p) => p.id === item.productId);
       if (!product) return null;
       return {
         id: product.id,
-        kind: 'product',
+        kind: "product",
         name: product.name,
         image: product.images[0],
         meta: product.country,
@@ -99,7 +135,7 @@ export function CartPage() {
                 className="flex gap-3.5 border border-ink/10 bg-paper p-3 md:gap-4"
               >
                 <Link
-                  to={line.href ?? '/shop'}
+                  to={line.href ?? "/shop"}
                   className="flex aspect-square w-20 flex-shrink-0 items-center justify-center overflow-hidden border border-ink/10 bg-paper md:w-24"
                 >
                   <ProductImage path={line.image} alt={line.name} />
@@ -111,7 +147,7 @@ export function CartPage() {
                       {line.meta}
                     </p>
                     <h2 className="font-heading text-lg leading-tight tracking-tight text-ink md:text-xl">
-                      <Link to={line.href ?? '/shop'}>{line.name}</Link>
+                      <Link to={line.href ?? "/shop"}>{line.name}</Link>
                     </h2>
                     <p className="font-sans text-sm font-light text-ink/60">
                       {formatPrice(line.price)}
@@ -134,10 +170,7 @@ export function CartPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          updateQuantity(
-                            line.id,
-                            Math.min(line.maxQuantity, line.quantity + 1)
-                          )
+                          updateQuantity(line.id, Math.min(line.maxQuantity, line.quantity + 1))
                         }
                         disabled={line.quantity >= line.maxQuantity}
                         className="p-1.5 text-ink/70 transition-colors hover:bg-ink/5 disabled:opacity-30"
@@ -167,9 +200,7 @@ export function CartPage() {
           </div>
 
           <div className="h-fit border border-ink/10 bg-paper p-4">
-            <h2 className="font-heading text-xl tracking-tight text-ink">
-              Cart Summary
-            </h2>
+            <h2 className="font-heading text-xl tracking-tight text-ink">Cart Summary</h2>
             <div className="mt-3 flex justify-between border-b border-ink/10 pb-3 font-sans text-base text-ink">
               <span className="font-light">Subtotal</span>
               <span className="font-medium">{formatPrice(subtotal)}</span>
