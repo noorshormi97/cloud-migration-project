@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MessageCircle, Minus, Plus, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
-import { useCart, type CartItemKind } from "../../context/CartContext";
+import { useCartActions, type CartItemKind } from "../../context/CartContext";
 import type { Product } from "../../data/products";
 import { isInStock } from "@/lib/store";
 import { askForPriceUrl, useWhatsAppNumber } from "@/hooks/useWhatsApp";
@@ -20,7 +20,7 @@ interface ProductInfoProps {
 
 export function ProductInfo({ product, cartKind = "product" }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCart();
+  const { addToCart } = useCartActions();
   const inStock = isInStock(product);
   const whatsappNumber = useWhatsAppNumber();
   const askPrice = product.price <= 0 && whatsappNumber.length > 0;

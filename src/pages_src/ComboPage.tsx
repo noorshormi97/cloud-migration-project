@@ -4,12 +4,12 @@ import { ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCombos } from '@/hooks/useContent';
 import { formatPrice } from '@/lib/store';
-import { useCart } from '@/context/CartContext';
+import { useCartActions } from '@/context/CartContext';
 import { ProductImage } from '@/components/products/ProductImage';
 
 export function ComboPage() {
   const { data: combos = [], isLoading } = useCombos();
-  const { addToCart } = useCart();
+  const { addToCart } = useCartActions();
 
   return (
     <section className="bg-brand px-6 py-6 md:py-10">

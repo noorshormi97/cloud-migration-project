@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useCart } from "../context/CartContext";
+import { useCartActions } from "../context/CartContext";
 import { formatPrice, COURIERS, type CartLine } from "@/lib/store";
 
 interface CheckoutFormProps {
@@ -11,7 +11,7 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ lines, total }: CheckoutFormProps) {
-  const { clearCart } = useCart();
+  const { clearCart } = useCartActions();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ProductCard } from "./ProductCard";
 import type { Product } from "../../data/products";
 import type { CartItemKind } from "../../context/CartContext";
@@ -13,7 +14,7 @@ interface ProductGridProps {
 // Compact product grid — 2 columns on mobile (like banknotecoinstamp.com),
 // scaling up to 2 / 3 / 4 columns on larger screens. Tighter gaps so more
 // cards are visible at once.
-export function ProductGrid({ products, hrefFor, cartKind }: ProductGridProps) {
+function ProductGridBase({ products, hrefFor, cartKind }: ProductGridProps) {
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product, index) => (
@@ -28,3 +29,5 @@ export function ProductGrid({ products, hrefFor, cartKind }: ProductGridProps) {
     </div>
   );
 }
+
+export const ProductGrid = memo(ProductGridBase);

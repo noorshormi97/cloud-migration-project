@@ -1,9 +1,10 @@
+import { memo } from "react";
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
 import { MessageCircle, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { ProductImage } from "./ProductImage";
-import { useCart, type CartItemKind } from "../../context/CartContext";
+import { useCartActions, type CartItemKind } from "../../context/CartContext";
 import type { Product } from "../../data/products";
 import { isInStock } from "@/lib/store";
 import { askForPriceUrl, useWhatsAppNumber } from "@/hooks/useWhatsApp";
@@ -26,14 +27,14 @@ interface ProductCardProps {
 
 // Compact product card — small square image, tight text, small button so many
 // cards fit in the grid (2 columns on mobile). Keeps link + add-to-cart.
-export function ProductCard({
+function ProductCardBase({
   product,
   index = 0,
   priority = false,
   href,
   cartKind = "product",
 }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart } = useCartActions();
   const inStock = isInStock(product);
   const whatsappNumber = useWhatsAppNumber();
   const askPrice = product.price <= 0 && whatsappNumber.length > 0;
@@ -129,3 +130,7 @@ export function ProductCard({
     </Link>
   );
 }
+
+// Cards are pure functions of their props; memoizing keeps big grids from
+// re-rendering when unrelated cart/state updates happen.
+export const ProductCard = memo(ProductCardBase);
