@@ -6,8 +6,11 @@ import { StartCollecting } from '../components/StartCollecting';
 import { AboutUsSection } from '../components/AboutUsSection';
 import { SendMessageSection } from '../components/SendMessageSection';
 import { FaqSection } from '../components/FaqSection';
+import { usePrefetchShop } from '../hooks/usePrefetchShop';
 
 export function HomePage() {
+  usePrefetchShop();
+
   return (
     <>
       <Hero />
