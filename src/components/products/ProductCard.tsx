@@ -27,14 +27,14 @@ interface ProductCardProps {
 
 // Compact product card — small square image, tight text, small button so many
 // cards fit in the grid (2 columns on mobile). Keeps link + add-to-cart.
-export function ProductCard({
+function ProductCardBase({
   product,
   index = 0,
   priority = false,
   href,
   cartKind = "product",
 }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart } = useCartActions();
   const inStock = isInStock(product);
   const whatsappNumber = useWhatsAppNumber();
   const askPrice = product.price <= 0 && whatsappNumber.length > 0;
@@ -130,3 +130,7 @@ export function ProductCard({
     </Link>
   );
 }
+
+// Cards are pure functions of their props; memoizing keeps big grids from
+// re-rendering when unrelated cart/state updates happen.
+export const ProductCard = memo(ProductCardBase);
