@@ -1,9 +1,10 @@
+import { memo } from "react";
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
 import { MessageCircle, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { ProductImage } from "./ProductImage";
-import { useCart, type CartItemKind } from "../../context/CartContext";
+import { useCartActions, type CartItemKind } from "../../context/CartContext";
 import type { Product } from "../../data/products";
 import { isInStock } from "@/lib/store";
 import { askForPriceUrl, useWhatsAppNumber } from "@/hooks/useWhatsApp";
