@@ -341,6 +341,8 @@ export type Database = {
           id: string
           note: string
           status: Database["public"]["Enums"]["order_status"]
+          stock_deducted: boolean
+          stock_restored: boolean
           subtotal: number
           total_price: number
         }
@@ -354,6 +356,8 @@ export type Database = {
           id?: string
           note?: string
           status?: Database["public"]["Enums"]["order_status"]
+          stock_deducted?: boolean
+          stock_restored?: boolean
           subtotal?: number
           total_price?: number
         }
@@ -367,6 +371,8 @@ export type Database = {
           id?: string
           note?: string
           status?: Database["public"]["Enums"]["order_status"]
+          stock_deducted?: boolean
+          stock_restored?: boolean
           subtotal?: number
           total_price?: number
         }
@@ -533,6 +539,7 @@ export type Database = {
     }
     Functions: {
       admin_exists: { Args: never; Returns: boolean }
+      cancel_order: { Args: { _order_id: string }; Returns: boolean }
       claim_admin: { Args: never; Returns: boolean }
       has_role: {
         Args: {
@@ -562,6 +569,7 @@ export type Database = {
         | "Cancelled"
         | "Shipped"
         | "Delivered"
+        | "Completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -696,6 +704,7 @@ export const Constants = {
         "Cancelled",
         "Shipped",
         "Delivered",
+        "Completed",
       ],
     },
   },
