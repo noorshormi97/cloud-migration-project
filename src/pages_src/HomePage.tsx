@@ -6,18 +6,19 @@ import { StartCollecting } from '../components/StartCollecting';
 import { AboutUsSection } from '../components/AboutUsSection';
 import { SendMessageSection } from '../components/SendMessageSection';
 import { FaqSection } from '../components/FaqSection';
-import { usePrefetchShop } from '../hooks/usePrefetchShop';
+import { RoutePrefetch } from '../components/RoutePrefetch';
 
 export function HomePage() {
-  usePrefetchShop();
-
   return (
     <>
+      {/* Preload the Shop page (chunk + product/category data) in the background
+          so clicking "Shop by Category" / "Shop All Products" opens instantly. */}
+      <RoutePrefetch to="/shop" />
       <Hero />
       <CategoryGrid />
 
       {/* Shop All Products — centered below "Shop by Category" */}
-      <section className="bg-brand px-6 pt-7 pb-10 md:pt-8 md:pb-14">
+      <section className="bg-brand px-6 pt-7 pb-8 md:pt-8 md:pb-10">
         <div className="mx-auto max-w-4xl text-center">
           <Link
             to="/shop"
