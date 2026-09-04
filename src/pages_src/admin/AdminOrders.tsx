@@ -145,12 +145,22 @@ export function AdminOrders() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {order.status === 'Cancelled' ? (
+                <span className="rounded-sm border border-ink/30 bg-ink/5 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/60">
+                  Cancelled
+                </span>
+              ) : null}
               <select
                 value={order.status}
-                onChange={(e) =>
-                  updateStatus.mutate({ id: order.id, status: e.target.value as Status })
-                }
+                onChange={(e) => {
+                  const next = e.target.value as Status;
+                  if (next === 'Cancelled') {
+                    setPendingCancelId(order.id);
+                    return;
+                  }
+                  updateStatus.mutate({ id: order.id, status: next });
+                }}
                 className="border border-ink/20 bg-paper px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink"
               >
                 {STATUSES.map((status) => (
@@ -159,7 +169,36 @@ export function AdminOrders() {
                   </option>
                 ))}
               </select>
-              {order.status === 'Confirmed' ? (
+              {order.status === 'Pending' ? (
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateStatus.mutate({ id: order.id, status: 'Confirmed' })
+                  }
+                  className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+                >
+                  Confirm Order
+                </button>
+              ) : null}
+              {order.status === 'Pending' || order.status === 'Confirmed' ? (
+                <button
+                  type="button"
+                  onClick={() => setPendingCancelId(order.id)}
+                  className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                >
+                  Cancel Order
+                </button>
+              ) : null}
+              {order.status === 'Cancelled' ? (
+                <button
+                  type="button"
+                  disabled
+                  className="cursor-not-allowed rounded-sm border border-ink/15 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/30"
+                >
+                  Cancel Order
+                </button>
+              ) : null}
+              {order.status === 'Confirmed' || order.status === 'Cancelled' ? (
                 <button
                   type="button"
                   onClick={() => {
