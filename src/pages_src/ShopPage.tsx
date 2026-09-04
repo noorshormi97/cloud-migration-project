@@ -4,6 +4,7 @@ import { ProductGrid } from '../components/products/ProductGrid';
 import { useProducts } from '../hooks/useProducts';
 import { useVisibleCategories } from '../hooks/useContent';
 import { Search } from 'lucide-react';
+import { RoutePrefetch } from '../components/RoutePrefetch';
 
 export function ShopPage() {
   const { data: products = [], isLoading } = useProducts();
@@ -51,10 +52,18 @@ export function ShopPage() {
     }
   };
 
+  // The product detail page shares one lazy chunk regardless of which product
+  // is opened. Preloading the first product's route warms that chunk (+ its
+  // data) in the background, so opening ANY product from the shop feels instant.
+  const firstProductId = products[0]?.id;
+
   return (
-    <section className="bg-brand px-6 py-6 md:py-10">
+    <section className="bg-brand px-6 pt-4 pb-6 md:pt-7 md:pb-10">
+      {firstProductId ? (
+        <RoutePrefetch to="/product/$id" params={{ id: firstProductId }} />
+      ) : null}
       <div className="mx-auto max-w-7xl">
-        <div className="mb-3 md:mb-4">
+        <div className="mb-2.5 md:mb-3">
           <Link
             to="/"
             className="inline-block font-sans text-xs font-medium uppercase tracking-widest text-ink/60 transition-colors hover:text-ink"
@@ -63,7 +72,7 @@ export function ShopPage() {
           </Link>
         </div>
 
-        <div className="mb-4 text-center md:mb-5">
+        <div className="mb-3.5 text-center md:mb-5">
           <h1 className="font-heading text-3xl tracking-tight text-ink md:text-4xl">
             Shop
           </h1>
