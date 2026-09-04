@@ -245,6 +245,38 @@ export function AdminOrders() {
           </p>
         </div>
       ))}
+
+      {pendingCancelId ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4">
+          <div className="w-full max-w-sm border border-ink/20 bg-paper p-6">
+            <p className="font-heading text-lg tracking-tight text-ink">Cancel this order?</p>
+            <p className="mt-2 font-sans text-sm font-light text-ink/70">
+              Are you sure you want to cancel this order? The product stock will be restored.
+            </p>
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setPendingCancelId(null)}
+                className="rounded-sm border border-ink/20 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+              >
+                Keep Order
+              </button>
+              <button
+                type="button"
+                disabled={cancelOrder.isPending}
+                onClick={() => {
+                  const id = pendingCancelId;
+                  setPendingCancelId(null);
+                  cancelOrder.mutate(id);
+                }}
+                className="rounded-sm border border-ink bg-ink px-3 py-2 font-sans text-xs uppercase tracking-widest text-brand transition-opacity hover:opacity-90 disabled:opacity-50"
+              >
+                Yes, Cancel Order
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
