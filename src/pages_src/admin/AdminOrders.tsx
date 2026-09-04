@@ -96,6 +96,22 @@ export function AdminOrders() {
     onSuccess: invalidate,
   });
 
+  // Cancellation goes through the database routine so stock is restored exactly
+  // once per order, no matter how often the button is pressed.
+  const cancelOrder = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc('cancel_order', { _order_id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidate();
+      void queryClient.invalidateQueries({ queryKey: ['products'] });
+      void queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+    },
+  });
+
+  const [pendingCancelId, setPendingCancelId] = useState<string | null>(null);
+
   if (isLoading) {
     return <p className="font-sans text-sm font-light text-ink/60">Loading orders…</p>;
   }
