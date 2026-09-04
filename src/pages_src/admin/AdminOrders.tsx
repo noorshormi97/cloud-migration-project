@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatPrice } from '@/lib/store';
 import { Trash2 } from 'lucide-react';
@@ -11,6 +12,15 @@ interface OrderItemRow {
   product_name: string;
   unit_price: number;
   quantity: number;
+}
+
+/** Loads just the combo names so order lines can be flagged as combos. */
+async function fetchComboNames(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('combos')
+    .select('name');
+  if (error) throw error;
+  return (data ?? []).map((row) => String((row as { name?: unknown }).name ?? '').trim());
 }
 
 interface OrderRow {
@@ -43,6 +53,23 @@ export function AdminOrders() {
     queryKey: ['admin-orders'],
     queryFn: fetchOrders,
   });
+  // Combo names used to tag combo order-lines (combos aren't stored with an id
+  // on order_items, only their name, so we match against the combos table).
+  const { data: comboNames = [] } = useQuery({
+    queryKey: ['combo-names'],
+    queryFn: fetchComboNames,
+    staleTime: 5 * 60 * 1000,
+  });
+  const comboNameSet = useMemo(() => {
+    const set = new Set<string>();
+    for (const name of comboNames) {
+      const n = name.trim().toLowerCase();
+      if (n) set.add(n);
+    }
+    return set;
+  }, [comboNames]);
+  const isCombo = (item: OrderItemRow) =>
+    comboNameSet.has(String(item.product_name ?? '').trim().toLowerCase());
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
 
@@ -129,8 +156,13 @@ export function AdminOrders() {
           <div className="mt-4 divide-y divide-ink/10 border-t border-ink/10">
             {order.order_items.map((item) => (
               <div key={item.id} className="flex justify-between py-2 font-sans text-sm">
-                <span className="font-light text-ink/80">
+                <span className="flex items-center gap-2 font-light text-ink/80">
                   {item.product_name} × {item.quantity}
+                  {isCombo(item) ? (
+                    <span className="shrink-0 rounded-sm border border-brand-dark/70 bg-brand-dark/40 px-1.5 py-px font-sans text-[10px] font-semibold uppercase tracking-widest text-ink/80">
+                      Combo
+                    </span>
+                  ) : null}
                 </span>
                 <span className="text-ink">
                   {formatPrice(Number(item.unit_price) * item.quantity)}
