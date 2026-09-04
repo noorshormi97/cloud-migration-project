@@ -202,7 +202,7 @@ export function AdminOrders() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (window.confirm('Permanently delete this confirmed order?')) {
+                    if (window.confirm('Permanently delete this order? Stock will not change.')) {
                       deleteOrder.mutate(order.id);
                     }
                   }}
