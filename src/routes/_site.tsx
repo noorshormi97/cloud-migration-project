@@ -18,24 +18,14 @@ export const Route = createFileRoute("/_site")({
 // so they are intentionally excluded here and always work. This avoids any
 // maintenance redirect loop on the admin panel / auth requests.
 function SiteLayout() {
-  const { data: maintenance, isLoading, isError } = useMaintenanceMode();
+  const { data: maintenance, isError } = useMaintenanceMode();
 
-  // While the flag is loading, show a neutral branded loading screen rather
-  // than briefly flashing the normal website (which would leak content while
-  // maintenance is on).
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-brand">
-        <p className="font-sans text-sm font-light tracking-wide text-ink/60">
-          Loading…
-        </p>
-      </div>
-    );
-  }
-
-  // Maintenance ON: show the maintenance page for every public route.
-  // Fail-open on error (isError) so a settings fetch failure never bricks the
-  // site — it just shows the normal website.
+  // NOTE on no loading screen: the public site renders immediately instead of
+  // blocking the first paint on the maintenance network check. The flag is
+  // fetched in the background and, if maintenance is confirmed ON, we swap to
+  // the maintenance page. Because maintenance is off in normal operation,
+  // visitors never see a blank/loading state on entry. Fail-open on error
+  // (isError) so a settings fetch failure never bricks the site.
   if (maintenance && !isError) {
     return <MaintenancePage />;
   }
