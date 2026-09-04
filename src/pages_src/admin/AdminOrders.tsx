@@ -1,10 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatPrice } from '@/lib/store';
 import { Trash2 } from 'lucide-react';
 
-const STATUSES = ['Pending', 'Confirmed', 'Cancelled', 'Shipped', 'Delivered'] as const;
+const STATUSES = [
+  'Pending',
+  'Confirmed',
+  'Cancelled',
+  'Completed',
+  'Shipped',
+  'Delivered',
+] as const;
 type Status = (typeof STATUSES)[number];
 
 interface OrderItemRow {
