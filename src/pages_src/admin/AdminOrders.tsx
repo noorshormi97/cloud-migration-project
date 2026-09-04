@@ -1,10 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatPrice } from '@/lib/store';
 import { Trash2 } from 'lucide-react';
 
-const STATUSES = ['Pending', 'Confirmed', 'Cancelled', 'Shipped', 'Delivered'] as const;
+const STATUSES = [
+  'Pending',
+  'Confirmed',
+  'Cancelled',
+  'Completed',
+  'Shipped',
+  'Delivered',
+] as const;
 type Status = (typeof STATUSES)[number];
 
 interface OrderItemRow {
@@ -89,6 +96,22 @@ export function AdminOrders() {
     onSuccess: invalidate,
   });
 
+  // Cancellation goes through the database routine so stock is restored exactly
+  // once per order, no matter how often the button is pressed.
+  const cancelOrder = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc('cancel_order', { _order_id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidate();
+      void queryClient.invalidateQueries({ queryKey: ['products'] });
+      void queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+    },
+  });
+
+  const [pendingCancelId, setPendingCancelId] = useState<string | null>(null);
+
   if (isLoading) {
     return <p className="font-sans text-sm font-light text-ink/60">Loading orders…</p>;
   }
@@ -122,12 +145,22 @@ export function AdminOrders() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {order.status === 'Cancelled' ? (
+                <span className="rounded-sm border border-ink/30 bg-ink/5 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/60">
+                  Cancelled
+                </span>
+              ) : null}
               <select
                 value={order.status}
-                onChange={(e) =>
-                  updateStatus.mutate({ id: order.id, status: e.target.value as Status })
-                }
+                onChange={(e) => {
+                  const next = e.target.value as Status;
+                  if (next === 'Cancelled') {
+                    setPendingCancelId(order.id);
+                    return;
+                  }
+                  updateStatus.mutate({ id: order.id, status: next });
+                }}
                 className="border border-ink/20 bg-paper px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink"
               >
                 {STATUSES.map((status) => (
@@ -136,11 +169,40 @@ export function AdminOrders() {
                   </option>
                 ))}
               </select>
-              {order.status === 'Confirmed' ? (
+              {order.status === 'Pending' ? (
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateStatus.mutate({ id: order.id, status: 'Confirmed' })
+                  }
+                  className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+                >
+                  Confirm Order
+                </button>
+              ) : null}
+              {order.status === 'Pending' || order.status === 'Confirmed' ? (
+                <button
+                  type="button"
+                  onClick={() => setPendingCancelId(order.id)}
+                  className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                >
+                  Cancel Order
+                </button>
+              ) : null}
+              {order.status === 'Cancelled' ? (
+                <button
+                  type="button"
+                  disabled
+                  className="cursor-not-allowed rounded-sm border border-ink/15 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/30"
+                >
+                  Cancel Order
+                </button>
+              ) : null}
+              {order.status === 'Confirmed' || order.status === 'Cancelled' ? (
                 <button
                   type="button"
                   onClick={() => {
-                    if (window.confirm('Permanently delete this confirmed order?')) {
+                    if (window.confirm('Permanently delete this order? Stock will not change.')) {
                       deleteOrder.mutate(order.id);
                     }
                   }}
@@ -183,6 +245,38 @@ export function AdminOrders() {
           </p>
         </div>
       ))}
+
+      {pendingCancelId ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4">
+          <div className="w-full max-w-sm border border-ink/20 bg-paper p-6">
+            <p className="font-heading text-lg tracking-tight text-ink">Cancel this order?</p>
+            <p className="mt-2 font-sans text-sm font-light text-ink/70">
+              Are you sure you want to cancel this order? The product stock will be restored.
+            </p>
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setPendingCancelId(null)}
+                className="rounded-sm border border-ink/20 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+              >
+                Keep Order
+              </button>
+              <button
+                type="button"
+                disabled={cancelOrder.isPending}
+                onClick={() => {
+                  const id = pendingCancelId;
+                  setPendingCancelId(null);
+                  cancelOrder.mutate(id);
+                }}
+                className="rounded-sm border border-ink bg-ink px-3 py-2 font-sans text-xs uppercase tracking-widest text-brand transition-opacity hover:opacity-90 disabled:opacity-50"
+              >
+                Yes, Cancel Order
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
