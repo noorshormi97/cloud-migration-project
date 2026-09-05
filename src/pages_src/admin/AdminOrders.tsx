@@ -277,14 +277,15 @@ export function AdminOrders() {
             <p>Subtotal: {formatPrice(Number(order.subtotal))}</p>
             <p>
               Courier: {order.courier || '—'} · Delivery{' '}
-              {formatPrice(Number(order.delivery_charge))}
+              {formatPrice(displayDeliveryCharge)}
             </p>
           </div>
           <p className="mt-2 text-right font-heading text-lg text-ink">
-            Total: {formatPrice(Number(order.total_price))}
+            Total: {formatPrice(displayTotal)}
           </p>
         </div>
-      ))}
+      );
+      })}
 
       {pendingCancelId ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4">
