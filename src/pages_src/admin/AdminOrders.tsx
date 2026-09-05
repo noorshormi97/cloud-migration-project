@@ -124,28 +124,66 @@ export function AdminOrders() {
     <div className="space-y-4">
       {orders.map((order) => (
         <div key={order.id} className="border border-ink/10 bg-paper p-4">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="font-heading text-lg tracking-tight text-ink">
-                {order.customer_name}
-              </p>
-              <p className="font-sans text-sm font-light text-ink/70">
-                {order.customer_phone}
-              </p>
-              <p className="font-sans text-sm font-light text-ink/70">
-                {order.customer_address}
-              </p>
-              {order.note ? (
-                <p className="mt-1 font-sans text-xs font-light italic text-ink/60">
-                  {order.note}
-                </p>
-              ) : null}
-              <p className="mt-1 font-sans text-xs uppercase tracking-widest text-ink/40">
-                {new Date(order.created_at).toLocaleString()}
-              </p>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="min-w-0 flex-1">
+              <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                <div className="min-w-0">
+                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
+                    Order ID
+                  </p>
+                  <p
+                    className="truncate font-sans text-sm font-medium text-ink"
+                    title={order.id}
+                  >
+                    {order.id}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
+                    Order Date / Time
+                  </p>
+                  <p className="font-sans text-sm text-ink/80">
+                    {new Date(order.created_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
+                    Customer Name
+                  </p>
+                  <p className="font-heading text-lg tracking-tight text-ink">
+                    {order.customer_name}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
+                    Phone Number
+                  </p>
+                  <p className="font-sans text-sm text-ink/80">
+                    {order.customer_phone}
+                  </p>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
+                    Address
+                  </p>
+                  <p className="font-sans text-sm font-light leading-snug text-ink/80">
+                    {order.customer_address}
+                  </p>
+                </div>
+                {order.note ? (
+                  <div className="sm:col-span-2">
+                    <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
+                      Note
+                    </p>
+                    <p className="font-sans text-sm font-light italic text-ink/60">
+                      {order.note}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-start gap-2 lg:justify-end">
               {order.status === 'Cancelled' ? (
                 <span className="rounded-sm border border-ink/30 bg-ink/5 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/60">
                   Cancelled
