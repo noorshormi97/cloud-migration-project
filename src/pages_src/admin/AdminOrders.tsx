@@ -45,6 +45,16 @@ interface OrderRow {
   order_items: OrderItemRow[];
 }
 
+const COURIER_CHARGES: Record<string, number> = {
+  steadfast: 130,
+  shundarban: 60,
+};
+
+function deliveryChargeFor(courier: string | null | undefined, fallback: number): number {
+  const key = String(courier ?? '').trim().toLowerCase();
+  return COURIER_CHARGES[key] ?? fallback;
+}
+
 async function fetchOrders(): Promise<OrderRow[]> {
   const { data, error } = await supabase
     .from('orders')
