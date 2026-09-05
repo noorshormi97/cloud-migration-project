@@ -45,6 +45,16 @@ interface OrderRow {
   order_items: OrderItemRow[];
 }
 
+const COURIER_CHARGES: Record<string, number> = {
+  steadfast: 130,
+  shundarban: 60,
+};
+
+function deliveryChargeFor(courier: string | null | undefined, fallback: number): number {
+  const key = String(courier ?? '').trim().toLowerCase();
+  return COURIER_CHARGES[key] ?? fallback;
+}
+
 async function fetchOrders(): Promise<OrderRow[]> {
   const { data, error } = await supabase
     .from('orders')
@@ -122,22 +132,14 @@ export function AdminOrders() {
 
   return (
     <div className="space-y-4">
-      {orders.map((order) => (
+      {orders.map((order) => {
+        const displayDeliveryCharge = deliveryChargeFor(order.courier, Number(order.delivery_charge));
+        const displayTotal = Number(order.subtotal) + displayDeliveryCharge;
+        return (
         <div key={order.id} className="border border-ink/10 bg-paper p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0 flex-1">
               <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
-                <div className="min-w-0">
-                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
-                    Order ID
-                  </p>
-                  <p
-                    className="truncate font-sans text-sm font-medium text-ink"
-                    title={order.id}
-                  >
-                    {order.id}
-                  </p>
-                </div>
                 <div>
                   <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
                     Order Date / Time
@@ -275,14 +277,15 @@ export function AdminOrders() {
             <p>Subtotal: {formatPrice(Number(order.subtotal))}</p>
             <p>
               Courier: {order.courier || '—'} · Delivery{' '}
-              {formatPrice(Number(order.delivery_charge))}
+              {formatPrice(displayDeliveryCharge)}
             </p>
           </div>
           <p className="mt-2 text-right font-heading text-lg text-ink">
-            Total: {formatPrice(Number(order.total_price))}
+            Total: {formatPrice(displayTotal)}
           </p>
         </div>
-      ))}
+      );
+      })}
 
       {pendingCancelId ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4">
