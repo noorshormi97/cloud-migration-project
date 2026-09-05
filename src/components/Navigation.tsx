@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from '@/lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingBag } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { useCartSafe } from '../context/CartContext';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -15,7 +15,7 @@ const navLinks = [
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const { totalItems } = useCart();
+  const { totalItems } = useCartSafe();
 
   return (
     <header className="sticky top-0 z-50 bg-brand">

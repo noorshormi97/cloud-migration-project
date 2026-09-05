@@ -153,3 +153,21 @@ export function useCartActions() {
   }
   return context;
 }
+
+// Safe accessor for chrome (nav/footer) that can briefly render outside the
+// provider during HMR or layout swaps: returns 0 items instead of throwing.
+export function useCartSafe(): CartContextValue {
+  const context = useContext(CartContext);
+  return context ?? EMPTY_CART;
+}
+
+const noop = () => {};
+const EMPTY_CART: CartContextValue = {
+  items: [],
+  addToCart: noop,
+  removeFromCart: noop,
+  updateQuantity: noop,
+  clearCart: noop,
+  totalItems: 0,
+  subtotal: 0,
+};
