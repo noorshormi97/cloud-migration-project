@@ -132,7 +132,10 @@ export function AdminOrders() {
 
   return (
     <div className="space-y-4">
-      {orders.map((order) => (
+      {orders.map((order) => {
+        const displayDeliveryCharge = deliveryChargeFor(order.courier, Number(order.delivery_charge));
+        const displayTotal = Number(order.subtotal) + displayDeliveryCharge;
+        return (
         <div key={order.id} className="border border-ink/10 bg-paper p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0 flex-1">
