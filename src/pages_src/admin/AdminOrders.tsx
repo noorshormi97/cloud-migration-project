@@ -127,17 +127,6 @@ export function AdminOrders() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0 flex-1">
               <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
-                <div className="min-w-0">
-                  <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
-                    Order ID
-                  </p>
-                  <p
-                    className="truncate font-sans text-sm font-medium text-ink"
-                    title={order.id}
-                  >
-                    {order.id}
-                  </p>
-                </div>
                 <div>
                   <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">
                     Order Date / Time
