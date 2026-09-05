@@ -91,8 +91,8 @@ export function formatPrice(price: number) {
 }
 
 export const COURIERS = [
-  { name: "Steadfast", charge: 120 },
-  { name: "Shundarban", charge: 50 },
+  { name: "Steadfast", charge: 130 },
+  { name: "Shundarban", charge: 60 },
 ] as const;
 
 export function isInStock(product: { available: boolean; stock: number }) {
