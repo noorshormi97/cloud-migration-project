@@ -6,6 +6,7 @@ import { StartCollecting } from '../components/StartCollecting';
 import { AboutUsSection } from '../components/AboutUsSection';
 import { SendMessageSection } from '../components/SendMessageSection';
 import { FaqSection } from '../components/FaqSection';
+import { BlogTeaser } from '../components/BlogTeaser';
 import { RoutePrefetch } from '../components/RoutePrefetch';
 
 export function HomePage() {
@@ -34,6 +35,7 @@ export function HomePage() {
       <AboutUsSection />
       <SendMessageSection />
       <FaqSection />
+      <BlogTeaser />
     </>
   );
 }
