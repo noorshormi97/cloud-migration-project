@@ -1,9 +1,15 @@
 import { Link } from '@/lib/router-compat';
 
+// ============================================================================
+// BlogTeaser — a small, separate homepage section that lets visitors enter the
+// full /blog page. Kept compact and visually consistent with the site (brand
+// background, ink borders, Times/Archivo typography).
+// ============================================================================
+
 export function BlogTeaser() {
   return (
     <section className="bg-brand px-6 py-8 md:py-10">
-      <div className="mx-auto max-w-2xl border border-ink/10 bg-paper px-6 py-8 text-center md:px-8">
+      <div className="mx-auto max-w-2xl rounded-[10px] border border-ink/10 bg-paper px-6 py-8 text-center md:px-8">
         <p className="font-sans text-[10px] font-medium uppercase tracking-[0.28em] text-ink/50">
           Discovery of Coins
         </p>
