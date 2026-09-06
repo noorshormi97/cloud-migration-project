@@ -12,6 +12,7 @@ import { AdminCombos } from './AdminCombos';
 import { AdminNewArrivals } from './AdminNewArrivals';
 import { AdminStartCollecting } from './AdminStartCollecting';
 import { AdminMaintenance } from './AdminMaintenance';
+import { AdminCat } from '@/components/AdminCat';
 
 const TABS = [
   'Orders',
@@ -91,6 +92,8 @@ export function AdminDashboard() {
           {tab === 'Maintenance' ? <AdminMaintenance /> : null}
         </div>
       </div>
+
+      <AdminCat tab={tab} />
     </div>
   );
 }
