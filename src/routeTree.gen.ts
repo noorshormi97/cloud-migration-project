@@ -17,6 +17,7 @@ import { Route as SiteCartRouteImport } from './routes/_site.cart'
 import { Route as SiteComboRouteImport } from './routes/_site.combo'
 import { Route as SiteContactRouteImport } from './routes/_site.contact'
 import { Route as SiteOrderSuccessRouteImport } from './routes/_site.order-success'
+import { Route as SitePrivacyRouteImport } from './routes/_site.privacy'
 import { Route as SiteShopRouteImport } from './routes/_site.shop'
 import { Route as SiteTermsRouteImport } from './routes/_site.terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -64,6 +65,11 @@ const SiteOrderSuccessRoute = SiteOrderSuccessRouteImport.update({
   path: '/order-success',
   getParentRoute: () => SiteRoute,
 } as any)
+const SitePrivacyRoute = SitePrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SiteShopRoute = SiteShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/combo': typeof SiteComboRoute
   '/contact': typeof SiteContactRoute
   '/order-success': typeof SiteOrderSuccessRoute
+  '/privacy': typeof SitePrivacyRoute
   '/shop': typeof SiteShopRoute
   '/terms': typeof SiteTermsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/combo': typeof SiteComboRoute
   '/contact': typeof SiteContactRoute
   '/order-success': typeof SiteOrderSuccessRoute
+  '/privacy': typeof SitePrivacyRoute
   '/shop': typeof SiteShopRoute
   '/terms': typeof SiteTermsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/_site/combo': typeof SiteComboRoute
   '/_site/contact': typeof SiteContactRoute
   '/_site/order-success': typeof SiteOrderSuccessRoute
+  '/_site/privacy': typeof SitePrivacyRoute
   '/_site/shop': typeof SiteShopRoute
   '/_site/terms': typeof SiteTermsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/combo'
     | '/contact'
     | '/order-success'
+    | '/privacy'
     | '/shop'
     | '/terms'
     | '/admin/login'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/combo'
     | '/contact'
     | '/order-success'
+    | '/privacy'
     | '/shop'
     | '/terms'
     | '/admin/login'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/_site/combo'
     | '/_site/contact'
     | '/_site/order-success'
+    | '/_site/privacy'
     | '/_site/shop'
     | '/_site/terms'
     | '/admin/login'
@@ -267,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteOrderSuccessRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/privacy': {
+      id: '/_site/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof SitePrivacyRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/shop': {
       id: '/_site/shop'
       path: '/shop'
@@ -325,6 +344,7 @@ interface SiteRouteChildren {
   SiteComboRoute: typeof SiteComboRoute
   SiteContactRoute: typeof SiteContactRoute
   SiteOrderSuccessRoute: typeof SiteOrderSuccessRoute
+  SitePrivacyRoute: typeof SitePrivacyRoute
   SiteShopRoute: typeof SiteShopRoute
   SiteTermsRoute: typeof SiteTermsRoute
   SiteIndexRoute: typeof SiteIndexRoute
@@ -339,6 +359,7 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteComboRoute: SiteComboRoute,
   SiteContactRoute: SiteContactRoute,
   SiteOrderSuccessRoute: SiteOrderSuccessRoute,
+  SitePrivacyRoute: SitePrivacyRoute,
   SiteShopRoute: SiteShopRoute,
   SiteTermsRoute: SiteTermsRoute,
   SiteIndexRoute: SiteIndexRoute,

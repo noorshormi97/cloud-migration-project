@@ -29,7 +29,11 @@ export function OrderSuccessPage() {
 
         <p className="mt-3 font-sans text-xs font-light text-ink/60">
           <Link to="/terms" className="underline underline-offset-4 hover:text-ink">
-            Read Terms &amp; Privacy
+            Read Terms &amp; Conditions
+          </Link>{' '}
+          ·{' '}
+          <Link to="/privacy" className="underline underline-offset-4 hover:text-ink">
+            Privacy Policy
           </Link>
         </p>
       </motion.div>
