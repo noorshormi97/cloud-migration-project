@@ -2,21 +2,21 @@ import { useState } from 'react';
 import { Link } from '@/lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingBag } from 'lucide-react';
-import { useCartSafe } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Shop', href: '/shop' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
   { label: 'Combo', href: '/combo' },
-  { label: 'Terms & Conditions', href: '/terms' },
-  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms & Policy', href: '/terms' },
 ];
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const { totalItems } = useCartSafe();
+  const { totalItems } = useCart();
 
   return (
     <header className="sticky top-0 z-50 bg-brand">
