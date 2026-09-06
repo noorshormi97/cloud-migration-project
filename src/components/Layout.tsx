@@ -10,6 +10,7 @@ function isCompactFooterPath(pathname: string) {
     pathname.startsWith('/about') ||
     pathname.startsWith('/contact') ||
     pathname.startsWith('/terms') ||
+    pathname.startsWith('/privacy') ||
     pathname.startsWith('/cart') ||
     pathname.startsWith('/order-success') ||
     pathname.startsWith('/combo')

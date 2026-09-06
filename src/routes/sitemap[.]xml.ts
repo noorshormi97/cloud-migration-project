@@ -52,6 +52,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           urlEntry("/about", "0.6", "monthly"),
           urlEntry("/contact", "0.6", "monthly"),
           urlEntry("/terms", "0.3", "yearly"),
+          urlEntry("/privacy", "0.3", "yearly"),
           ...categories.map((c) =>
             urlEntry(`/shop?category=${encodeURIComponent(c.name)}`, "0.7", "weekly"),
           ),
