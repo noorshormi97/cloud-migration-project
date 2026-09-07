@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useCartActions } from "../context/CartContext";
+import { Link } from "@/lib/router-compat";
 import { formatPrice, COURIERS, type CartLine } from "@/lib/store";
 
 interface CheckoutFormProps {
@@ -18,6 +19,7 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [courier, setCourier] = useState<string>("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", address: "", note: "" });
 
   const deliveryCharge = COURIERS.find((option) => option.name === courier)?.charge ?? 0;
@@ -67,6 +69,10 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
     }
     if (!courier) {
       setError("Please select a courier service.");
+      return;
+    }
+    if (!acceptedTerms) {
+      setError("Please accept the Terms & Conditions to place your order.");
       return;
     }
 
@@ -201,14 +207,34 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
         </div>
       </div>
 
+      <label className="flex cursor-pointer items-center gap-2 border border-ink/15 bg-paper px-3 py-2 font-sans text-xs text-ink transition-colors has-[:checked]:border-ink/40">
+        <input
+          type="checkbox"
+          checked={acceptedTerms}
+          onChange={(e) => setAcceptedTerms(e.target.checked)}
+          className="h-3.5 w-3.5 shrink-0 accent-ink"
+        />
+        <span className="font-light leading-tight">
+          I agree to the{" "}
+          <Link
+            to="/terms"
+            className="font-normal underline underline-offset-2 transition-colors hover:text-ink/70"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Terms &amp; Conditions
+          </Link>{" "}
+          — safe, no spam. 🔒
+        </span>
+      </label>
+
       {error ? <p className="font-sans text-xs text-red-700">{error}</p> : null}
       <button
         type="submit"
-        disabled={submitting || !courier}
+        disabled={submitting || !courier || !acceptedTerms}
         className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
       >
         {submitting ? "Placing order…" : `Place order · ${formatPrice(finalTotal)}`}
       </button>
     </form>
   );
-}
+                           }
