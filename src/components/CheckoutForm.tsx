@@ -223,7 +223,6 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
           >
             Terms &amp; Conditions
           </Link>{" "}
-          — safe, no spam. 🔒
         </span>
       </label>
 
