@@ -74,7 +74,7 @@ export function ContactPage() {
     }
   }
 
-  const phone = handle(data?.phone) || '01700000000';
+  const phone = handle(data?.phone) || '+8801977278788';
   contactItems.push({ label: 'Phone', value: phone, href: `tel:${phone}` });
 
   return (
