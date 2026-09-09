@@ -5,6 +5,9 @@ interface ProductSpecsProps {
 }
 
 export function ProductSpecs({ product }: ProductSpecsProps) {
+  // Only show spec rows that actually have a value — empty rows (e.g. a
+  // missing Currency or Year) make the page look unfinished to customers
+  // and to Google's content reviewers.
   const specs = [
     { label: 'Country', value: product.country },
     { label: 'Currency', value: product.currency },
@@ -12,16 +15,20 @@ export function ProductSpecs({ product }: ProductSpecsProps) {
     { label: 'Year', value: product.year },
     { label: 'Condition', value: product.condition },
     { label: 'Type', value: product.type },
-  ];
+  ].filter((spec) => spec.value && spec.value.trim().length > 0);
+
+  const description = (product.description ?? '').trim();
 
   return (
     <div className="border-t border-ink/10 pt-10 md:pt-12">
       <h2 className="mb-4 font-heading text-2xl tracking-tight text-ink">
         About this collectible
       </h2>
-      <p className="max-w-3xl font-sans text-base font-light leading-relaxed text-ink/80">
-        {product.description}
-      </p>
+      {description.length > 0 && (
+        <p className="max-w-3xl font-sans text-base font-light leading-relaxed text-ink/80">
+          {description}
+        </p>
+      )}
 
       <div className="mt-8 max-w-2xl">
         <h3 className="mb-3 font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
