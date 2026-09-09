@@ -11,7 +11,7 @@ const navLinks = [
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
   { label: 'Combo', href: '/combo' },
-  { label: 'Terms & Policy', href: '/terms' },
+  { label: 'Terms', href: '/terms' },
 ];
 
 export function Navigation() {
