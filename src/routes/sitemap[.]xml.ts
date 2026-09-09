@@ -49,6 +49,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           urlEntry("/", "1.0", "weekly"),
           urlEntry("/shop", "0.9", "daily"),
           urlEntry("/combo", "0.8", "weekly"),
+          urlEntry("/blog", "0.7", "weekly"),
           urlEntry("/about", "0.6", "monthly"),
           urlEntry("/contact", "0.6", "monthly"),
           urlEntry("/terms", "0.3", "yearly"),
