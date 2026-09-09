@@ -9,8 +9,7 @@ const navLinks = [
   { label: 'Shop', href: '/shop' },
   { label: 'Contact', href: '/contact' },
   { label: 'Combo', href: '/combo' },
-  { label: 'Terms & Conditions', href: '/terms' },
-  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms & Privacy Policy', href: '/terms' },
 ];
 
 export function Footer() {
@@ -24,7 +23,7 @@ export function Footer() {
   // before an admin fills the fields in.
   const instagram = (data?.instagram ?? '').trim() || '@discoveryofcoins';
   const instagramHref = socialUrl(instagram, 'instagram') ?? '#';
-  const phone = (data?.phone ?? '').trim() || '01700000000';
+  const phone = (data?.phone ?? '').trim() || '+8801977278788';
   const whatsapp = (data?.whatsapp_channel ?? '').trim();
   const whatsappHref = socialUrl(whatsapp, 'whatsapp');
 
