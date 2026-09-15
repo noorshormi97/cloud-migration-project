@@ -12,6 +12,7 @@ import { AdminCombos } from './AdminCombos';
 import { AdminNewArrivals } from './AdminNewArrivals';
 import { AdminStartCollecting } from './AdminStartCollecting';
 import { AdminMaintenance } from './AdminMaintenance';
+import { AdminCurrencyQuiz } from './AdminCurrencyQuiz';
 
 const TABS = [
   'Orders',
