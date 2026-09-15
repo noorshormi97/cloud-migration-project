@@ -24,6 +24,7 @@ const TABS = [
   'FAQs',
   'Contact Details',
   'Maintenance',
+  'Currency Quiz',
 ] as const;
 type Tab = (typeof TABS)[number];
 
