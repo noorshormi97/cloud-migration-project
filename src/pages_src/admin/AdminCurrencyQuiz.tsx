@@ -91,7 +91,9 @@ function shuffle<T>(items: T[]): T[] {
   const copy = [...items];
   for (let i = copy.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
+    const tmp = copy[i] as T;
+    copy[i] = copy[j] as T;
+    copy[j] = tmp;
   }
   return copy;
 }
@@ -123,7 +125,7 @@ export function AdminCurrencyQuiz() {
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
-  const current = quiz[index];
+  const current = quiz[index] as Question;
   const total = quiz.length;
 
   const restart = useCallback(() => {
