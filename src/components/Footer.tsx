@@ -29,7 +29,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-ink/10 bg-brand px-6 pt-10 pb-8 md:pt-12 md:pb-10">
-      {/* 4 columns on desktop: Brand | Navigation | Contact | Designer (right) */}
+      {/* 4 columns on desktop: Brand | Navigation | Contact | Developer (right) */}
       <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-4 md:gap-4">
         <div>
           <p className="font-heading text-xl tracking-tight text-ink md:text-2xl">
@@ -100,10 +100,10 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Designer credit — desktop only, sits in the right-side space */}
+        {/* Developer credit — desktop only, sits in the right-side space */}
         <div className="hidden md:flex md:flex-col md:items-center">
           <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
-            A web by
+            Developed by
           </p>
           {/* Visual logo button that opens your popup card */}
           <DesignerCredit className="mt-3" logoClassName="h-14 w-14" />
@@ -135,7 +135,7 @@ export function Footer() {
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            {/* Logo only — mobile bottom-right, opens designer note */}
+            {/* Logo only — mobile bottom-right, opens developer note */}
             <DesignerCredit className="h-8 w-8 shrink-0 md:hidden" logoClassName="h-full w-full" />
           </div>
         </div>
