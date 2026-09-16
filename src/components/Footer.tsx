@@ -131,7 +131,7 @@ export function Footer() {
 
       <div className="mx-auto mt-8 max-w-6xl border-t border-ink/10 pt-4">
         <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
-          <p className="whitespace-nowrap font-sans text-[8px] font-light uppercase tracking-normal text-ink/40 md:text-xs md:tracking-widest">
+          <p className="font-sans text-[8px] font-light uppercase tracking-wide text-ink/40 md:text-[10px]">
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
