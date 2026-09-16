@@ -15,7 +15,7 @@ export function CompactFooter() {
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
         </div>
-        {/* Designer logo — opens the designer note popup */}
+        {/* "Developed by" logo — opens the developer note popup */}
         <DesignerCredit className="h-8 w-8 shrink-0 md:h-9 md:w-9" logoClassName="h-full w-full" />
       </div>
     </footer>
