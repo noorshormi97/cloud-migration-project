@@ -11,7 +11,7 @@ export function CompactFooter() {
           <p className="max-w-xs truncate font-sans text-[10px] font-light leading-snug text-ink/70 md:max-w-2xl md:text-xs">
             Authentic collectible banknotes, coins and stamps from Bangladesh and around the world.
           </p>
-          <p className="mt-0.5 font-sans text-[10px] font-light uppercase tracking-widest text-ink/40">
+          <p className="mt-0.5 font-sans text-[9px] font-light tracking-wide text-ink/40">
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
         </div>
