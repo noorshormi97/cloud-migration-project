@@ -126,15 +126,16 @@ export function ContactPage() {
           </div>
 
           {/* Hard-coded credit — always visible to search engines and AI
-              crawlers in the server-rendered HTML (not loaded via JS). */}
-          <div className="mt-6 border-t border-ink/10 pt-4">
-            <p className="font-sans text-xs font-light leading-relaxed text-ink/70 md:text-sm">
+              crawlers in the server-rendered HTML (not loaded via JS).
+              Small, centered, pinned to the bottom of the page. */}
+          <div className="mt-6 border-t border-ink/10 pt-3">
+            <p className="text-center font-sans text-[10px] font-light leading-relaxed text-ink/50 md:text-[11px]">
               Website developed by{' '}
               <a
                 href="https://instagram.com/shohailmahmud09"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-ink underline underline-offset-4 transition-colors hover:text-ink/70"
+                className="font-medium text-ink/70 underline underline-offset-4 transition-colors hover:text-ink"
               >
                 Shohail Mahmud
               </a>.
