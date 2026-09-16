@@ -29,10 +29,12 @@ function GithubIcon({ className = '' }: { className?: string }) {
   );
 }
 
-// Designer credit — clicking the "A web by" logo opens a popup styled like
-// the Instagram "ask me a question" sticker: logo on top, then the name,
+// DEVELOPER credit — clicking the "Developed by" logo opens a popup styled
+// like the Instagram "ask me a question" sticker: logo on top, then the name,
 // then the social links, then the handover note as a footnote at the bottom.
 // Colors and typography match the rest of the site (brand yellow / ink).
+// IMPORTANT: this person is the DEVELOPER, not the logo designer. The word
+// "designer" must not appear here — it misleads visitors and search engines.
 
 const INSTAGRAM_URL = 'https://instagram.com/shohailmahmud09';
 const GITHUB_URL = 'https://github.com/shohail-mahmud';
@@ -50,12 +52,12 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
   return (
     <DialogPrimitive.Root>
       <DialogPrimitive.Trigger
-        aria-label="About the designer"
+        aria-label="About the developer"
         className={`block cursor-pointer transition-opacity hover:opacity-80 ${className}`}
       >
         <img
           src="/logo.png"
-          alt="Designer logo — Shohail Mahmud"
+          alt="Developed by Shohail Mahmud"
           className={`object-contain ${logoClassName}`}
         />
       </DialogPrimitive.Trigger>
@@ -80,7 +82,7 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
             {/* Logo */}
             <img
               src="/logo.png"
-              alt="Shohail Mahmud logo"
+              alt="Developer Shohail Mahmud"
               className="mx-auto mt-2 h-16 w-16 object-contain"
             />
 
