@@ -1,43 +1,47 @@
 import { Link } from '@/lib/router-compat';
+import { motion } from 'framer-motion';
 
-// ============================================================================
-// The Blog — Discovery of Coins.
-//
-// Purely additive content page rendered inside the existing public Layout
-// (Navigation + Footer). Content is data-driven below so posts are easy to add.
-//
-// SEO: the /blog route head (src/routes/_site.blog.tsx) sets title, meta
-// description, canonical URL and OG tags. Each post below opens with the real
-// YouTube video from @discoveryofcoins, then a short natural article. Keywords
-// are used once or twice in natural sentences — never stuffed — so the page
-// ranks on Google without triggering spam filters.
-// ============================================================================
+/**
+ * Editorial blog for Discovery of Coins.
+ *
+ * Posts are plain data below (no CMS/database call) so the page renders
+ * fully on the server — that matters for SEO and for AdSense reviewers,
+ * who must be able to read real article text without running JavaScript.
+ *
+ * To publish a new post: add an entry to POSTS. Newest first.
+ */
 
-interface BlogPost {
-  id: string;
-  title: string;
-  metaDescription: string;
-  date: string;
-  videoTitle: string;
-  /** Full embed URL for this video on @discoveryofcoins. */
-  videoUrl: string;
-  intro: string;
-  body: { heading?: string; paragraphs: string[] }[];
-  sources: { label: string; url: string }[];
+interface BlogSection {
+  heading: string;
+  paragraphs: string[];
 }
 
-const posts: BlogPost[] = [
+interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  /** Short standfirst shown under the title. */
+  intro: string;
+  /** YouTube video id, e.g. "LVHwjs8nKoE". Omit for a text-only post. */
+  youtubeId?: string;
+  /** Accessible title for the embedded video. */
+  videoTitle?: string;
+  sections: BlogSection[];
+  sources: { label: string; href: string }[];
+}
+
+const POSTS: BlogPost[] = [
   {
-    id: 'takar-haat-bangladesh-note-market',
-    title: 'Visiting the "Taka Haat" in Bangladesh: Inside the Market for Old Taka Notes',
-    metaDescription:
-      'What is a Takar Haat in Bangladesh? A look at the market where collectors buy and sell old Bangladeshi taka notes, plus tips for new currency collectors.',
+    slug: 'taka-haat-market-old-taka-notes',
+    title:
+      'Visiting the "Taka Haat" in Bangladesh: Inside the Market for Old Taka Notes',
     date: 'September 2026',
-    videoTitle: '36 – The Taka Haat (Bangladeshi Banknote Market) — Discovery of Coins',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/LVHwjs8nKoE',
     intro:
       'In Bangladesh, serious collectors of old banknotes know that the real treasure hunt does not always happen online. It happens at the "Taka Haat" — the lively market where buyers and sellers of Bangladeshi taka notes gather. In this video we walk through one of these markets to show new collectors exactly how it works.',
-    body: [
+    youtubeId: 'LVHwjs8nKoE',
+    videoTitle:
+      '36 – The Taka Haat (Bangladeshi Banknote Market) — Discovery of Coins',
+    sections: [
       {
         heading: 'What is the Taka Haat?',
         paragraphs: [
@@ -59,21 +63,27 @@ const posts: BlogPost[] = [
       },
     ],
     sources: [
-      { label: 'Bangladesh Bank — Notes & Coins', url: 'https://www.bb.org.bd/en/index.php/note' },
-      { label: 'Video: @discoveryofcoins on YouTube', url: 'https://www.youtube.com/watch?v=LVHwjs8nKoE' },
+      {
+        label: 'Bangladesh Bank — Notes & Coins',
+        href: 'https://www.bb.org.bd/en/index.php/currency/currency',
+      },
+      {
+        label: 'Video: @discoveryofcoins on YouTube',
+        href: 'https://www.youtube.com/watch?v=LVHwjs8nKoE',
+      },
     ],
   },
   {
-    id: 'old-red-1-taka-note-value',
-    title: 'How Much Is an Old Red 1 Taka Note Worth? Valuing Bangladeshi 1 Taka Notes',
-    metaDescription:
-      'How much is an old 1 taka note worth? A clear, honest guide to valuing the famous red 1 taka notes of Bangladesh and what really drives their price.',
+    slug: 'old-red-1-taka-note-value',
+    title:
+      'How Much Is an Old Red 1 Taka Note Worth? Valuing Bangladeshi 1 Taka Notes',
     date: 'September 2026',
-    videoTitle: '546 – Red 1 Taka worth 1 lakh? How much is one taka worth — Discovery of Coins',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/x5NuwOR-E84',
     intro:
       'The humble 1 Taka is the most collected note in Bangladesh, and the red 1 Taka holds a special place in collectors\u2019 hearts. Rumours sometimes claim an old one is worth a fortune. In this video we take a realistic look at how much a Bangladeshi 1 Taka note is actually worth and what determines its value.',
-    body: [
+    youtubeId: 'x5NuwOR-E84',
+    videoTitle:
+      '546 – Red 1 Taka worth 1 lakh? How much is one taka worth — Discovery of Coins',
+    sections: [
       {
         heading: 'Why the 1 Taka is so popular',
         paragraphs: [
@@ -95,21 +105,27 @@ const posts: BlogPost[] = [
       },
     ],
     sources: [
-      { label: 'Bangladesh Bank — Notes & Coins', url: 'https://www.bb.org.bd/en/index.php/note' },
-      { label: 'Video: @discoveryofcoins on YouTube', url: 'https://www.youtube.com/watch?v=x5NuwOR-E84' },
+      {
+        label: 'Bangladesh Bank — Notes & Coins',
+        href: 'https://www.bb.org.bd/en/index.php/currency/currency',
+      },
+      {
+        label: 'Video: @discoveryofcoins on YouTube',
+        href: 'https://www.youtube.com/watch?v=x5NuwOR-E84',
+      },
     ],
   },
   {
-    id: '1984-one-pound-scottish-thistle-coin',
-    title: 'The 1984 One Pound Coin with the Scottish Thistle: A Guide to Valuing UK Coins',
-    metaDescription:
-      'An introduction to the 1984 One Pound coin bearing the Scottish thistle, how to tell the Scottish design from the English one, and how to value collectible foreign coins.',
+    slug: '1984-one-pound-coin-scottish-thistle',
+    title:
+      'The 1984 One Pound Coin with the Scottish Thistle: A Guide to Valuing UK Coins',
     date: 'September 2026',
-    videoTitle: '17 – One Pound UK 1984 Scottish Thistle Value — Discovery of Coins',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/WDMu2T4LKEg',
     intro:
       'Collecting goes far beyond Bangladeshi notes. World coins are a fantastic branch of numismatics, and one classic example is the British One Pound coin introduced in 1983. In this video we look at the 1984 One Pound carrying the Scottish thistle and explain how collectors value UK coins.',
-    body: [
+    youtubeId: 'WDMu2T4LKEg',
+    videoTitle:
+      '17 – One Pound UK 1984 Scottish Thistle Value — Discovery of Coins',
+    sections: [
       {
         heading: 'The Scottish thistle One Pound',
         paragraphs: [
@@ -130,26 +146,93 @@ const posts: BlogPost[] = [
       },
     ],
     sources: [
-      { label: 'Royal Mint — One Pound coin', url: 'https://www.royalmint.com/one-pound-coin/' },
-      { label: 'Video: @discoveryofcoins on YouTube', url: 'https://www.youtube.com/watch?v=WDMu2T4LKEg' },
+      {
+        label: 'Royal Mint — One Pound coin',
+        href: 'https://www.royalmint.com/',
+      },
+      {
+        label: 'Video: @discoveryofcoins on YouTube',
+        href: 'https://www.youtube.com/watch?v=WDMu2T4LKEg',
+      },
     ],
   },
 ];
 
-function VideoEmbed({ url, title }: { url: string; title: string }) {
-  // Lazy-loaded, responsive iframe (16:9) so it never slows the page.
+function VideoEmbed({ id, title }: { id: string; title: string }) {
   return (
-    <div className="relative aspect-video w-full overflow-hidden bg-ink/5">
-      <iframe
-        src={url}
-        title={title}
-        loading="lazy"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin"
-        allowFullScreen
-        className="absolute inset-0 h-full w-full border-0"
-      />
+    <div className="my-6 overflow-hidden rounded-lg border border-ink/10 bg-ink/5">
+      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${id}`}
+          title={title}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="absolute left-0 top-0 h-full w-full border-0"
+        />
+      </div>
     </div>
+  );
+}
+
+function Article({ post }: { post: BlogPost }) {
+  return (
+    <article
+      id={post.slug}
+      className="border-t border-ink/10 pt-10 first:border-t-0 first:pt-0 md:pt-12"
+    >
+      <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+        {post.date}
+      </p>
+
+      <h2 className="mt-2 font-heading text-2xl tracking-tight text-ink md:text-3xl">
+        {post.title}
+      </h2>
+
+      <p className="mt-4 font-sans text-base font-light leading-relaxed tracking-wide text-ink/80 md:text-lg">
+        {post.intro}
+      </p>
+
+      {post.youtubeId && (
+        <VideoEmbed id={post.youtubeId} title={post.videoTitle ?? post.title} />
+      )}
+
+      <div className="mt-6 space-y-6">
+        {post.sections.map((section) => (
+          <section key={section.heading}>
+            <h3 className="font-heading text-lg tracking-tight text-ink md:text-xl">
+              {section.heading}
+            </h3>
+            <div className="mt-2 space-y-3.5 font-sans text-base font-light leading-relaxed tracking-wide text-ink/80">
+              {section.paragraphs.map((text, i) => (
+                <p key={i}>{text}</p>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <footer className="mt-6">
+        <h4 className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+          Sources
+        </h4>
+        <ul className="mt-2 space-y-1 font-sans text-sm font-light text-ink/70">
+          {post.sources.map((source) => (
+            <li key={source.href}>
+              <a
+                href={source.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 transition-colors hover:text-ink"
+              >
+                {source.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </footer>
+    </article>
   );
 }
 
@@ -166,80 +249,51 @@ export function BlogPage() {
           </Link>
         </div>
 
-        <header className="text-center">
-          <p className="font-sans text-[10px] font-medium uppercase tracking-[0.28em] text-ink/50">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
             Discovery of Coins
           </p>
-          <h1 className="mt-2 font-heading text-4xl tracking-tight text-ink md:text-5xl">
+
+          <h1 className="mt-2 font-heading text-4xl tracking-tight text-ink md:text-5xl lg:text-6xl">
             The Blog
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl font-sans text-sm font-light leading-relaxed text-ink/70 md:text-base">
+
+          <p className="mt-4 font-sans text-base font-light leading-relaxed tracking-wide text-ink/80 md:text-lg">
             Guides and stories on Bangladeshi banknotes, taka note value and
             collecting world coins — from the Taka Haat to valuing old
             Bangladeshi notes and British One Pound coins.
           </p>
-        </header>
 
-        <div className="mt-10 space-y-14 md:mt-14">
-          {posts.map((post) => (
-            <article key={post.id} id={post.id} className="space-y-5">
-              <VideoEmbed url={post.videoUrl} title={post.videoTitle} />
+          <div className="mt-10 space-y-10 md:mt-12 md:space-y-12">
+            {POSTS.map((post) => (
+              <Article key={post.slug} post={post} />
+            ))}
+          </div>
 
-              <div>
-                <p className="font-sans text-[10px] font-medium uppercase tracking-[0.22em] text-ink/40">
-                  {post.date}
-                </p>
-                <h2 className="mt-1.5 font-heading text-2xl leading-tight tracking-tight text-ink md:text-3xl">
-                  {post.title}
-                </h2>
-                <p className="mt-3 font-sans text-base font-light leading-relaxed text-ink/75">
-                  {post.intro}
-                </p>
-              </div>
-
-              <div className="space-y-5">
-                {post.body.map((section, i) => (
-                  <div key={i} className="space-y-2">
-                    {section.heading ? (
-                      <h3 className="font-heading text-xl tracking-tight text-ink">
-                        {section.heading}
-                      </h3>
-                    ) : null}
-                    {section.paragraphs.map((para, j) => (
-                      <p
-                        key={j}
-                        className="font-sans text-base font-light leading-relaxed text-ink/75"
-                      >
-                        {para}
-                      </p>
-                    ))}
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-ink/10 pt-3">
-                <p className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-ink/40">
-                  Sources
-                </p>
-                <p className="mt-1.5 font-sans text-xs font-light leading-relaxed text-ink/60">
-                  {post.sources.map((s, i) => (
-                    <span key={s.url}>
-                      {i > 0 ? ' · ' : ''}
-                      <a
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-2 transition-colors hover:text-ink"
-                      >
-                        {s.label}
-                      </a>
-                    </span>
-                  ))}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
+          <div className="mt-12 border-t border-ink/10 pt-8">
+            <p className="font-sans text-base font-light leading-relaxed text-ink/80">
+              Ready to start or grow your collection?{' '}
+              <Link
+                to="/shop"
+                className="text-ink underline underline-offset-4 transition-colors hover:text-ink/70"
+              >
+                Browse the shop
+              </Link>{' '}
+              or{' '}
+              <Link
+                to="/contact"
+                className="text-ink underline underline-offset-4 transition-colors hover:text-ink/70"
+              >
+                get in touch
+              </Link>
+              .
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
