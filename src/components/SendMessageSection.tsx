@@ -295,7 +295,7 @@ export function SendMessageSection() {
                   <button
                     type="button"
                     onClick={() => setSent(false)}
-                    className="mt-6 border border-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors duration-300 hover:bg-ink hover:text-brand"
+                    className="rounded-control mt-6 border border-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors duration-300 hover:bg-ink hover:text-brand"
                   >
                     Write another message
                   </button>
