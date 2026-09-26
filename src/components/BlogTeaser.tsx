@@ -22,7 +22,7 @@ export function BlogTeaser() {
         </p>
         <Link
           to="/blog"
-          className="mt-5 inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
+          className="mt-5 inline-block rounded-control border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
         >
           Read the Blog
         </Link>
