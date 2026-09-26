@@ -109,7 +109,7 @@ function ProductCardBase({
             <button
               type="button"
               onClick={handleAskForPrice}
-              className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+              className="rounded-control mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
             >
               <MessageCircle size={12} strokeWidth={1.5} />
               Ask for Price
@@ -119,7 +119,7 @@ function ProductCardBase({
               type="button"
               disabled={!inStock}
               onClick={handleAddToCart}
-              className="mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-control mt-1.5 flex items-center justify-center gap-1.5 border border-ink bg-transparent px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ShoppingBag size={12} strokeWidth={1.5} />
               {inStock ? "Add to Cart" : "Out of Stock"}
