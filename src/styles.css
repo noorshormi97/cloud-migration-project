@@ -19,6 +19,12 @@
  */
 
 @theme inline {
+  /* Shared corner radius for every interactive control — buttons, chips,
+     inputs and icon buttons. The storefront's look is deliberately sharp and
+     editorial, so this is a very small softening rather than a pill shape.
+     Change this ONE value to restyle every control on the site at once. */
+  --radius-control: 6px;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
