@@ -94,7 +94,7 @@ export function CartPage() {
           </p>
           <Link
             to="/shop"
-            className="mt-5 inline-block border border-ink bg-ink px-8 py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+            className="rounded-control mt-5 inline-block border border-ink bg-ink px-8 py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
           >
             Continue Shopping
           </Link>
@@ -159,7 +159,7 @@ export function CartPage() {
                       <button
                         type="button"
                         onClick={() => updateQuantity(line.id, line.quantity - 1)}
-                        className="p-1.5 text-ink/70 transition-colors hover:bg-ink/5"
+                        className="rounded-control p-1.5 text-ink/70 transition-colors hover:bg-ink/5"
                         aria-label="Decrease quantity"
                       >
                         <Minus size={14} />
@@ -173,7 +173,7 @@ export function CartPage() {
                           updateQuantity(line.id, Math.min(line.maxQuantity, line.quantity + 1))
                         }
                         disabled={line.quantity >= line.maxQuantity}
-                        className="p-1.5 text-ink/70 transition-colors hover:bg-ink/5 disabled:opacity-30"
+                        className="rounded-control p-1.5 text-ink/70 transition-colors hover:bg-ink/5 disabled:opacity-30"
                         aria-label="Increase quantity"
                       >
                         <Plus size={14} />
