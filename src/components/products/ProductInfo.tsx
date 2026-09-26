@@ -76,7 +76,7 @@ export function ProductInfo({ product, cartKind = "product" }: ProductInfoProps)
           <button
             type="button"
             onClick={handleAskForPrice}
-            className="flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85"
+            className="rounded-control flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85"
           >
             <MessageCircle size={15} strokeWidth={1.5} />
             Ask for Price
@@ -88,7 +88,7 @@ export function ProductInfo({ product, cartKind = "product" }: ProductInfoProps)
             <button
               type="button"
               onClick={decrease}
-              className="p-2.5 text-ink/70 transition-colors hover:bg-ink/5"
+              className="rounded-control p-2.5 text-ink/70 transition-colors hover:bg-ink/5"
               aria-label="Decrease quantity"
             >
               <Minus size={16} />
@@ -99,7 +99,7 @@ export function ProductInfo({ product, cartKind = "product" }: ProductInfoProps)
             <button
               type="button"
               onClick={increase}
-              className="p-2.5 text-ink/70 transition-colors hover:bg-ink/5"
+              className="rounded-control p-2.5 text-ink/70 transition-colors hover:bg-ink/5"
               aria-label="Increase quantity"
             >
               <Plus size={16} />
@@ -110,7 +110,7 @@ export function ProductInfo({ product, cartKind = "product" }: ProductInfoProps)
             type="button"
             disabled={!inStock}
             onClick={handleAddToCart}
-            className="flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-control flex items-center justify-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ShoppingBag size={15} strokeWidth={1.5} />
             {inStock ? "Add to Cart" : "Out of Stock"}
