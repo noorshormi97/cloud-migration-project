@@ -327,7 +327,7 @@ export function SendMessageSection() {
                       if (message.trim()) setCatState('awake');
                     }}
                     placeholder="Looking for a particular note? Tell us what you’re looking for…"
-                    className="mt-2 w-full resize-none rounded-2xl border border-ink/15 bg-brand/10 px-4 py-3.5 font-sans text-base font-light leading-relaxed text-ink outline-none transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] placeholder:text-ink/40 hover:border-ink/30 focus:border-ink/60 focus:bg-paper focus:shadow-[0_8px_24px_-14px_rgba(17,17,17,0.35)]"
+                    className="mt-2 w-full resize-none rounded-control border border-ink/15 bg-brand/10 px-4 py-3.5 font-sans text-base font-light leading-relaxed text-ink outline-none transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] placeholder:text-ink/40 hover:border-ink/30 focus:border-ink/60 focus:bg-paper focus:shadow-[0_8px_24px_-14px_rgba(17,17,17,0.35)]"
                   />
 
                   {error ? (
@@ -343,7 +343,7 @@ export function SendMessageSection() {
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.25, ease: EASE }}
-                      className="w-full rounded-full border border-ink bg-ink px-8 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors duration-300 hover:bg-transparent hover:text-ink sm:w-auto"
+                      className="w-full rounded-control border border-ink bg-ink px-8 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors duration-300 hover:bg-transparent hover:text-ink sm:w-auto"
                     >
                       Send Message
                     </motion.button>
