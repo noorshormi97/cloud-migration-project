@@ -23,7 +23,7 @@ export function HomePage() {
         <div className="mx-auto max-w-4xl text-center">
           <Link
             to="/shop"
-            className="inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
+            className="rounded-control inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
           >
             Shop All Products
           </Link>
