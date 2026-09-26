@@ -41,7 +41,7 @@ export function ProductGallery({ productName, images = [] }: ProductGalleryProps
             <button
               type="button"
               onClick={() => go(-1)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 border border-ink/15 bg-paper/90 p-2 text-ink transition-colors hover:bg-ink hover:text-brand"
+              className="rounded-control absolute left-2 top-1/2 -translate-y-1/2 border border-ink/15 bg-paper/90 p-2 text-ink transition-colors hover:bg-ink hover:text-brand"
               aria-label="Previous image"
             >
               <ChevronLeft size={18} />
@@ -49,12 +49,12 @@ export function ProductGallery({ productName, images = [] }: ProductGalleryProps
             <button
               type="button"
               onClick={() => go(1)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 border border-ink/15 bg-paper/90 p-2 text-ink transition-colors hover:bg-ink hover:text-brand"
+              className="rounded-control absolute right-2 top-1/2 -translate-y-1/2 border border-ink/15 bg-paper/90 p-2 text-ink transition-colors hover:bg-ink hover:text-brand"
               aria-label="Next image"
             >
               <ChevronRight size={18} />
             </button>
-            <p className="absolute bottom-2 right-2 bg-ink/80 px-2 py-1 font-sans text-[10px] uppercase tracking-widest text-brand">
+            <p className="rounded-control absolute bottom-2 right-2 bg-ink/80 px-2 py-1 font-sans text-[10px] uppercase tracking-widest text-brand">
               {safeIndex + 1} / {slides.length}
             </p>
           </>
