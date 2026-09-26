@@ -17,7 +17,7 @@ function Card({ item }: { item: StartCollectingItem }) {
         <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-ink/10 bg-white">
           <ProductImage path={image} alt={item.name} iconType="coin" />
           {outOfStock ? (
-            <span className="absolute left-0 top-0 bg-ink/80 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+            <span className="rounded-control absolute left-0 top-0 bg-ink/80 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
               Out of stock
             </span>
           ) : null}
@@ -80,7 +80,7 @@ export function StartCollecting() {
         <div className="mt-8 text-center">
           <Link
             to="/shop"
-            className="inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
+            className="rounded-control inline-block border border-ink bg-ink px-7 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
           >
             More
           </Link>
