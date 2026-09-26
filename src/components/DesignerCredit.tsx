@@ -97,7 +97,7 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full bg-ink px-4 py-2.5 font-sans text-[11px] font-medium uppercase tracking-widest text-brand transition-opacity hover:opacity-85"
+                className="flex items-center justify-center gap-2 rounded-control bg-ink px-4 py-2.5 font-sans text-[11px] font-medium uppercase tracking-widest text-brand transition-opacity hover:opacity-85"
               >
                 <InstagramIcon className="h-3.5 w-3.5" />
                 <span className="normal-case tracking-normal">Instagram · {IG_HANDLE}</span>
@@ -106,7 +106,7 @@ export function DesignerCredit({ className = '', logoClassName = '' }: DesignerC
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full border border-ink px-4 py-2.5 font-sans text-[11px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+                className="flex items-center justify-center gap-2 rounded-control border border-ink px-4 py-2.5 font-sans text-[11px] font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
               >
                 <GithubIcon className="h-3.5 w-3.5" />
                 <span className="normal-case tracking-normal">GitHub · {GH_HANDLE}</span>
