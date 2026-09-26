@@ -23,7 +23,7 @@ function Card({ item }: { item: NewArrival }) {
           className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
         {item.is_new ? (
-          <span className="absolute left-0 top-0 bg-ink px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+          <span className="rounded-control absolute left-0 top-0 bg-ink px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
             New
           </span>
         ) : null}
