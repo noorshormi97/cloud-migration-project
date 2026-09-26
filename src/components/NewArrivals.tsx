@@ -33,12 +33,12 @@ function ArrivalCard({ item }: { item: NewArrival }) {
       <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden border-b border-ink/10 bg-paper">
         <ProductImage path={image} alt={item.name} label="Image" iconType={iconTypeFor(item)} />
         {item.is_new ? (
-          <span className="absolute left-0 top-0 bg-ink px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+          <span className="rounded-control absolute left-0 top-0 bg-ink px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
             New
           </span>
         ) : null}
         {outOfStock ? (
-          <span className="absolute right-0 top-0 bg-ink/80 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+          <span className="rounded-control absolute right-0 top-0 bg-ink/80 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
             Out of stock
           </span>
         ) : null}
