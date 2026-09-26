@@ -122,7 +122,7 @@ export function ComboPage() {
                         duration: 2500,
                       });
                     }}
-                    className="mt-3.5 flex items-center justify-center gap-2 bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-control mt-3.5 flex items-center justify-center gap-2 bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ShoppingBag size={14} strokeWidth={1.5} />
                     {combo.available ? 'Add to Cart' : 'Unavailable'}
