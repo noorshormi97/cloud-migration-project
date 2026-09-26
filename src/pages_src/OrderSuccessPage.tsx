@@ -22,7 +22,7 @@ export function OrderSuccessPage() {
 
         <Link
           to="/shop"
-          className="mt-5 inline-block bg-ink px-8 py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+          className="rounded-control mt-5 inline-block bg-ink px-8 py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
         >
           Continue Shopping
         </Link>
