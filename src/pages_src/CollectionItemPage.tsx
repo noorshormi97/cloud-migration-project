@@ -95,7 +95,7 @@ export function CollectionItemPage({ kind }: { kind: CollectionKind }) {
         <p className="mt-4 font-sans text-sm font-light text-ink/60">{copy.notFound}</p>
         <Link
           to="/"
-          className="mt-8 inline-block border border-ink bg-ink px-6 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+          className="rounded-control mt-8 inline-block border border-ink bg-ink px-6 py-3 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
         >
           Back to Home
         </Link>
