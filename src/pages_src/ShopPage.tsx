@@ -95,7 +95,7 @@ export function ShopPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name…"
-              className="w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none transition-colors focus:border-ink/50"
+              className="rounded-control w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none transition-colors focus:border-ink/50"
             />
           </div>
         </div>
@@ -107,7 +107,7 @@ export function ShopPage() {
                 key={category}
                 type="button"
                 onClick={() => handleCategoryChange(category)}
-                className={`whitespace-nowrap border px-2.5 py-1 font-sans text-[11px] uppercase tracking-wider transition-colors duration-200 ${
+                className={`rounded-control whitespace-nowrap border px-2.5 py-1 font-sans text-[11px] uppercase tracking-wider transition-colors duration-200 ${
                   activeCategory === category
                     ? 'border-ink bg-ink text-brand'
                     : 'border-ink/20 bg-transparent text-ink hover:border-ink/40'
