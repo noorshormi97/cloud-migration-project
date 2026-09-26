@@ -118,7 +118,7 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-3 w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+        className="rounded-control mt-3 w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
       >
         Proceed to Checkout
       </button>
@@ -172,7 +172,7 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
         {COURIERS.map((option) => (
           <label
             key={option.name}
-            className={`flex cursor-pointer items-center justify-between border px-3 py-2 font-sans text-sm text-ink transition-colors ${
+            className={`rounded-control flex cursor-pointer items-center justify-between border px-3 py-2 font-sans text-sm text-ink transition-colors ${
               courier === option.name ? "border-ink" : "border-ink/20 hover:border-ink/40"
             }`}
           >
@@ -207,7 +207,7 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
         </div>
       </div>
 
-      <label className="flex cursor-pointer items-center gap-2 border border-ink/15 bg-paper px-3 py-2 font-sans text-xs text-ink transition-colors has-[:checked]:border-ink/40">
+      <label className="rounded-control flex cursor-pointer items-center gap-2 border border-ink/15 bg-paper px-3 py-2 font-sans text-xs text-ink transition-colors has-[:checked]:border-ink/40">
         <input
           type="checkbox"
           checked={acceptedTerms}
@@ -230,7 +230,7 @@ export function CheckoutForm({ lines, total }: CheckoutFormProps) {
       <button
         type="submit"
         disabled={submitting || !courier || !acceptedTerms}
-        className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
+        className="rounded-control w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
       >
         {submitting ? "Placing order…" : `Place order · ${formatPrice(finalTotal)}`}
       </button>
