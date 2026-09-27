@@ -1,14 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
 import { useMaintenanceMode, setMaintenanceMode } from '@/lib/maintenance';
 
 export function AdminMaintenance() {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { data: maintenance, isLoading } = useMaintenanceMode();
 
   const toggle = useMutation({
     mutationFn: (on: boolean) => setMaintenanceMode(on),
-    onSuccess: () =>
-      void queryClient.invalidateQueries({ queryKey: ['maintenance-mode'] }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['maintenance-mode'] });
+      // The public site reads the flag in the /_site route loader, which is a
+      // separate cache from react-query. Without this, flipping the switch
+      // could take up to a minute to reach the shop.
+      void router.invalidate();
+    },
   });
 
   return (
