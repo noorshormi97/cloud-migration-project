@@ -2,17 +2,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatPrice } from '@/lib/store';
-import { Trash2 } from 'lucide-react';
 
-const STATUSES = [
-  'Pending',
-  'Confirmed',
-  'Cancelled',
-  'Completed',
-  'Shipped',
-  'Delivered',
-] as const;
-type Status = (typeof STATUSES)[number];
+// Exactly the values of the database enum public.order_status. The old list
+// also contained 'Completed', which the database rejects — selecting it always
+// failed silently.
+type Status = 'Pending' | 'Confirmed' | 'Cancelled' | 'Shipped' | 'Delivered';
 
 interface OrderItemRow {
   id: string;
@@ -59,6 +53,9 @@ async function fetchOrders(): Promise<OrderRow[]> {
   const { data, error } = await supabase
     .from('orders')
     .select('*, order_items(*)')
+    // Only orders still waiting on a decision. Confirming or cancelling takes
+    // the order off this list; the row itself is kept in the database.
+    .eq('status', 'Pending')
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data ?? []) as unknown as OrderRow[];
@@ -98,14 +95,6 @@ export function AdminOrders() {
     onSuccess: invalidate,
   });
 
-  const deleteOrder = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('orders').delete().eq('id', id);
-      if (error) throw error;
-    },
-    onSuccess: invalidate,
-  });
-
   // Cancellation goes through the database routine so stock is restored exactly
   // once per order, no matter how often the button is pressed.
   const cancelOrder = useMutation({
@@ -127,7 +116,11 @@ export function AdminOrders() {
   }
 
   if (orders.length === 0) {
-    return <p className="font-sans text-sm font-light text-ink/60">No orders yet.</p>;
+    return (
+      <p className="font-sans text-sm font-light text-ink/60">
+        No pending orders.
+      </p>
+    );
   }
 
   return (
@@ -186,72 +179,20 @@ export function AdminOrders() {
             </div>
 
             <div className="flex flex-wrap items-start gap-2 lg:justify-end">
-              {order.status === 'Cancelled' ? (
-                <span className="rounded-sm border border-ink/30 bg-ink/5 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/60">
-                  Cancelled
-                </span>
-              ) : null}
-              <select
-                value={order.status}
-                onChange={(e) => {
-                  const next = e.target.value as Status;
-                  if (next === 'Cancelled') {
-                    setPendingCancelId(order.id);
-                    return;
-                  }
-                  updateStatus.mutate({ id: order.id, status: next });
-                }}
-                className="border border-ink/20 bg-paper px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink"
+              <button
+                type="button"
+                onClick={() => updateStatus.mutate({ id: order.id, status: 'Confirmed' })}
+                className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
               >
-                {STATUSES.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-              {order.status === 'Pending' ? (
-                <button
-                  type="button"
-                  onClick={() =>
-                    updateStatus.mutate({ id: order.id, status: 'Confirmed' })
-                  }
-                  className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
-                >
-                  Confirm Order
-                </button>
-              ) : null}
-              {order.status === 'Pending' || order.status === 'Confirmed' ? (
-                <button
-                  type="button"
-                  onClick={() => setPendingCancelId(order.id)}
-                  className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
-                >
-                  Cancel Order
-                </button>
-              ) : null}
-              {order.status === 'Cancelled' ? (
-                <button
-                  type="button"
-                  disabled
-                  className="cursor-not-allowed rounded-sm border border-ink/15 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/30"
-                >
-                  Cancel Order
-                </button>
-              ) : null}
-              {order.status === 'Confirmed' || order.status === 'Cancelled' ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (window.confirm('Permanently delete this order? Stock will not change.')) {
-                      deleteOrder.mutate(order.id);
-                    }
-                  }}
-                  className="border border-ink/20 p-2 text-ink/50 transition-colors hover:border-ink hover:text-ink"
-                  aria-label="Delete order"
-                >
-                  <Trash2 size={16} />
-                </button>
-              ) : null}
+                Confirm Order
+              </button>
+              <button
+                type="button"
+                onClick={() => setPendingCancelId(order.id)}
+                className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+              >
+                Cancel Order
+              </button>
             </div>
           </div>
 
