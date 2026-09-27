@@ -45,15 +45,23 @@ function MaintenanceMark() {
   );
 }
 
-export function MaintenancePage() {
+interface MaintenancePageProps {
+  /** Supplied by the /_site loader so this page makes no database call of its
+   *  own. Left undefined only if the component is rendered somewhere else. */
+  whatsappNumber?: string | null;
+}
+
+export function MaintenancePage({ whatsappNumber }: MaintenancePageProps = {}) {
   const { data } = useQuery({
     queryKey: ['contact-details'],
     queryFn: fetchContactDetails,
+    // Already handed to us by the loader — don't spend a request on it.
+    enabled: whatsappNumber === undefined,
   });
 
   // Reuse the business's existing WhatsApp number from contact_details (the
   // same source the "Send a message" section uses). Never invent a number.
-  const rawNumber = (data?.whatsapp_number ?? '').replace(/[^\d]/g, '');
+  const rawNumber = (whatsappNumber ?? data?.whatsapp_number ?? '').replace(/[^\d]/g, '');
   const waLink = rawNumber
     ? `https://wa.me/${rawNumber}?text=${encodeURIComponent(
         `Hello ${SITE_NAME}, I saw the website is under maintenance. I'd like to ask a question.`,
