@@ -2,49 +2,44 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchContactDetails } from '@/lib/content';
 import { SITE_NAME } from '@/lib/seo';
 
-// Construction-style "Under Construction" sign, drawn inline so it stays crisp
-// and matches the site's minimal editorial aesthetic (no external assets).
-function ConstructionSign() {
+// Maintenance mark: a spanner set into a gear. Drawn inline as SVG so it stays
+// crisp at any size and needs no image file.
+function MaintenanceMark() {
   return (
     <svg
-      viewBox="0 0 220 180"
-      className="mx-auto h-28 w-36 drop-shadow-[0_12px_24px_rgba(17,17,17,0.18)] sm:h-36 sm:w-44"
+      viewBox="0 0 230 215"
+      className="mx-auto h-[clamp(3rem,min(14vh,18vw),9rem)] w-[clamp(3rem,min(14vh,18vw),9rem)] drop-shadow-[0_12px_24px_rgba(17,17,17,0.18)]"
       role="img"
-      aria-label="Under construction"
+      aria-label="Under maintenance"
     >
-      {/* ground shadow */}
-      <ellipse cx="110" cy="168" rx="70" ry="8" fill="#111111" opacity="0.12" />
-      {/* two legs */}
-      <line x1="70" y1="118" x2="60" y2="170" stroke="#111111" strokeWidth="9" strokeLinecap="round" />
-      <line x1="150" y1="118" x2="160" y2="170" stroke="#111111" strokeWidth="9" strokeLinecap="round" />
-      {/* plank / sign face */}
-      <rect
-        x="18"
-        y="18"
-        width="184"
-        height="102"
-        rx="6"
-        fill="#111111"
-        stroke="#111111"
-        strokeWidth="3"
-      />
-      {/* hazard stripes */}
-      <g stroke="#fae588" strokeWidth="10">
-        <line x1="30" y1="34" x2="50" y2="16" />
-        <line x1="52" y1="34" x2="72" y2="16" />
-        <line x1="74" y1="34" x2="94" y2="16" />
+      {/* gear body */}
+      <circle cx="100" cy="112" r="54.12" fill="#111111" />
+      {/* eight teeth */}
+      <g fill="#111111">
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(0 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(45 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(90 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(135 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(180 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(225 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(270 100 112)" />
+        <rect x="86.14" y="46" width="27.72" height="27.72" rx="8.87" transform="rotate(315 100 112)" />
       </g>
-      {/* gear symbol */}
-      <g transform="translate(110 68)">
-        <circle cx="0" cy="0" r="9" fill="none" stroke="#fae588" strokeWidth="4" />
-        <g stroke="#fae588" strokeWidth="4" strokeLinecap="round">
-          <line x1="0" y1="-16" x2="0" y2="-11" />
-          <line x1="14" y1="-8" x2="9.9" y2="-5.5" />
-          <line x1="14" y1="8" x2="9.9" y2="5.5" />
-          <line x1="0" y1="16" x2="0" y2="11" />
-          <line x1="-14" y1="8" x2="-9.9" y2="5.5" />
-          <line x1="-14" y1="-8" x2="-9.9" y2="-5.5" />
-        </g>
+      {/* hollow centre */}
+      <circle cx="100" cy="112" r="40.26" fill="#fae588" />
+      {/* background-coloured gap so the handle reads across the gear */}
+      <line x1="102" y1="108" x2="34" y2="178" stroke="#fae588" strokeWidth="29" strokeLinecap="round" />
+      {/* the spanner */}
+      <circle cx="102" cy="108" r="27" fill="#111111" />
+      <line x1="102" y1="108" x2="34" y2="178" stroke="#111111" strokeWidth="19" strokeLinecap="round" />
+      {/* jaw + bore: single background shapes, no clip path, so no hairline seam */}
+      <polygon points="102,108 110.54,76.12 133.88,99.46" fill="#fae588" />
+      <circle cx="102" cy="108" r="12" fill="#fae588" />
+      {/* shine */}
+      <g stroke="#111111" strokeWidth="11" strokeLinecap="round">
+        <line x1="108.47" y1="31.44" x2="110.66" y2="10.56" />
+        <line x1="148.75" y1="47.31" x2="161.39" y2="30.54" />
+        <line x1="175.1" y1="81.66" x2="194.57" y2="73.79" />
       </g>
     </svg>
   );
@@ -66,18 +61,18 @@ export function MaintenancePage() {
     : null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-brand">
-      <div className="flex flex-1 items-center justify-center px-6 py-16">
+    <div className="flex h-[100svh] flex-col overflow-hidden bg-brand">
+      <div className="flex min-h-0 flex-1 items-center justify-center px-6 py-[clamp(0.75rem,3vh,4rem)]">
         <div className="mx-auto max-w-xl text-center">
-          <ConstructionSign />
+          <MaintenanceMark />
 
-          <h1 className="mt-10 font-heading text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] tracking-tight text-ink">
+          <h1 className="mt-[clamp(0.75rem,3.5vh,2.5rem)] font-heading text-[clamp(1.9rem,min(9vh,7vw),5rem)] leading-[0.95] tracking-tight text-ink">
             The Website is
             <br />
             Under Maintenance
           </h1>
 
-          <p className="mx-auto mt-6 max-w-md font-sans text-base font-light leading-relaxed tracking-wide text-ink/80 md:text-lg">
+          <p className="mx-auto mt-[clamp(0.6rem,2.2vh,1.5rem)] max-w-md font-sans text-[clamp(0.8125rem,min(2.3vh,3.6vw),1.125rem)] font-light leading-relaxed tracking-wide text-ink/80">
             Sorry, we are currently working on the website. We’ll be back soon.
             Thank you for your patience.
           </p>
@@ -87,7 +82,7 @@ export function MaintenancePage() {
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-10 inline-flex items-center justify-center gap-2 border border-ink bg-ink px-8 py-3.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
+              className="rounded-control mt-[clamp(0.85rem,3.5vh,2.5rem)] inline-flex items-center justify-center gap-2 border border-ink bg-ink px-[clamp(1.25rem,5vw,2rem)] py-[clamp(0.55rem,1.6vh,0.875rem)] font-sans text-[clamp(0.625rem,1.5vh,0.75rem)] font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
             >
               <svg
                 width="16"
@@ -105,8 +100,8 @@ export function MaintenancePage() {
       </div>
 
       {/* Dev credit footer — small, unobtrusive, single line on mobile */}
-      <footer className="border-t border-ink/10 px-4 py-4 sm:px-6">
-        <p className="flex flex-nowrap items-center justify-center gap-1 text-center font-sans text-[9px] font-light uppercase tracking-[0.12em] text-ink/40 sm:text-[10px]">
+      <footer className="shrink-0 border-t border-ink/10 px-4 py-[clamp(0.5rem,1.6vh,1rem)] sm:px-6">
+        <p className="flex flex-nowrap items-center justify-center gap-1 text-center font-sans text-[10px] font-light tracking-normal text-ink/45 sm:text-[11px]">
           <span className="whitespace-nowrap">Website monitored &amp; maintained by</span>
           <a
             href="https://www.instagram.com/shohailmahmud09"
