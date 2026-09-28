@@ -8,7 +8,7 @@ import { formatPrice, PRODUCT_BUCKET } from '@/lib/store';
 import { ProductImage } from '@/components/products/ProductImage';
 
 const inputClass =
-  'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+  'rounded-control w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
 
 type SlotDraft = { country: string; denomination: string; description: string };
 
@@ -183,7 +183,7 @@ export function AdminCombos() {
           setDraft({ ...emptyDraft, slots: [{ ...emptySlot }] });
           setError(null);
         }}
-        className="inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+        className="rounded-control inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
       >
         <Plus size={14} /> Create combo
       </button>
@@ -200,7 +200,7 @@ export function AdminCombos() {
                 setEditingId(null);
                 setDraft(null);
               }}
-              className="text-ink/50 hover:text-ink"
+              className="rounded-control text-ink/50 hover:text-ink"
               aria-label="Close editor"
             >
               <X size={18} />
@@ -226,7 +226,7 @@ export function AdminCombos() {
                 Number of items (1–{MAX_COMBO_SLOTS})
               </span>
               <input
-                className={`${inputClass} mt-1`}
+                className={`rounded-control ${inputClass} mt-1`}
                 type="number"
                 min="1"
                 max={MAX_COMBO_SLOTS}
@@ -255,7 +255,7 @@ export function AdminCombos() {
           </div>
 
           <textarea
-            className={`${inputClass} min-h-[90px]`}
+            className={`rounded-control ${inputClass} min-h-[90px]`}
             placeholder="Combo description"
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
@@ -275,7 +275,7 @@ export function AdminCombos() {
                   <button
                     type="button"
                     onClick={() => void removeImage(path)}
-                    className="absolute right-1 top-1 bg-ink/80 p-1 text-brand"
+                    className="rounded-control absolute right-1 top-1 bg-ink/80 p-1 text-brand"
                     aria-label="Remove image"
                   >
                     <X size={12} />
@@ -337,7 +337,7 @@ export function AdminCombos() {
             type="button"
             onClick={() => save.mutate()}
             disabled={save.isPending || !draft.name.trim()}
-            className="bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-50"
+            className="rounded-control bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-50"
           >
             {save.isPending ? 'Saving…' : 'Save combo'}
           </button>
@@ -370,7 +370,7 @@ export function AdminCombos() {
                     setDraft(toDraft(combo));
                     setError(null);
                   }}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label="Edit combo"
                 >
                   <Pencil size={15} />
@@ -380,7 +380,7 @@ export function AdminCombos() {
                   onClick={() => {
                     if (window.confirm(`Delete combo "${combo.name}"?`)) remove.mutate(combo);
                   }}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label="Delete combo"
                 >
                   <Trash2 size={15} />
