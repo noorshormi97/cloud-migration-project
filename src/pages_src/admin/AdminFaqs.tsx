@@ -6,7 +6,7 @@ import { useFaqs } from '@/hooks/useContent';
 import type { Faq } from '@/lib/content';
 
 const inputClass =
-  'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+  'rounded-control w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
 
 type Draft = {
   question: string;
@@ -106,7 +106,7 @@ export function AdminFaqs() {
       <button
         type="button"
         onClick={startNew}
-        className="inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+        className="rounded-control inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
       >
         <Plus size={14} /> Add FAQ
       </button>
@@ -123,7 +123,7 @@ export function AdminFaqs() {
                 setEditingId(null);
                 setDraft(null);
               }}
-              className="text-ink/50 hover:text-ink"
+              className="rounded-control text-ink/50 hover:text-ink"
               aria-label="Close editor"
             >
               <X size={18} />
@@ -137,7 +137,7 @@ export function AdminFaqs() {
             onChange={(e) => setDraft({ ...draft, question: e.target.value })}
           />
           <textarea
-            className={`${inputClass} min-h-[90px]`}
+            className={`rounded-control ${inputClass} min-h-[90px]`}
             placeholder="Answer"
             value={draft.answer}
             onChange={(e) => setDraft({ ...draft, answer: e.target.value })}
@@ -169,7 +169,7 @@ export function AdminFaqs() {
             type="button"
             onClick={() => save.mutate()}
             disabled={save.isPending || !draft.question.trim()}
-            className="bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-50"
+            className="rounded-control bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-50"
           >
             {save.isPending ? 'Saving…' : 'Save FAQ'}
           </button>
@@ -195,7 +195,7 @@ export function AdminFaqs() {
                 <button
                   type="button"
                   onClick={() => move(faq, -1)}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label="Move up"
                 >
                   <ArrowUp size={15} />
@@ -203,7 +203,7 @@ export function AdminFaqs() {
                 <button
                   type="button"
                   onClick={() => move(faq, 1)}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label="Move down"
                 >
                   <ArrowDown size={15} />
@@ -213,7 +213,7 @@ export function AdminFaqs() {
                   onClick={() =>
                     patch.mutate({ id: faq.id, values: { enabled: !faq.enabled } })
                   }
-                  className={`border px-3 py-1.5 font-sans text-[11px] uppercase tracking-widest transition-colors ${
+                  className={`rounded-control border px-3 py-1.5 font-sans text-[11px] uppercase tracking-widest transition-colors ${
                     faq.enabled
                       ? 'border-ink bg-ink text-brand'
                       : 'border-ink/20 text-ink hover:border-ink/40'
@@ -224,7 +224,7 @@ export function AdminFaqs() {
                 <button
                   type="button"
                   onClick={() => startEdit(faq)}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label="Edit FAQ"
                 >
                   <Pencil size={15} />
@@ -234,7 +234,7 @@ export function AdminFaqs() {
                   onClick={() => {
                     if (window.confirm('Delete this FAQ?')) remove.mutate(faq.id);
                   }}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label="Delete FAQ"
                 >
                   <Trash2 size={15} />
