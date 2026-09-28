@@ -38,12 +38,21 @@ export function webSiteSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     creator: {
+      // A stable @id lets Google treat every mention of this person as the
+      // same entity instead of guessing. The sameAs list is what it uses to
+      // stitch the separate profiles together — the more that agree, the
+      // better it resolves the name.
+      "@id": "https://github.com/shohail-mahmud#person",
       "@type": "Person",
       name: "Shohail Mahmud",
+      alternateName: "Nirjon",
+      jobTitle: "Web Developer",
+      nationality: "Bangladeshi",
       url: "https://github.com/shohail-mahmud",
       sameAs: [
         "https://github.com/shohail-mahmud",
         "https://instagram.com/shohailmahmud09",
+        "https://dev.to/nirjon_09",
       ],
     },
   };
@@ -75,16 +84,30 @@ export function productSchema(product: ProductSchemaInput) {
     itemCondition: product.condition
       ? "https://schema.org/UsedCondition"
       : "https://schema.org/NewCondition",
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "BDT",
-      price: product.price,
-      availability: product.inStock
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-      url: product.url,
-      seller: { "@type": "Organization", name: SITE_NAME },
-    },
+    // A confidential price (0) must NOT be published as price: 0 — search
+    // engines would list the item as free. We omit the price and mark the
+    // offer as one that requires contacting the seller instead.
+    offers:
+      product.price > 0
+        ? {
+            "@type": "Offer",
+            priceCurrency: "BDT",
+            price: product.price,
+            availability: product.inStock
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock",
+            url: product.url,
+            seller: { "@type": "Organization", name: SITE_NAME },
+          }
+        : {
+            "@type": "Offer",
+            priceCurrency: "BDT",
+            availability: product.inStock
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock",
+            url: product.url,
+            seller: { "@type": "Organization", name: SITE_NAME },
+          },
   };
 }
 
