@@ -15,26 +15,26 @@ const DATA: Entry[] = [
   { country: 'Cambodia', currency: 'Riel' },
   { country: 'Laos', currency: 'Kip' },
   { country: 'Malaysia', currency: 'Ringgit' },
-  { country: 'Indonesia', currency: 'Indonesian Rupiah' },
-  { country: 'Philippines', currency: 'Philippine Peso' },
+  { country: 'Indonesia', currency: 'Ind Rupiah' },
+  { country: 'Philippines', currency: 'P Peso' },
   { country: 'Japan', currency: 'Yen' },
-  { country: 'China', currency: 'Renminbi (Yuan)' },
-  { country: 'South Korea', currency: 'South Korean Won' },
+  { country: 'China', currency: 'Renminbi ' },
+  { country: 'South Korea', currency: ' Won' },
   { country: 'Mongolia', currency: 'Tugrik' },
   { country: 'Kazakhstan', currency: 'Tenge' },
-  { country: 'Uzbekistan', currency: 'Uzbekistani Som' },
+  { country: 'Uzbekistan', currency: ' Som' },
   { country: 'Afghanistan', currency: 'Afghani' },
   { country: 'Iran', currency: 'Iranian Rial' },
   { country: 'Iraq', currency: 'Iraqi Dinar' },
-  { country: 'Saudi Arabia', currency: 'Saudi Riyal' },
-  { country: 'United Arab Emirates', currency: 'UAE Dirham' },
+  { country: 'Saudi Arabia', currency: 'S Riyal' },
+  { country: 'United Arab Emirates', currency: ' Dirham' },
   { country: 'Qatar', currency: 'Qatari Riyal' },
-  { country: 'Kuwait', currency: 'Kuwaiti Dinar' },
-  { country: 'Oman', currency: 'Omani Rial' },
-  { country: 'Bahrain', currency: 'Bahraini Dinar' },
+  { country: 'Kuwait', currency: ' Dinar' },
+  { country: 'Oman', currency: ' Rial' },
+  { country: 'Bahrain', currency: ' Dinar' },
   { country: 'Israel', currency: 'Shekel' },
-  { country: 'Turkey', currency: 'Turkish Lira' },
-  { country: 'Russia', currency: 'Russian Ruble' },
+  { country: 'Turkey', currency: ' Lira' },
+  { country: 'Russia', currency: ' Ruble' },
   { country: 'Ukraine', currency: 'Hryvnia' },
   { country: 'Poland', currency: 'Zloty' },
   { country: 'Czech Republic', currency: 'Czech Koruna' },
@@ -188,7 +188,7 @@ export function AdminCurrencyQuiz() {
             <button
               type="button"
               onClick={restart}
-              className="mt-6 border border-ink bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
+              className="rounded-control mt-6 border border-ink bg-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-transparent hover:text-ink"
             >
               Play again
             </button>
@@ -219,7 +219,7 @@ export function AdminCurrencyQuiz() {
                     type="button"
                     disabled={Boolean(picked)}
                     onClick={() => choose(option)}
-                    className={`border px-4 py-2.5 text-left font-sans text-xs font-medium uppercase tracking-widest transition-colors disabled:cursor-default ${state}`}
+                    className={`rounded-control border px-4 py-2.5 text-left font-sans text-xs font-medium uppercase tracking-widest transition-colors disabled:cursor-default ${state}`}
                   >
                     {option}
                   </button>
@@ -235,7 +235,7 @@ export function AdminCurrencyQuiz() {
                 type="button"
                 disabled={!picked}
                 onClick={next}
-                className="border border-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
+                className="rounded-control border border-ink px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
               >
                 {index + 1 === total ? 'See score' : 'Next question'}
               </button>
