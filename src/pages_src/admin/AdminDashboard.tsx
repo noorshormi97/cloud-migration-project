@@ -58,7 +58,7 @@ export function AdminDashboard() {
           <button
             type="button"
             onClick={() => void handleSignOut()}
-            className="border border-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+            className="rounded-control border border-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
           >
             Sign out
           </button>
@@ -70,7 +70,7 @@ export function AdminDashboard() {
               key={item}
               type="button"
               onClick={() => setTab(item)}
-              className={`border px-4 py-2 font-sans text-xs uppercase tracking-widest transition-colors ${
+              className={`rounded-control border px-4 py-2 font-sans text-xs uppercase tracking-widest transition-colors ${
                 tab === item
                   ? 'border-ink bg-ink text-brand'
                   : 'border-ink/20 text-ink hover:border-ink/40'
