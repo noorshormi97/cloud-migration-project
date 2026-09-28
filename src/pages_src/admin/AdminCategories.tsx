@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCategories } from '@/hooks/useContent';
 
 const inputClass =
-  'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+  'rounded-control w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
 
 export function AdminCategories() {
   const queryClient = useQueryClient();
@@ -59,7 +59,7 @@ export function AdminCategories() {
     <div className="max-w-2xl space-y-5">
       <div className="flex flex-wrap gap-2">
         <input
-          className={`${inputClass} max-w-xs`}
+          className={`rounded-control ${inputClass} max-w-xs`}
           placeholder="New category name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
@@ -68,7 +68,7 @@ export function AdminCategories() {
           type="button"
           onClick={() => add.mutate()}
           disabled={add.isPending || !newName.trim()}
-          className="inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-50"
+          className="rounded-control inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-50"
         >
           <Plus size={14} /> Add category
         </button>
@@ -97,7 +97,7 @@ export function AdminCategories() {
                   onClick={() =>
                     toggle.mutate({ id: category.id, visible: !category.visible })
                   }
-                  className={`border px-4 py-2 font-sans text-xs uppercase tracking-widest transition-colors ${
+                  className={`rounded-control border px-4 py-2 font-sans text-xs uppercase tracking-widest transition-colors ${
                     category.visible
                       ? 'border-ink bg-ink text-brand'
                       : 'border-ink/20 text-ink hover:border-ink/40'
@@ -116,7 +116,7 @@ export function AdminCategories() {
                       remove.mutate(category.id);
                     }
                   }}
-                  className="p-2 text-ink/50 hover:text-ink"
+                  className="rounded-control p-2 text-ink/50 hover:text-ink"
                   aria-label={`Delete ${category.name}`}
                 >
                   <Trash2 size={15} />
