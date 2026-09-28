@@ -1,4 +1,4 @@
-import { DesignerCredit } from './DesignerCredit';
+import { DeveloperCredit } from './DeveloperCredit';
 
 export function CompactFooter() {
   return (
@@ -15,8 +15,13 @@ export function CompactFooter() {
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
         </div>
-        {/* "Developed by" logo — opens the developer note popup */}
-        <DesignerCredit className="h-8 w-8 shrink-0 md:h-9 md:w-9" logoClassName="h-full w-full" />
+        {/* Developer logo + the three profile links (no popup) */}
+        <DeveloperCredit
+          className="shrink-0"
+          logoClassName="h-8 w-8 md:h-9 md:w-9"
+          showName={false}
+          iconClassName="h-3.5 w-3.5"
+        />
       </div>
     </footer>
   );
