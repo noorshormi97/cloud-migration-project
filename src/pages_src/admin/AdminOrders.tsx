@@ -182,14 +182,14 @@ export function AdminOrders() {
               <button
                 type="button"
                 onClick={() => updateStatus.mutate({ id: order.id, status: 'Confirmed' })}
-                className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+                className="rounded-control border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
               >
                 Confirm Order
               </button>
               <button
                 type="button"
                 onClick={() => setPendingCancelId(order.id)}
-                className="rounded-sm border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                className="rounded-control border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
               >
                 Cancel Order
               </button>
@@ -202,7 +202,7 @@ export function AdminOrders() {
                 <span className="flex items-center gap-2 font-light text-ink/80">
                   {item.product_name} × {item.quantity}
                   {isCombo(item) ? (
-                    <span className="shrink-0 rounded-sm border border-brand-dark/70 bg-brand-dark/40 px-1.5 py-px font-sans text-[10px] font-semibold uppercase tracking-widest text-ink/80">
+                    <span className="shrink-0 rounded-control border border-brand-dark/70 bg-brand-dark/40 px-1.5 py-px font-sans text-[10px] font-semibold uppercase tracking-widest text-ink/80">
                       Combo
                     </span>
                   ) : null}
@@ -239,7 +239,7 @@ export function AdminOrders() {
               <button
                 type="button"
                 onClick={() => setPendingCancelId(null)}
-                className="rounded-sm border border-ink/20 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                className="rounded-control border border-ink/20 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
               >
                 Keep Order
               </button>
@@ -251,7 +251,7 @@ export function AdminOrders() {
                   setPendingCancelId(null);
                   cancelOrder.mutate(id);
                 }}
-                className="rounded-sm border border-ink bg-ink px-3 py-2 font-sans text-xs uppercase tracking-widest text-brand transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="rounded-control border border-ink bg-ink px-3 py-2 font-sans text-xs uppercase tracking-widest text-brand transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 Yes, Cancel Order
               </button>
