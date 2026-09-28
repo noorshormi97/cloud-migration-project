@@ -72,7 +72,7 @@ export function AdminLoginPage() {
   };
 
   const inputClass =
-    'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+    'rounded-control w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-brand px-6 py-16">
@@ -106,7 +106,7 @@ export function AdminLoginPage() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
+            className="rounded-control w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
           >
             {busy ? 'Please wait…' : mode === 'setup' ? 'Create admin' : 'Sign in'}
           </button>
@@ -116,7 +116,7 @@ export function AdminLoginPage() {
           <button
             type="button"
             onClick={() => setMode(mode === 'setup' ? 'signin' : 'setup')}
-            className="mt-4 w-full font-sans text-xs uppercase tracking-widest text-ink/60 underline"
+            className="rounded-control mt-4 w-full font-sans text-xs uppercase tracking-widest text-ink/60 underline"
           >
             {mode === 'setup' ? 'Back to sign in' : 'First time? Create the admin account'}
           </button>
