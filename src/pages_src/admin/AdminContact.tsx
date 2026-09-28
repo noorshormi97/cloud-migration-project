@@ -80,7 +80,7 @@ export function AdminContact() {
   });
 
   const inputClass =
-    'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+    'rounded-control w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
 
   return (
     <div className="max-w-lg space-y-3 border border-ink/10 bg-paper p-5">
@@ -90,7 +90,7 @@ export function AdminContact() {
             {field.label}
           </span>
           <input
-            className={`${inputClass} mt-1`}
+            className={`rounded-control ${inputClass} mt-1`}
             value={form[field.key]}
             onChange={(e) =>
               setForm((current) => ({ ...current, [field.key]: e.target.value }))
@@ -102,7 +102,7 @@ export function AdminContact() {
         type="button"
         onClick={() => save.mutate()}
         disabled={save.isPending}
-        className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
+        className="rounded-control w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60"
       >
         {save.isPending ? 'Saving…' : 'Save contact details'}
       </button>
