@@ -32,7 +32,7 @@ const emptyDraft: Draft = {
   currency: '',
   year: '',
   condition: '',
-  type: 'Coin',
+  type: typeForCategory(productCategories[0] as string) ?? 'Coin',
   description: '',
   price: '0',
   stock: '0',
@@ -58,8 +58,20 @@ function toDraft(product: Product): Draft {
   };
 }
 
+// A category like "Bangladeshi Banknotes" already tells us the item is a
+// banknote, so the Type dropdown shouldn't sit on "Coin" waiting to be fixed by
+// hand. Returns null for categories that don't imply a type (Accessories,
+// Foreign Sets, Fantasy Items) — those keep whatever is already selected.
+function typeForCategory(category: string): string | null {
+  const c = category.toLowerCase();
+  if (c.includes('banknote') || c.includes('note')) return 'Banknote';
+  if (c.includes('coin')) return 'Coin';
+  if (c.includes('stamp')) return 'Stamp';
+  return null;
+}
+
 const inputClass =
-  'w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
+  'rounded-control w-full border border-ink/20 bg-paper px-3 py-2.5 font-sans text-sm font-light text-ink outline-none focus:border-ink/50';
 
 export function AdminProducts() {
   const queryClient = useQueryClient();
@@ -75,6 +87,12 @@ export function AdminProducts() {
 
   // Search filter — matches against the product name, category, country, year,
   // and denomination so the admin can find a product to edit quickly.
+  // Rendering every product at once produced a 17,000px page and re-rendered
+  // all of them on each keystroke. Show a page at a time instead; searching
+  // still looks at the whole catalogue, only the drawing is capped.
+  const PAGE_SIZE = 30;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
   const filteredProducts = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return products;
@@ -98,6 +116,10 @@ export function AdminProducts() {
   // like "Polymer Banknotes" appear here automatically. The hardcoded list is
   // kept as a fallback while loading or if the table is empty.
   const { data: dbCategories = [] } = useCategories();
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [search]);
+
   const categoryOptions = useMemo(() => {
     const names = new Set<string>();
     [...dbCategories.map((c) => c.name), ...productCategories].forEach((name) => {
@@ -178,7 +200,15 @@ export function AdminProducts() {
 
   const startNew = () => {
     setEditingId('new');
-    setDraft({ ...emptyDraft, category: categoryOptions[0] ?? emptyDraft.category });
+    // The first category comes from the database, so the type has to be
+    // derived from THAT — not from the hardcoded fallback list. This is what
+    // used to leave a banknote category sitting next to Type "Coin".
+    const category = categoryOptions[0] ?? emptyDraft.category;
+    setDraft({
+      ...emptyDraft,
+      category,
+      type: typeForCategory(category) ?? emptyDraft.type,
+    });
     setError(null);
   };
 
@@ -187,7 +217,7 @@ export function AdminProducts() {
       <button
         type="button"
         onClick={startNew}
-        className="inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+        className="rounded-control inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
       >
         <Plus size={14} /> Add product
       </button>
@@ -207,7 +237,7 @@ export function AdminProducts() {
                 setEditingId(null);
                 setDraft(null);
               }}
-              className="text-ink/50 hover:text-ink"
+              className="rounded-control text-ink/50 hover:text-ink"
               aria-label="Close editor"
             >
               <X size={18} />
@@ -230,7 +260,17 @@ export function AdminProducts() {
             <select
               className={inputClass}
               value={draft.category}
-              onChange={(e) => setDraft({ ...draft, category: e.target.value })}
+              onChange={(e) => {
+                const category = e.target.value;
+                // Follow the category, but leave Type alone for categories that
+                // don't imply one. It stays editable either way.
+                const derived = typeForCategory(category);
+                setDraft({
+                  ...draft,
+                  category,
+                  type: derived ?? draft.type,
+                });
+              }}
             >
               {categoryOptions.map((category) => (
                 <option key={category} value={category}>
@@ -273,21 +313,40 @@ export function AdminProducts() {
               value={draft.condition}
               onChange={(e) => setDraft({ ...draft, condition: e.target.value })}
             />
-            <input
-              className={inputClass}
-              placeholder="Price"
-              type="number"
-              value={draft.price}
-              onChange={(e) => setDraft({ ...draft, price: e.target.value })}
-            />
-            <input
-              className={inputClass}
-              placeholder="Stock quantity"
-              type="number"
-              min="0"
-              value={draft.stock}
-              onChange={(e) => setDraft({ ...draft, stock: e.target.value })}
-            />
+            {/* These two both sit at 0 by default, so the placeholder never
+                shows and they read as two identical empty boxes. Label them. */}
+            <label className="block">
+              <span className="mb-1 block font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+                Price (৳)
+              </span>
+              <input
+                className={inputClass}
+                placeholder="Price in taka"
+                type="number"
+                min="0"
+                value={draft.price}
+                onChange={(e) => setDraft({ ...draft, price: e.target.value })}
+              />
+              <span className="mt-1 block font-sans text-[11px] font-light text-ink/45">
+                Leave at 0 to hide the price and show “Ask for Price” instead.
+              </span>
+            </label>
+            <label className="block">
+              <span className="mb-1 block font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+                Stock
+              </span>
+              <input
+                className={inputClass}
+                placeholder="How many in stock"
+                type="number"
+                min="0"
+                value={draft.stock}
+                onChange={(e) => setDraft({ ...draft, stock: e.target.value })}
+              />
+              <span className="mt-1 block font-sans text-[11px] font-light text-ink/45">
+                0 marks the product out of stock.
+              </span>
+            </label>
             <label className="flex items-center gap-2 font-sans text-sm text-ink">
               <input
                 type="checkbox"
@@ -299,7 +358,7 @@ export function AdminProducts() {
           </div>
 
           <textarea
-            className={`${inputClass} min-h-[90px]`}
+            className={`rounded-control ${inputClass} min-h-[90px]`}
             placeholder="Description"
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
@@ -319,7 +378,7 @@ export function AdminProducts() {
                   <button
                     type="button"
                     onClick={() => void removeImage(path)}
-                    className="absolute right-1 top-1 bg-ink/80 p-1 text-brand"
+                    className="rounded-control absolute right-1 top-1 bg-ink/80 p-1 text-brand"
                     aria-label="Remove image"
                   >
                     <X size={12} />
@@ -346,7 +405,7 @@ export function AdminProducts() {
             type="button"
             onClick={() => save.mutate()}
             disabled={save.isPending}
-            className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60 sm:w-auto sm:px-8"
+            className="rounded-control w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60 sm:w-auto sm:px-8"
           >
             {save.isPending ? 'Saving…' : 'Save product'}
           </button>
@@ -368,7 +427,7 @@ export function AdminProducts() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={`Search ${products.length} products by name, category, country, year…`}
-              className="w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none focus:border-ink/50"
+              className="rounded-control w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none focus:border-ink/50"
             />
           </div>
 
@@ -378,7 +437,7 @@ export function AdminProducts() {
             </p>
           ) : (
           <div className="divide-y divide-ink/10 border border-ink/10 bg-paper">
-            {filteredProducts.map((product) => (
+            {filteredProducts.slice(0, visibleCount).map((product) => (
             <div
               key={product.id}
               className="flex flex-wrap items-center justify-between gap-3 p-4"
@@ -406,7 +465,7 @@ export function AdminProducts() {
                     setDraft(toDraft(product));
                     setError(null);
                   }}
-                  className="border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
+                  className="rounded-control border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
                   aria-label="Edit product"
                 >
                   <Pencil size={16} />
@@ -418,7 +477,7 @@ export function AdminProducts() {
                       remove.mutate(product);
                     }
                   }}
-                  className="border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
+                  className="rounded-control border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
                   aria-label="Delete product"
                 >
                   <Trash2 size={16} />
@@ -428,6 +487,35 @@ export function AdminProducts() {
           ))}
           </div>
           )}
+
+          {filteredProducts.length > 0 ? (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="font-sans text-xs font-light text-ink/60">
+                Showing {Math.min(visibleCount, filteredProducts.length)} of{' '}
+                {filteredProducts.length}
+                {search.trim() ? ' matching' : ''} product
+                {filteredProducts.length === 1 ? '' : 's'}
+              </p>
+              {visibleCount < filteredProducts.length ? (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+                    className="rounded-control border border-ink/30 px-4 py-2 font-sans text-xs font-medium uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
+                  >
+                    Show {Math.min(PAGE_SIZE, filteredProducts.length - visibleCount)} more
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount(filteredProducts.length)}
+                    className="rounded-control border border-ink/20 px-4 py-2 font-sans text-xs font-light text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                  >
+                    Show all
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </>
       )}
     </div>
