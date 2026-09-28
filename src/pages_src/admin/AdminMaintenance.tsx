@@ -56,7 +56,7 @@ export function AdminMaintenance() {
             type="button"
             disabled={isLoading || toggle.isPending}
             onClick={() => toggle.mutate(true)}
-            className={`border px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest transition-colors disabled:opacity-50 ${
+            className={`rounded-control border px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest transition-colors disabled:opacity-50 ${
               maintenance
                 ? 'border-ink bg-ink text-brand'
                 : 'border-ink/20 text-ink hover:border-ink/40'
@@ -68,7 +68,7 @@ export function AdminMaintenance() {
             type="button"
             disabled={isLoading || toggle.isPending}
             onClick={() => toggle.mutate(false)}
-            className={`border px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest transition-colors disabled:opacity-50 ${
+            className={`rounded-control border px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-widest transition-colors disabled:opacity-50 ${
               !maintenance
                 ? 'border-ink bg-ink text-brand'
                 : 'border-ink/20 text-ink hover:border-ink/40'
