@@ -1,7 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContactDetails, socialUrl } from '@/lib/content';
-import { DesignerCredit } from './DesignerCredit';
+import { DeveloperCredit } from './DeveloperCredit';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -100,6 +100,20 @@ export function Footer() {
               </p>
             ) : null}
           </div>
+
+          {/* Developer credit — mobile only, sits directly under WhatsApp.
+              Logo on one side, the profile links on the other. Same real
+              anchors as the desktop block, so Google reads it identically. */}
+          <div className="mt-5 border-t border-ink/10 pt-4 md:hidden">
+            <h3 className="mb-3 font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
+              Developed by
+            </h3>
+            <DeveloperCredit
+              orientation="row"
+              logoClassName="h-10 w-10"
+              iconClassName="h-4 w-4"
+            />
+          </div>
         </div>
 
         {/* Developer credit — desktop only, sits in the right-side space */}
@@ -107,27 +121,9 @@ export function Footer() {
           <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
             Developed by
           </p>
-          {/* Visual logo button that opens your popup card */}
-          <DesignerCredit className="mt-3" logoClassName="h-14 w-14" />
-          {/* Smart crawlable links for Googlebot: completely invisible to
-              users via sr-only. rel="me" tells Google these profiles belong to
-              the same author (helps GitHub AND Instagram get associated). */}
-          <a
-            href="https://github.com/shohail-mahmud"
-            target="_blank"
-            rel="author external me noopener"
-            className="sr-only"
-          >
-            Shohail Mahmud on GitHub
-          </a>
-          <a
-            href="https://instagram.com/shohailmahmud09"
-            target="_blank"
-            rel="author external me noopener"
-            className="sr-only"
-          >
-            Shohail Mahmud on Instagram
-          </a>
+          {/* Logo, name and the three profile links. No popup: everything
+              Google needs is now in the HTML and visible on screen. */}
+          <DeveloperCredit className="mt-3" logoClassName="h-14 w-14" />
         </div>
       </div>
 
@@ -136,10 +132,6 @@ export function Footer() {
           <p className="font-sans text-[8px] font-light uppercase tracking-wide text-ink/40 md:text-[10px]">
             © {new Date().getFullYear()} Discovery of Coins. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
-            {/* Logo only — mobile bottom-right, opens developer note */}
-            <DesignerCredit className="h-8 w-8 shrink-0 md:hidden" logoClassName="h-full w-full" />
-          </div>
         </div>
       </div>
     </footer>
