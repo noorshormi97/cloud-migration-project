@@ -207,7 +207,7 @@ export function AdminStartCollecting() {
           });
           setError(null);
         }}
-        className="inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
+        className="rounded-control inline-flex items-center gap-2 bg-ink px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90"
       >
         <Plus size={14} /> Add item
       </button>
@@ -224,7 +224,7 @@ export function AdminStartCollecting() {
                 setEditingId(null);
                 setDraft(null);
               }}
-              className="text-ink/50 hover:text-ink"
+              className="rounded-control text-ink/50 hover:text-ink"
               aria-label="Close editor"
             >
               <X size={18} />
@@ -233,13 +233,13 @@ export function AdminStartCollecting() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Product name"
               value={draft.name}
               onChange={(e) => setDraft({ ...draft, name: e.target.value })}
             />
             <select
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               value={draft.category}
               onChange={(e) => setDraft({ ...draft, category: e.target.value })}
             >
@@ -250,37 +250,37 @@ export function AdminStartCollecting() {
               ))}
             </select>
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Country"
               value={draft.country}
               onChange={(e) => setDraft({ ...draft, country: e.target.value })}
             />
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Year"
               value={draft.year}
               onChange={(e) => setDraft({ ...draft, year: e.target.value })}
             />
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Condition / grade (e.g. UNC)"
               value={draft.condition}
               onChange={(e) => setDraft({ ...draft, condition: e.target.value })}
             />
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Denomination (e.g. 10 Taka)"
               value={draft.denomination}
               onChange={(e) => setDraft({ ...draft, denomination: e.target.value })}
             />
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Currency (e.g. BDT)"
               value={draft.currency}
               onChange={(e) => setDraft({ ...draft, currency: e.target.value })}
             />
             <select
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               value={draft.type}
               onChange={(e) => setDraft({ ...draft, type: e.target.value })}
             >
@@ -291,14 +291,14 @@ export function AdminStartCollecting() {
               ))}
             </select>
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Price"
               type="number"
               value={draft.price}
               onChange={(e) => setDraft({ ...draft, price: e.target.value })}
             />
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Stock"
               type="number"
               min="0"
@@ -306,7 +306,7 @@ export function AdminStartCollecting() {
               onChange={(e) => setDraft({ ...draft, stock: e.target.value })}
             />
             <input
-              className={inputClass}
+              className={`rounded-control ${inputClass}`}
               placeholder="Display order"
               type="number"
               value={draft.display_order}
@@ -333,7 +333,7 @@ export function AdminStartCollecting() {
           </div>
 
           <textarea
-            className={`${inputClass} min-h-[88px]`}
+            className={`rounded-control ${inputClass} min-h-[88px]`}
             placeholder="Description (shown on the product page)"
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
@@ -382,7 +382,7 @@ export function AdminStartCollecting() {
             type="button"
             onClick={() => save.mutate()}
             disabled={save.isPending}
-            className="w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60 sm:w-auto sm:px-8"
+            className="rounded-control w-full bg-ink py-3 font-sans text-sm font-medium uppercase tracking-widest text-brand transition-colors hover:bg-ink/90 disabled:opacity-60 sm:w-auto sm:px-8"
           >
             {save.isPending ? "Saving…" : "Save item"}
           </button>
@@ -416,7 +416,7 @@ export function AdminStartCollecting() {
                 <button
                   type="button"
                   onClick={() => toggle.mutate({ id: item.id, enabled: !item.enabled })}
-                  className="border border-ink/20 px-3 py-2 font-sans text-[10px] uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                  className="rounded-control border border-ink/20 px-3 py-2 font-sans text-[10px] uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
                 >
                   {item.enabled ? "Disable" : "Enable"}
                 </button>
@@ -427,7 +427,7 @@ export function AdminStartCollecting() {
                     setDraft(toDraft(item));
                     setError(null);
                   }}
-                  className="border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
+                  className="rounded-control border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
                   aria-label="Edit item"
                 >
                   <Pencil size={16} />
@@ -439,7 +439,7 @@ export function AdminStartCollecting() {
                       remove.mutate(item);
                     }
                   }}
-                  className="border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
+                  className="rounded-control border border-ink/20 p-2 text-ink/60 transition-colors hover:border-ink hover:text-ink"
                   aria-label="Delete item"
                 >
                   <Trash2 size={16} />
