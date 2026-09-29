@@ -31,30 +31,33 @@ export function orgSchema() {
   };
 }
 
+const DEVELOPER = {
+  "@id": "https://github.com/shohail-mahmud#person",
+  "@type": "Person",
+  name: "Shohail Mahmud",
+  jobTitle: "Web Developer",
+  description:
+    "Web developer from Bangladesh. Developer of the Discovery of Coins website.",
+  nationality: "Bangladeshi",
+  url: "https://github.com/shohail-mahmud",
+  sameAs: [
+    "https://github.com/shohail-mahmud",
+    "https://instagram.com/shohailmahmud09",
+  ],
+} as const;
+
 export function webSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE_NAME,
     url: SITE_URL,
-    creator: {
-      // A stable @id lets Google treat every mention of this person as the
-      // same entity instead of guessing. The sameAs list is what it uses to
-      // stitch the separate profiles together — the more that agree, the
-      // better it resolves the name.
-      "@id": "https://github.com/shohail-mahmud#person",
-      "@type": "Person",
-      name: "Shohail Mahmud",
-      alternateName: "Nirjon",
-      jobTitle: "Web Developer",
-      nationality: "Bangladeshi",
-      url: "https://github.com/shohail-mahmud",
-      sameAs: [
-        "https://github.com/shohail-mahmud",
-        "https://instagram.com/shohailmahmud09",
-        "https://dev.to/nirjon_09",
-      ],
-    },
+    // Answering "who made this website?" unambiguously. Different consumers
+    // read different properties — Google leans on `creator`, some AI
+    // assistants look for `author` — so both point at the same Person node via
+    // a stable @id, which also tells them these are one entity, not three.
+    creator: DEVELOPER,
+    author: DEVELOPER,
   };
 }
 
