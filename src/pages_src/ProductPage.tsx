@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams, Link } from '@/lib/router-compat';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
@@ -7,15 +8,21 @@ import { ProductInfo } from '../components/products/ProductInfo';
 import { ProductSpecs } from '../components/products/ProductSpecs';
 import { ProductGrid } from '../components/products/ProductGrid';
 import { useProduct } from '../hooks/useProducts';
+import { getRelatedProducts } from '@/lib/related';
 
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
   const { data: product, products, isLoading } = useProduct(id);
   const navigate = useNavigate();
   const router = useRouter();
-  const relatedProducts = product
-    ? products.filter((item) => item.id !== product.id).slice(0, 4)
-    : [];
+  // Was `products.slice(0, 4)` — the same four rows on all 253 pages, and
+  // because the four oldest products are confidential-price sets, every page
+  // showed nothing but "Ask for Price". Now scored by category, country, type,
+  // price bracket and stock.
+  const relatedProducts = useMemo(
+    () => getRelatedProducts(product, products),
+    [product, products],
+  );
 
   // Go back in history when possible (restores the shop's scroll position);
   // otherwise fall back to the shop page.
