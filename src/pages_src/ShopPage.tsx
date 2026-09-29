@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from '@/lib/router-compat';
 import { ProductGrid } from '../components/products/ProductGrid';
+import { orderShopProducts } from '@/lib/shopOrder';
 import { useProducts } from '../hooks/useProducts';
 import { useVisibleCategories } from '../hooks/useContent';
 import { Search } from 'lucide-react';
@@ -42,6 +43,13 @@ export function ShopPage() {
     if (!q) return categoryFiltered;
     return categoryFiltered.filter((product) => product.name.toLowerCase().includes(q));
   }, [activeCategory, products, categoryNames, searchQuery]);
+
+  // Shelf order. Without this the grid opens with a dozen "Ask for Price"
+  // cards, because the oldest rows in the table are the confidential sets.
+  const shelvedProducts = useMemo(
+    () => orderShopProducts(filteredProducts),
+    [filteredProducts],
+  );
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -124,7 +132,7 @@ export function ShopPage() {
             Loading collectibles…
           </p>
         ) : filteredProducts.length > 0 ? (
-          <ProductGrid products={filteredProducts} />
+          <ProductGrid products={shelvedProducts} />
         ) : (
           <p className="text-center font-sans text-sm font-light text-ink/60">
             No collectibles found{searchQuery ? ` for "${searchQuery.trim()}"` : ''}.
