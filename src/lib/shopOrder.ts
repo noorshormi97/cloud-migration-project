@@ -1,5 +1,18 @@
 import type { Product } from "@/data/products";
-import { isInStock, isPriceOnRequest } from "@/lib/store";
+import { isInStock } from "@/lib/store";
+
+/**
+ * A price of 0 means "ask us" — a deliberate state, not missing data.
+ *
+ * Defined here so this file depends on nothing new. store.ts exports the very
+ * same rule once the confidential-price update is applied, so these files can
+ * be pasted in any order without breaking the build.
+ */
+function isAskPrice(price: number): boolean {
+  const value = Number(price);
+  return !Number.isFinite(value) || value <= 0;
+}
+
 
 /**
  * Shelf order for the Shop grid.
@@ -31,7 +44,7 @@ export function orderShopProducts(products: Product[]): Product[] {
 
   for (const product of products) {
     if (!isInStock(product)) soldOut.push(product);
-    else if (isPriceOnRequest(product.price)) askPrice.push(product);
+    else if (isAskPrice(product.price)) askPrice.push(product);
     else priced.push(product);
   }
 
