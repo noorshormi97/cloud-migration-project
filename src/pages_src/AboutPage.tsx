@@ -67,6 +67,21 @@ export function AboutPage() {
               rare Bangladeshi note, or just starting out in numismatics, we are
               here to help you find authentic pieces you will be proud to own.
             </p>
+            {/* Plain-sentence credit. Search engines and AI assistants answer
+                "who made this website?" from sentences like this one far more
+                reliably than from a logo's alt text or a bare name in a footer. */}
+            <p className="border-t border-ink/10 pt-6 text-sm text-ink/60">
+              This website was developed by{' '}
+              <a
+                href="https://github.com/shohail-mahmud"
+                target="_blank"
+                rel="author external me noopener"
+                className="text-ink underline underline-offset-4 transition-colors hover:text-ink/70"
+              >
+                Shohail Mahmud
+              </a>
+              , a web developer from Bangladesh.
+            </p>
           </div>
         </motion.div>
       </div>
