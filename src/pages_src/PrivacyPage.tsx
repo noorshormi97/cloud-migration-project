@@ -1,9 +1,9 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 
-// Privacy Policy — written to satisfy Google AdSense's required disclosures:
-// third-party vendors (incl. Google) use cookies, the ad-personalisation
-// opt-outs, plus what data this store itself collects and why.
+// Privacy Policy — what this store collects, why, and who else touches it.
+// The Site carries no advertising, so there are no ad-network or
+// ad-personalisation disclosures here. Keep it that way unless ads return.
 const privacySections = [
   {
     title: 'Who We Are',
@@ -33,24 +33,14 @@ const privacySections = [
     title: 'Cookies & Local Storage',
     body: [
       'The Site uses cookies and similar technologies (such as browser local storage) to remember your shopping cart between visits and to make the Site work properly.',
-      'Third parties listed below may also set cookies when you use the Site. You can control or delete cookies through your browser settings; the Site will still work, but some features (like a saved cart) may be lost.',
-    ],
-  },
-  {
-    title: 'Advertising & Google AdSense',
-    body: [
-      'We use Google AdSense to display advertising on the Site.',
-      'Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites.',
-      "Google's use of advertising cookies (including the DoubleClick cookie) enables it and its partners to serve ads to you based on your visits to this Site and/or other sites on the Internet.",
-      'You may opt out of personalised advertising by visiting Google Ads Settings at https://www.google.com/settings/ads.',
-      'Alternatively, you can opt out of some third-party vendors\u2019 use of cookies for personalised advertising by visiting https://www.aboutads.info/choices.',
-      'You can learn more about how Google uses information from sites that use its services at https://policies.google.com/technologies/partner-sites.',
+      'The Site shows no advertising and sets no advertising or ad-tracking cookies. What we store is limited to what the Site needs to function, such as your cart.',
+      'You can control or delete cookies and local storage through your browser settings. The Site will still work, but some conveniences (like a saved cart) may be lost.',
     ],
   },
   {
     title: 'Third-Party Services',
     body: [
-      'We rely on a small number of trusted services to run the Site: Supabase (secure hosting of our product catalogue and order data), courier companies (delivery of your orders), and Google (advertising, as described above).',
+      'We rely on a small number of trusted services to run the Site: Supabase (secure hosting of our product catalogue and order data), Vercel (website hosting, which processes technical request data such as IP addresses), and courier companies (delivery of your orders).',
       'Each of these providers processes data only as needed to provide their service to us, under their own privacy policies.',
     ],
   },
@@ -71,14 +61,14 @@ const privacySections = [
     title: 'Your Choices & Rights',
     body: [
       'You may contact us at any time to ask what information we hold about you, to correct it, or to request deletion of your order information (subject to legitimate record-keeping needs).',
-      'You can opt out of personalised advertising using the links in the Advertising section above.',
     ],
   },
   {
-    title: 'Website Monitoring & Developer',
+    title: 'Developer & Maintenance',
     body: [
-      'This website is actively monitored and maintained by its developer, Shohail Mahmud (Instagram: https://instagram.com/shohailmahmud09), to keep it secure, fast and reliable.',
-      'Monitoring is strictly technical — keeping the Site online, fixing bugs and protecting it against abuse. It does not involve reading, collecting or using your personal information for any other purpose.',
+      'This website was built and is maintained by Shohail Mahmud, a web developer based in Bangladesh (GitHub: https://github.com/shohail-mahmud, Instagram: https://instagram.com/shohailmahmud09).',
+      'Maintenance means applying updates, fixing problems and improving the Site. There is no automated monitoring or alerting service watching the Site around the clock.',
+      'Carrying out that work sometimes requires access to the systems where order data is stored. Your information is only ever accessed for the purpose of running and repairing the Site, is never used for anything else, and is never shared or sold.',
     ],
   },
   {
@@ -97,7 +87,10 @@ const privacySections = [
 
 // Render URLs inside body text as real links.
 function withLinks(text: string) {
-  const parts = text.split(/(https?:\/\/[^\s.,]+(?:\.[^\s.,]+)*(?:\/[^\s,]*)?)/g);
+  // Stop before a closing bracket or trailing punctuation — a URL written
+  // inside brackets, like (Instagram: https://…/name), used to swallow the
+  // ')' into the href and produce a broken link.
+  const parts = text.split(/(https?:\/\/[^\s)\]]*[^\s)\].,;:!?])/g);
   return parts.map((part, i) =>
     part.startsWith('http') ? (
       <a
