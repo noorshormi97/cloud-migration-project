@@ -66,7 +66,7 @@ const privacySections = [
   {
     title: 'Developer & Maintenance',
     body: [
-      'This website was built and is maintained by Shohail Mahmud, a web developer based in Bangladesh (GitHub: https://github.com/shohail-mahmud, Instagram: https://instagram.com/shohailmahmud09).',
+      'This website was built and is maintained by Shohail Mahmud, a web developer based in Bangladesh — [@shohail-mahmud](https://github.com/shohail-mahmud) on GitHub, [@shohailmahmud09](https://instagram.com/shohailmahmud09) on Instagram.',
       'Maintenance means applying updates, fixing problems and improving the Site. There is no automated monitoring or alerting service watching the Site around the clock.',
       'Carrying out that work sometimes requires access to the systems where order data is stored. Your information is only ever accessed for the purpose of running and repairing the Site, is never used for anything else, and is never shared or sold.',
     ],
@@ -87,25 +87,39 @@ const privacySections = [
 
 // Render URLs inside body text as real links.
 function withLinks(text: string) {
-  // Stop before a closing bracket or trailing punctuation — a URL written
-  // inside brackets, like (Instagram: https://…/name), used to swallow the
-  // ')' into the href and produce a broken link.
-  const parts = text.split(/(https?:\/\/[^\s)\]]*[^\s)\].,;:!?])/g);
-  return parts.map((part, i) =>
-    part.startsWith('http') ? (
-      <a
-        key={i}
-        href={part}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline decoration-ink/30 underline-offset-2 transition-colors hover:decoration-ink"
-      >
-        {part}
-      </a>
-    ) : (
-      part
-    ),
-  );
+  // Two forms are supported in the section text above:
+  //   [@handle](https://example.com/handle)  -> shows "@handle", links the URL
+  //   https://example.com/page               -> shows and links the bare URL
+  // The bare-URL pattern stops before closing brackets and trailing
+  // punctuation, so a link written inside parentheses doesn't swallow the ')'.
+  const TOKEN = /(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|https?:\/\/[^\s)\]]*[^\s)\].,;:!?])/g;
+  const LINK_CLASS =
+    'underline decoration-ink/30 underline-offset-2 transition-colors hover:decoration-ink';
+
+  return text.split(TOKEN).map((part, i) => {
+    const labelled = /^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/.exec(part);
+    if (labelled) {
+      return (
+        <a
+          key={i}
+          href={labelled[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={LINK_CLASS}
+        >
+          {labelled[1]}
+        </a>
+      );
+    }
+    if (part.startsWith('http')) {
+      return (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer" className={LINK_CLASS}>
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
 }
 
 export function PrivacyPage() {
