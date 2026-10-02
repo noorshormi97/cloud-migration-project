@@ -7,11 +7,14 @@ import { useVisibleCategories } from '../hooks/useContent';
 import { Search } from 'lucide-react';
 import { RoutePrefetch } from '../components/RoutePrefetch';
 
+const PAGE_SIZE = 16;
+
 export function ShopPage() {
   const { data: products = [], isLoading } = useProducts();
   const { data: visibleCategories } = useVisibleCategories();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const pageParam = Number(searchParams.get('page') || '1');
 
   const categoryNames = useMemo(
     () => visibleCategories.map((category) => category.name),
@@ -51,19 +54,35 @@ export function ShopPage() {
     [filteredProducts],
   );
 
+  const pageCount = Math.max(1, Math.ceil(shelvedProducts.length / PAGE_SIZE));
+  const page = Math.min(Math.max(1, Number.isFinite(pageParam) ? pageParam : 1), pageCount);
+  const pageItems = shelvedProducts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const writeParams = (next: { category?: string; page?: number }) => {
+    const params: Record<string, string> = {};
+    const category = next.category ?? (activeCategory === 'All' ? '' : activeCategory);
+    if (category) params.category = category;
+    const nextPage = next.page ?? 1;
+    if (nextPage > 1) params.page = String(nextPage);
+    setSearchParams(params, { replace: true });
+  };
+
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
-    if (category === 'All') {
-      setSearchParams({}, { replace: true });
-    } else {
-      setSearchParams({ category }, { replace: true });
+    writeParams({ category: category === 'All' ? '' : category, page: 1 });
+  };
+
+  const handlePageChange = (nextPage: number) => {
+    writeParams({ page: nextPage });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   // The product detail page shares one lazy chunk regardless of which product
   // is opened. Preloading the first product's route warms that chunk (+ its
   // data) in the background, so opening ANY product from the shop feels instant.
-  const firstProductId = products[0]?.id;
+  const firstProductId = pageItems[0]?.id;
 
   return (
     <section className="bg-brand px-6 pt-4 pb-6 md:pt-7 md:pb-10">
@@ -101,7 +120,10 @@ export function ShopPage() {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                writeParams({ page: 1 });
+              }}
               placeholder="Search by name…"
               className="rounded-control w-full border border-ink/20 bg-paper py-2.5 pl-9 pr-3 font-sans text-sm font-light text-ink outline-none transition-colors focus:border-ink/50"
             />
@@ -132,7 +154,35 @@ export function ShopPage() {
             Loading collectibles…
           </p>
         ) : filteredProducts.length > 0 ? (
-          <ProductGrid products={shelvedProducts} />
+          <>
+            <ProductGrid products={pageItems} />
+            {pageCount > 1 ? (
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5">
+                <button
+                  type="button"
+                  disabled={page <= 1}
+                  onClick={() => handlePageChange(page - 1)}
+                  className="rounded-control border border-ink/20 px-2.5 py-1 font-sans text-[11px] uppercase tracking-wider text-ink transition-colors hover:border-ink/40 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Prev
+                </button>
+                <span className="px-2 font-sans text-[11px] uppercase tracking-wider text-ink/70">
+                  Page {page} of {pageCount}
+                </span>
+                <button
+                  type="button"
+                  disabled={page >= pageCount}
+                  onClick={() => handlePageChange(page + 1)}
+                  className="rounded-control border border-ink/20 px-2.5 py-1 font-sans text-[11px] uppercase tracking-wider text-ink transition-colors hover:border-ink/40 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Next
+                </button>
+              </div>
+            ) : null}
+            <p className="mt-3 text-center font-sans text-[10px] font-light uppercase tracking-widest text-ink/45">
+              {shelvedProducts.length} collectibles · page {page} of {pageCount}
+            </p>
+          </>
         ) : (
           <p className="text-center font-sans text-sm font-light text-ink/60">
             No collectibles found{searchQuery ? ` for "${searchQuery.trim()}"` : ''}.
