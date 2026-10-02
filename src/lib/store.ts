@@ -48,46 +48,93 @@ export async function fetchProducts(): Promise<Product[]> {
   return (data ?? []).map((row) => mapProduct(row as unknown as ProductRow));
 }
 
-// Signing every image with its own request means one round-trip per card.
-// Requests made in the same tick are batched into a single createSignedUrls call.
-const SIGN_EXPIRY = 60 * 60 * 24 * 7;
-let pendingPaths: string[] = [];
-let pendingBatch: Promise<Map<string, string | null>> | null = null;
-
-function signBatch(): Promise<Map<string, string | null>> {
-  if (!pendingBatch) {
-    pendingBatch = new Promise((resolve) => {
-      setTimeout(async () => {
-        const paths = Array.from(new Set(pendingPaths));
-        pendingPaths = [];
-        pendingBatch = null;
-        const result = new Map<string, string | null>();
-        if (paths.length === 0) return resolve(result);
-        const { data, error } = await supabase.storage
-          .from(PRODUCT_BUCKET)
-          .createSignedUrls(paths, SIGN_EXPIRY);
-        if (!error) {
-          for (const entry of data ?? []) {
-            if (entry.path) result.set(entry.path, entry.signedUrl ?? null);
-          }
-        }
-        resolve(result);
-      }, 0);
-    });
-  }
-  return pendingBatch;
+/**
+ * The product-images bucket is public, so every photo already has a permanent
+ * public URL.
+ *
+ * We used to mint a signed URL on every page load. The token was different each
+ * time, so the URL was different each time, so neither the browser nor the CDN
+ * could ever reuse a photo it had already downloaded - every single visit paid
+ * full price for every single image. Signing also bought us nothing: the bucket
+ * is public either way.
+ *
+ * A public URL is stable, needs no round-trip to create, and is served from the
+ * CDN cache.
+ */
+export interface ImageTransform {
+  width: number;
+  height?: number;
+  quality?: number;
+  resize?: "cover" | "contain" | "fill";
 }
 
-export async function fetchImageUrl(path: string): Promise<string | null> {
+/** Sizes the photo to the box it is actually displayed in. */
+export const IMAGE_SIZES = {
+  /** Shop / related / new-arrival grid cards (~163px box, 2x screens). */
+  card: { width: 400, height: 400, quality: 70, resize: "cover" } as ImageTransform,
+  /** Cart rows and admin list rows. */
+  thumb: { width: 160, height: 160, quality: 65, resize: "cover" } as ImageTransform,
+  /**
+   * The large image on a product page. Square, because the gallery box is
+   * aspect-square and already crops to a square with object-cover - and
+   * because passing a width with no height makes Supabase keep the original
+   * height, which stretches the photo.
+   */
+  detail: { width: 800, height: 800, quality: 78, resize: "cover" } as ImageTransform,
+} as const;
+
+/**
+ * Builds the URL for a stored photo. Synchronous - there is no network call.
+ * Pass a transform to have Supabase serve a resized copy instead of the
+ * full-resolution original.
+ */
+export function imageUrl(path: string, transform?: ImageTransform): string | null {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  pendingPaths.push(path);
-  const batch = await signBatch();
-  return batch.get(path) ?? null;
+
+  // Let the client build the URL - it already knows the project address, so
+  // nothing here depends on an environment variable being present during SSR.
+  const { data } = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(path);
+  const publicUrl = data?.publicUrl;
+  if (!publicUrl) return null;
+  if (!transform) return publicUrl;
+
+  const params = new URLSearchParams({ width: String(transform.width) });
+  if (transform.height) params.set("height", String(transform.height));
+  params.set("resize", transform.resize ?? "cover");
+  params.set("quality", String(transform.quality ?? 70));
+
+  // Same object, served resized. Still one stable, cacheable URL per size.
+  return `${publicUrl.replace("/object/public/", "/render/image/public/")}?${params.toString()}`;
+}
+
+/** Kept async so existing callers and queries do not have to change. */
+export async function fetchImageUrl(
+  path: string,
+  transform?: ImageTransform,
+): Promise<string | null> {
+  return imageUrl(path, transform);
 }
 
 export function formatPrice(price: number) {
   return `৳${price.toLocaleString("en-BD")}`;
+}
+
+/**
+ * A price of 0 is not "free" — it means the price is deliberately withheld and
+ * the buyer is asked to message us. This single rule is the source of truth so
+ * every surface (cards, detail pages, combos, meta tags, structured data)
+ * treats confidential pricing the same way.
+ */
+export const PRICE_ON_REQUEST = "Ask for Price";
+
+export function isPriceOnRequest(price: number | null | undefined) {
+  const value = Number(price);
+  return !Number.isFinite(value) || value <= 0;
+}
+
+export function formatPriceOrAsk(price: number | null | undefined) {
+  return isPriceOnRequest(price) ? PRICE_ON_REQUEST : formatPrice(Number(price));
 }
 
 export const COURIERS = [
