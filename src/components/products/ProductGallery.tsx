@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { IMAGE_SIZES } from '@/lib/store';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductImage } from './ProductImage';
 
@@ -31,6 +32,7 @@ export function ProductGallery({ productName, images = [] }: ProductGalleryProps
         <ProductImage
           key={active ?? `placeholder-${safeIndex}`}
           path={active}
+          transform={IMAGE_SIZES.detail}
           alt={`${productName} — image ${safeIndex + 1}`}
           iconSize={40}
           label={`${productName} — View ${safeIndex + 1}`}
