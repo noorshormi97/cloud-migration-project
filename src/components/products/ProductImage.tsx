@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchImageUrl } from '@/lib/store';
+import { IMAGE_SIZES, imageUrl, type ImageTransform } from '@/lib/store';
 
 interface ProductImageProps {
   path?: string | undefined;
@@ -9,6 +8,10 @@ interface ProductImageProps {
   label?: string;
   // Which Flaticon placeholder to show when there's no photo.
   iconType?: 'banknote' | 'coin' | 'accessory' | 'generic';
+  // Which stored size to request. Defaults to the card size, which covers
+  // every grid card, cart row and admin thumbnail. Pass IMAGE_SIZES.detail for
+  // the large image on a product page, or null for the untouched original.
+  transform?: ImageTransform | null;
 }
 
 const ICONS: Record<string, string> = {
@@ -25,15 +28,13 @@ export function ProductImage({
   iconSize = 40,
   label,
   iconType = 'generic',
+  transform = IMAGE_SIZES.card,
 }: ProductImageProps) {
-  const { data: url } = useQuery({
-    queryKey: ['product-image', path],
-    queryFn: () => fetchImageUrl(path as string),
-    enabled: Boolean(path),
-    staleTime: 1000 * 60 * 60,
-  });
+  // Public bucket URLs are built on the spot - no request, no loading state,
+  // and the same photo keeps the same URL so the browser can cache it.
+  const url = path ? imageUrl(path, transform ?? undefined) : null;
 
-  if (path && url) {
+  if (url) {
     return (
       <img
         src={url}
