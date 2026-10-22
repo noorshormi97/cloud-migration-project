@@ -14,6 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_at: string
+          id: string
+          order_id: string
+          outcome: string
+        }
+        Insert: {
+          created_at?: string
+          event_at?: string
+          id?: string
+          order_id: string
+          outcome: string
+        }
+        Update: {
+          created_at?: string
+          event_at?: string
+          id?: string
+          order_id?: string
+          outcome?: string
+        }
+        Relationships: []
+      }
+      analytics_items: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          item_id: string | null
+          item_kind: string
+          item_name: string
+          item_type: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          item_id?: string | null
+          item_kind?: string
+          item_name: string
+          item_type?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          item_id?: string | null
+          item_kind?: string
+          item_name?: string
+          item_type?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analytics_items_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "analytics_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_settings: {
         Row: {
           created_at: string
@@ -538,6 +606,12 @@ export type Database = {
       admin_exists: { Args: never; Returns: boolean }
       cancel_order: { Args: { _order_id: string }; Returns: undefined }
       claim_admin: { Args: never; Returns: boolean }
+      confirm_order_with_analytics: {
+        Args: { _order_id: string }
+        Returns: undefined
+      }
+      delete_analytics: { Args: never; Returns: undefined }
+      get_analytics: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
