@@ -80,6 +80,9 @@ function ErrorComponentFallback({ error, reset }: { error: Error; reset: () => v
   );
 }
 
+// The router expects the error component to be lazy.
+const ErrorComponent = lazy(async () => ({ default: ErrorComponentFallback }));
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
