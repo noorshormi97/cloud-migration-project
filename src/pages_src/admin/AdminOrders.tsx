@@ -40,7 +40,6 @@ interface OrderRow {
 }
 
 const COURIER_CHARGES: Record<string, number> = {
-  steadfast: 130,
   shundarban: 60,
 };
 

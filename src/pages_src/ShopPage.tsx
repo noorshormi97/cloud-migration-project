@@ -61,9 +61,9 @@ export function ShopPage() {
   const writeParams = (next: { category?: string; page?: number }) => {
     const params: Record<string, string> = {};
     const category = next.category ?? (activeCategory === 'All' ? '' : activeCategory);
-    if (category) params.category = category;
+    if (category) params['category'] = category;
     const nextPage = next.page ?? 1;
-    if (nextPage > 1) params.page = String(nextPage);
+    if (nextPage > 1) params['page'] = String(nextPage);
     setSearchParams(params, { replace: true });
   };
 

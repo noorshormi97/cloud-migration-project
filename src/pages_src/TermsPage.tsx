@@ -24,7 +24,7 @@ const policies = [
   {
     title: 'Shipping',
     content:
-      'We currently ship only through Shundarban and Steadfast. There is currently no post office delivery option.',
+      'We currently ship only through Shundarban. There is currently no post office delivery option.',
   },
   {
     title: 'Return Policy',

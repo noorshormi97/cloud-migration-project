@@ -138,7 +138,6 @@ export function formatPriceOrAsk(price: number | null | undefined) {
 }
 
 export const COURIERS = [
-  { name: "Steadfast", charge: 130 },
   { name: "Shundarban", charge: 60 },
 ] as const;
 
