@@ -23,7 +23,7 @@ const privacySections = [
   {
     title: 'How We Use Your Information',
     body: [
-      'To process and deliver your orders, including sharing your name, phone number and address with our courier partners (currently Steadfast and Shundarban) solely so they can deliver your parcel.',
+      'To process and deliver your orders, including sharing your name, phone number and address with our courier partner (currently Shundarban) solely so they can deliver your parcel.',
       'To contact you about your order, respond to your questions, and provide customer support.',
       'To operate, protect and improve the Site.',
       'We do not sell your personal information to anyone.',

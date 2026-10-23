@@ -43,7 +43,7 @@ export function AboutPage() {
             </p>
             <p>
               Collectors across Bangladesh order from us online and receive
-              delivery through trusted couriers (Steadfast and Shundarban). We
+              delivery through our trusted courier (Shundarban). We
               also welcome collectors abroad — reach out through our{' '}
               <Link
                 to="/contact"
