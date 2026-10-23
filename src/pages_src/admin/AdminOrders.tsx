@@ -86,12 +86,17 @@ export function AdminOrders() {
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: Status }) => {
-      const { error } = await supabase.from('orders').update({ status }).eq('id', id);
+  // Confirmation runs through the database routine so the analytics record and
+  // the status change happen together — retries can't create duplicates.
+  const confirmOrder = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc('confirm_order_with_analytics', { _order_id: id });
       if (error) throw error;
     },
-    onSuccess: invalidate,
+    onSuccess: () => {
+      invalidate();
+      void queryClient.invalidateQueries({ queryKey: ['admin-analytics'] });
+    },
   });
 
   // Cancellation goes through the database routine so stock is restored exactly
@@ -180,7 +185,7 @@ export function AdminOrders() {
             <div className="flex flex-wrap items-start gap-2 lg:justify-end">
               <button
                 type="button"
-                onClick={() => updateStatus.mutate({ id: order.id, status: 'Confirmed' })}
+                onClick={() => confirmOrder.mutate(order.id)}
                 className="rounded-control border border-ink/30 px-3 py-2 font-sans text-xs uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-brand"
               >
                 Confirm Order
