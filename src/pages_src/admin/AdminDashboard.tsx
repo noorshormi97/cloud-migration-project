@@ -13,6 +13,7 @@ import { AdminNewArrivals } from './AdminNewArrivals';
 import { AdminStartCollecting } from './AdminStartCollecting';
 import { AdminMaintenance } from './AdminMaintenance';
 import { AdminCurrencyQuiz } from './AdminCurrencyQuiz';
+import { AdminAnalytics } from './AdminAnalytics';
 
 const TABS = [
   'Orders',
@@ -23,6 +24,7 @@ const TABS = [
   'Combos',
   'FAQs',
   'Contact Details',
+  'Analytics',
   'Maintenance',
   'Currency Quiz',
 ] as const;
