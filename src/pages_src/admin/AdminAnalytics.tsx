@@ -1,5 +1,13 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  BadgeCheck,
+  Banknote,
+  CircleX,
+  Trash2,
+  TrendingUp,
+  Wallet,
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatPrice } from '@/lib/store';
 
@@ -41,12 +49,61 @@ async function fetchAnalytics(): Promise<AnalyticsData> {
   return (data ?? {}) as unknown as AnalyticsData;
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+interface StatCardProps {
+  label: string;
+  value: string;
+  icon: React.ReactNode;
+}
+
+function StatCard({ label, value, icon }: StatCardProps) {
   return (
-    <div className="border border-ink/10 bg-paper p-4">
-      <p className="font-sans text-[10px] uppercase tracking-widest text-ink/40">{label}</p>
-      <p className="mt-1 font-heading text-2xl tracking-tight text-ink md:text-3xl">{value}</p>
+    <div className="relative overflow-hidden rounded-control border border-ink/10 bg-paper p-4 md:p-5">
+      <div className="flex items-center justify-between gap-2">
+        <p className="font-sans text-[10px] font-medium uppercase tracking-widest text-ink/40">
+          {label}
+        </p>
+        <span className="shrink-0 rounded-control border border-ink/10 bg-brand/40 p-1.5 text-ink/70">
+          {icon}
+        </span>
+      </div>
+      <p className="mt-2 font-heading text-2xl tracking-tight text-ink md:text-3xl">
+        {value}
+      </p>
     </div>
+  );
+}
+
+function SectionHeader({ title, hint }: { title: string; hint?: string }) {
+  return (
+    <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+      <h2 className="font-heading text-xl tracking-tight text-ink md:text-2xl">
+        {title}
+      </h2>
+      {hint ? (
+        <p className="font-sans text-[11px] font-light uppercase tracking-widest text-ink/40">
+          {hint}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function OutcomeBadge({ outcome }: { outcome: string }) {
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center gap-1 rounded-control px-2 py-0.5 font-sans text-[10px] font-medium uppercase tracking-widest ${
+        outcome === 'Confirmed'
+          ? 'border border-ink/30 bg-ink text-brand'
+          : 'border border-ink/20 bg-paper text-ink/70'
+      }`}
+    >
+      {outcome === 'Confirmed' ? (
+        <BadgeCheck className="h-3 w-3" aria-hidden="true" />
+      ) : (
+        <CircleX className="h-3 w-3" aria-hidden="true" />
+      )}
+      {outcome}
+    </span>
   );
 }
 
@@ -80,75 +137,137 @@ export function AdminAnalytics() {
   }
 
   const historyEmpty = data.history.length === 0;
+  const maxBestSellerQty = Math.max(
+    1,
+    ...data.best_sellers.map((row) => Number(row.total_quantity)),
+  );
+  const totalOutcomes = Number(data.total_confirmed) + Number(data.total_cancelled);
+  const confirmRate =
+    totalOutcomes > 0
+      ? Math.round((Number(data.total_confirmed) / totalOutcomes) * 100)
+      : null;
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Confirmed Orders" value={String(data.total_confirmed)} />
-        <StatCard label="Cancelled Orders" value={String(data.total_cancelled)} />
-        <StatCard label="Banknotes Sold" value={String(data.total_banknotes_sold)} />
-        <StatCard label="Revenue" value={formatPrice(Number(data.total_revenue))} />
-      </div>
-
-      <div>
-        <h2 className="mb-3 font-heading text-xl tracking-tight text-ink md:text-2xl">
-          Best Sellers
-        </h2>
-        {data.best_sellers.length === 0 ? (
-          <p className="font-sans text-sm font-light text-ink/60">
-            No confirmed sales recorded yet.
+    <div className="space-y-8">
+      {/* Overview */}
+      <section>
+        <SectionHeader title="Overview" />
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Confirmed Orders"
+            value={String(data.total_confirmed)}
+            icon={<BadgeCheck className="h-4 w-4" aria-hidden="true" />}
+          />
+          <StatCard
+            label="Cancelled Orders"
+            value={String(data.total_cancelled)}
+            icon={<CircleX className="h-4 w-4" aria-hidden="true" />}
+          />
+          <StatCard
+            label="Banknotes Sold"
+            value={String(data.total_banknotes_sold)}
+            icon={<Banknote className="h-4 w-4" aria-hidden="true" />}
+          />
+          <StatCard
+            label="Revenue"
+            value={formatPrice(Number(data.total_revenue))}
+            icon={<Wallet className="h-4 w-4" aria-hidden="true" />}
+          />
+        </div>
+        {confirmRate !== null ? (
+          <p className="mt-3 flex items-center gap-2 font-sans text-xs font-light text-ink/60">
+            <TrendingUp className="h-3.5 w-3.5 text-ink/50" aria-hidden="true" />
+            {confirmRate}% of decided orders were confirmed
           </p>
+        ) : null}
+      </section>
+
+      {/* Best Sellers */}
+      <section>
+        <SectionHeader title="Best Sellers" hint="Confirmed sales only" />
+        {data.best_sellers.length === 0 ? (
+          <div className="rounded-control border border-dashed border-ink/20 bg-paper p-6 text-center">
+            <p className="font-sans text-sm font-light text-ink/60">
+              No confirmed sales recorded yet. Confirm an order and it will show up here.
+            </p>
+          </div>
         ) : (
-          <div className="divide-y divide-ink/10 border border-ink/10 bg-paper">
-            {data.best_sellers.map((row) => (
+          <div className="overflow-hidden rounded-control border border-ink/10 bg-paper">
+            {data.best_sellers.map((row, index) => (
               <div
                 key={`${row.name}-${row.type}`}
-                className="flex items-center justify-between gap-4 px-4 py-2.5 font-sans text-sm"
+                className={`px-4 py-3 ${
+                  index < data.best_sellers.length - 1 ? 'border-b border-ink/10' : ''
+                }`}
               >
-                <span className="min-w-0 flex-1 truncate text-ink">
-                  {row.name}
-                  {row.type ? (
-                    <span className="ml-2 font-light text-ink/50">{row.type}</span>
-                  ) : null}
-                </span>
-                <span className="font-light text-ink/70">{row.total_quantity} sold</span>
-                <span className="w-24 text-right text-ink">
-                  {formatPrice(Number(row.total_value))}
-                </span>
+                <div className="flex flex-wrap items-center justify-between gap-2 font-sans text-sm">
+                  <span className="flex min-w-0 items-baseline gap-2">
+                    <span className="w-5 shrink-0 font-heading text-xs text-ink/40">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="min-w-0 truncate text-ink">
+                      {row.name}
+                      {row.type ? (
+                        <span className="ml-2 font-light text-ink/50">{row.type}</span>
+                      ) : null}
+                    </span>
+                  </span>
+                  <span className="flex items-baseline gap-3">
+                    <span className="font-light text-ink/70">{row.total_quantity} sold</span>
+                    <span className="w-24 text-right text-ink">
+                      {formatPrice(Number(row.total_value))}
+                    </span>
+                  </span>
+                </div>
+                <div className="mt-2 ml-7 h-1.5 overflow-hidden rounded-control bg-ink/5">
+                  <div
+                    className="h-full rounded-control bg-brand-dark"
+                    style={{
+                      width: `${Math.max(
+                        4,
+                        Math.round((Number(row.total_quantity) / maxBestSellerQty) * 100),
+                      )}%`,
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      <div>
-        <h2 className="mb-3 font-heading text-xl tracking-tight text-ink md:text-2xl">
-          Order Outcome History
-        </h2>
+      {/* History */}
+      <section>
+        <SectionHeader title="Order Outcome History" hint="Latest 100" />
         {historyEmpty ? (
-          <p className="font-sans text-sm font-light text-ink/60">
-            Confirm or cancel an order and it will be recorded here.
-          </p>
+          <div className="rounded-control border border-dashed border-ink/20 bg-paper p-6 text-center">
+            <p className="font-sans text-sm font-light text-ink/60">
+              Confirm or cancel an order and it will be recorded here.
+            </p>
+          </div>
         ) : (
-          <div className="space-y-3">
-            {data.history.map((event) => (
-              <div key={event.id} className="border border-ink/10 bg-paper p-4">
+          <div className="overflow-hidden rounded-control border border-ink/10 bg-paper">
+            {data.history.map((event, eventIndex) => (
+              <div
+                key={event.id}
+                className={`p-4 ${
+                  eventIndex < data.history.length - 1 ? 'border-b border-ink/10' : ''
+                }`}
+              >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-sans text-xs text-ink/60">
-                    {new Date(event.event_at).toLocaleString()}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <OutcomeBadge outcome={event.outcome} />
+                    <p className="font-sans text-xs text-ink/60">
+                      {new Date(event.event_at).toLocaleString()}
+                    </p>
+                  </div>
+                  <p className="font-sans text-xs font-light text-ink/50">
+                    {event.items.length}{' '}
+                    {event.items.length === 1 ? 'item' : 'items'}
                   </p>
-                  <span
-                    className={`rounded-control px-2 py-0.5 font-sans text-[10px] font-medium uppercase tracking-widest ${
-                      event.outcome === 'Confirmed'
-                        ? 'border border-ink/30 bg-ink text-brand'
-                        : 'border border-ink/20 bg-paper text-ink/70'
-                    }`}
-                  >
-                    {event.outcome}
-                  </span>
                 </div>
                 {event.items.length > 0 ? (
-                  <div className="mt-2 divide-y divide-ink/10 border-t border-ink/10">
+                  <div className="mt-2 divide-y divide-ink/5 border-t border-ink/10">
                     {event.items.map((item, index) => (
                       <div
                         key={`${item.name}-${index}`}
@@ -171,11 +290,13 @@ export function AdminAnalytics() {
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      <div className="flex justify-end">
+      {/* Danger zone */}
+      <section>
+        <SectionHeader title="Danger Zone" hint="Erases analytics only" />
         {confirmDelete ? (
-          <div className="w-full max-w-sm border border-ink/20 bg-paper p-5">
+          <div className="w-full max-w-sm rounded-control border border-ink/20 bg-paper p-5">
             <p className="font-heading text-lg tracking-tight text-ink">Delete analytics data?</p>
             <p className="mt-2 font-sans text-sm font-light text-ink/70">
               This permanently erases all analytics records. Orders, products, stock and prices are
@@ -203,12 +324,13 @@ export function AdminAnalytics() {
           <button
             type="button"
             onClick={() => setConfirmDelete(true)}
-            className="rounded-control border border-ink/30 px-4 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
+            className="inline-flex items-center gap-2 rounded-control border border-ink/30 px-4 py-2 font-sans text-xs uppercase tracking-widest text-ink/70 transition-colors hover:border-ink hover:text-ink"
           >
+            <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
             Delete Analytics
           </button>
         )}
-      </div>
+      </section>
     </div>
   );
 }
