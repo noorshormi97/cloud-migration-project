@@ -92,6 +92,7 @@ export function AdminDashboard() {
           {tab === 'Combos' ? <AdminCombos /> : null}
           {tab === 'FAQs' ? <AdminFaqs /> : null}
           {tab === 'Contact Details' ? <AdminContact /> : null}
+          {tab === 'Analytics' ? <AdminAnalytics /> : null}
           {tab === 'Maintenance' ? <AdminMaintenance /> : null}
           {tab === 'Currency Quiz' ? <AdminCurrencyQuiz /> : null}
         </div>
