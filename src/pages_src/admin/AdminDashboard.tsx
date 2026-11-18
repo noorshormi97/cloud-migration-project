@@ -12,7 +12,6 @@ import { AdminCombos } from './AdminCombos';
 import { AdminNewArrivals } from './AdminNewArrivals';
 import { AdminStartCollecting } from './AdminStartCollecting';
 import { AdminMaintenance } from './AdminMaintenance';
-import { AdminCurrencyQuiz } from './AdminCurrencyQuiz';
 import { AdminAnalytics } from './AdminAnalytics';
 
 const TABS = [
@@ -26,7 +25,6 @@ const TABS = [
   'Contact Details',
   'Analytics',
   'Maintenance',
-  'Currency Quiz',
 ] as const;
 type Tab = (typeof TABS)[number];
 
@@ -94,7 +92,6 @@ export function AdminDashboard() {
           {tab === 'Contact Details' ? <AdminContact /> : null}
           {tab === 'Analytics' ? <AdminAnalytics /> : null}
           {tab === 'Maintenance' ? <AdminMaintenance /> : null}
-          {tab === 'Currency Quiz' ? <AdminCurrencyQuiz /> : null}
         </div>
       </div>
     </div>
