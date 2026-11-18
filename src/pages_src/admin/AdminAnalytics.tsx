@@ -136,10 +136,16 @@ export function AdminAnalytics() {
     return <p className="font-sans text-sm font-light text-ink/60">Could not load analytics.</p>;
   }
 
-  const historyEmpty = data.history.length === 0;
+  const latestHistory = [...data.history]
+    .sort((a, b) => new Date(b.event_at).getTime() - new Date(a.event_at).getTime())
+    .slice(0, 5);
+  const topBestSellers = [...data.best_sellers]
+    .sort((a, b) => Number(b.total_quantity) - Number(a.total_quantity))
+    .slice(0, 5);
+  const historyEmpty = latestHistory.length === 0;
   const maxBestSellerQty = Math.max(
     1,
-    ...data.best_sellers.map((row) => Number(row.total_quantity)),
+    ...topBestSellers.map((row) => Number(row.total_quantity)),
   );
   const totalOutcomes = Number(data.total_confirmed) + Number(data.total_cancelled);
   const confirmRate =
@@ -148,7 +154,7 @@ export function AdminAnalytics() {
       : null;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Overview */}
       <section>
         <SectionHeader title="Overview" />
@@ -182,115 +188,103 @@ export function AdminAnalytics() {
         ) : null}
       </section>
 
-      {/* Best Sellers */}
-      <section>
-        <SectionHeader title="Best Sellers" hint="Confirmed sales only" />
-        {data.best_sellers.length === 0 ? (
-          <div className="rounded-control border border-dashed border-ink/20 bg-paper p-6 text-center">
-            <p className="font-sans text-sm font-light text-ink/60">
-              No confirmed sales recorded yet. Confirm an order and it will show up here.
+      <div className="grid items-start gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Best Sellers */}
+        <section className="min-w-0 rounded-control border border-ink/10 bg-paper p-4 md:p-5">
+          <SectionHeader title="Best Sellers" hint="Top 5 · Confirmed sales" />
+          {topBestSellers.length === 0 ? (
+            <p className="py-5 text-center font-sans text-sm font-light text-ink/60">
+              No confirmed sales recorded yet.
             </p>
-          </div>
-        ) : (
-          <div className="overflow-hidden rounded-control border border-ink/10 bg-paper">
-            {data.best_sellers.map((row, index) => (
-              <div
-                key={`${row.name}-${row.type}`}
-                className={`px-4 py-3 ${
-                  index < data.best_sellers.length - 1 ? 'border-b border-ink/10' : ''
-                }`}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2 font-sans text-sm">
-                  <span className="flex min-w-0 items-baseline gap-2">
-                    <span className="w-5 shrink-0 font-heading text-xs text-ink/40">
-                      {String(index + 1).padStart(2, '0')}
+          ) : (
+            <div className="space-y-4" role="img" aria-label="Top five best sellers by units sold">
+              {topBestSellers.map((row, index) => (
+                <div key={`${row.name}-${row.type}`}>
+                  <div className="flex min-w-0 items-start justify-between gap-3 font-sans text-sm">
+                    <div className="flex min-w-0 items-start gap-2">
+                      <span className="w-5 shrink-0 pt-0.5 font-heading text-xs text-ink/40">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-ink">{row.name}</span>
+                        {row.type ? (
+                          <span className="block truncate text-xs font-light text-ink/50">
+                            {row.type}
+                          </span>
+                        ) : null}
+                      </span>
+                    </div>
+                    <span className="shrink-0 text-right">
+                      <span className="block text-ink">{row.total_quantity} sold</span>
+                      <span className="block text-xs font-light text-ink/60">
+                        {formatPrice(Number(row.total_value))}
+                      </span>
                     </span>
-                    <span className="min-w-0 truncate text-ink">
-                      {row.name}
-                      {row.type ? (
-                        <span className="ml-2 font-light text-ink/50">{row.type}</span>
-                      ) : null}
-                    </span>
-                  </span>
-                  <span className="flex items-baseline gap-3">
-                    <span className="font-light text-ink/70">{row.total_quantity} sold</span>
-                    <span className="w-24 text-right text-ink">
-                      {formatPrice(Number(row.total_value))}
-                    </span>
-                  </span>
-                </div>
-                <div className="mt-2 ml-7 h-1.5 overflow-hidden rounded-control bg-ink/5">
+                  </div>
                   <div
-                    className="h-full rounded-control bg-brand-dark"
-                    style={{
-                      width: `${Math.max(
-                        4,
-                        Math.round((Number(row.total_quantity) / maxBestSellerQty) * 100),
-                      )}%`,
-                    }}
-                  />
+                    className="mt-2 ml-7 h-2 overflow-hidden rounded-control bg-ink/5"
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="h-full rounded-control bg-brand-dark"
+                      style={{
+                        width: `${Math.max(
+                          4,
+                          Math.round((Number(row.total_quantity) / maxBestSellerQty) * 100),
+                        )}%`,
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+              ))}
+            </div>
+          )}
+        </section>
 
-      {/* History */}
-      <section>
-        <SectionHeader title="Order Outcome History" hint="Latest 100" />
-        {historyEmpty ? (
-          <div className="rounded-control border border-dashed border-ink/20 bg-paper p-6 text-center">
-            <p className="font-sans text-sm font-light text-ink/60">
+        {/* Latest history */}
+        <section className="min-w-0 rounded-control border border-ink/10 bg-paper p-4 md:p-5">
+          <SectionHeader title="Order Outcome History" hint="Latest 5" />
+          {historyEmpty ? (
+            <p className="py-5 text-center font-sans text-sm font-light text-ink/60">
               Confirm or cancel an order and it will be recorded here.
             </p>
-          </div>
-        ) : (
-          <div className="overflow-hidden rounded-control border border-ink/10 bg-paper">
-            {data.history.map((event, eventIndex) => (
-              <div
-                key={event.id}
-                className={`p-4 ${
-                  eventIndex < data.history.length - 1 ? 'border-b border-ink/10' : ''
-                }`}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex flex-wrap items-center gap-3">
+          ) : (
+            <div className="divide-y divide-ink/10">
+              {latestHistory.map((event) => (
+                <div key={event.id} className="py-3 first:pt-1 last:pb-0">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <OutcomeBadge outcome={event.outcome} />
-                    <p className="font-sans text-xs text-ink/60">
+                    <span className="font-sans text-[11px] text-ink/55">
                       {new Date(event.event_at).toLocaleString()}
-                    </p>
+                    </span>
                   </div>
-                  <p className="font-sans text-xs font-light text-ink/50">
-                    {event.items.length}{' '}
-                    {event.items.length === 1 ? 'item' : 'items'}
+                  <p className="mt-2 font-sans text-xs font-light text-ink/55">
+                    {event.items.length} {event.items.length === 1 ? 'item' : 'items'}
                   </p>
+                  {event.items.length > 0 ? (
+                    <div className="mt-1 space-y-1">
+                      {event.items.map((item, index) => (
+                        <div
+                          key={`${item.name}-${index}`}
+                          className="flex justify-between gap-3 font-sans text-xs"
+                        >
+                          <span className="min-w-0 truncate font-light text-ink/80">
+                            {item.name} × {item.quantity}
+                            {item.type ? <span className="ml-1 text-ink/50">{item.type}</span> : null}
+                          </span>
+                          <span className="shrink-0 text-ink">
+                            {formatPrice(Number(item.unit_price) * item.quantity)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
-                {event.items.length > 0 ? (
-                  <div className="mt-2 divide-y divide-ink/5 border-t border-ink/10">
-                    {event.items.map((item, index) => (
-                      <div
-                        key={`${item.name}-${index}`}
-                        className="flex justify-between py-2 font-sans text-sm"
-                      >
-                        <span className="font-light text-ink/80">
-                          {item.name} × {item.quantity}
-                          {item.type ? (
-                            <span className="ml-2 text-ink/50">{item.type}</span>
-                          ) : null}
-                        </span>
-                        <span className="text-ink">
-                          {formatPrice(Number(item.unit_price) * item.quantity)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
 
       {/* Danger zone */}
       <section>
