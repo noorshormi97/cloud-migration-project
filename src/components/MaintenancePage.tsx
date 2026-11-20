@@ -55,7 +55,7 @@ export function MaintenancePage({ whatsappNumber }: MaintenancePageProps = {}) {
   const { data } = useQuery({
     queryKey: ['contact-details'],
     queryFn: fetchContactDetails,
-    // Already handed to us by the loader — don't spend a request on it.
+    // Already handed to us by the loader - don't spend a request on it.
     enabled: whatsappNumber === undefined,
   });
 
@@ -107,7 +107,7 @@ export function MaintenancePage({ whatsappNumber }: MaintenancePageProps = {}) {
         </div>
       </div>
 
-      {/* Dev credit footer — small, unobtrusive, single line on mobile */}
+      {/* Dev credit footer - small, unobtrusive, single line on mobile */}
       <footer className="shrink-0 border-t border-ink/10 px-4 py-[clamp(0.5rem,1.6vh,1rem)] sm:px-6">
         <p className="flex flex-nowrap items-center justify-center gap-1 text-center font-sans text-[10px] font-light tracking-normal text-ink/45 sm:text-[11px]">
           <span className="whitespace-nowrap">Developed &amp; maintained by</span>

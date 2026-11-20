@@ -192,7 +192,7 @@ export function AdminStartCollecting() {
     <div className="space-y-6">
       <p className="font-sans text-sm font-light text-ink/60">
         These 10 items appear in the “Start Collecting” section on the homepage. Start Collecting is
-        its own catalogue, separate from the shop — each item has its own stock, images and product
+        its own catalogue, separate from the shop - each item has its own stock, images and product
         page.
       </p>
 

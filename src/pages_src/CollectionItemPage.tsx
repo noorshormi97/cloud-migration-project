@@ -33,8 +33,8 @@ const COPY: Record<
 };
 
 // Detail page for New Arrivals / Start Collecting items. Intentionally
-// mirrors the shop's ProductPage — same gallery, info, specs and related
-// grid — but reads from the section's own table and adds to the cart under
+// mirrors the shop's ProductPage - same gallery, info, specs and related
+// grid - but reads from the section's own table and adds to the cart under
 // the section's own kind so stock and orders stay separate from the shop.
 export function CollectionItemPage({ kind }: { kind: CollectionKind }) {
   const { id } = useParams<{ id: string }>();

@@ -15,7 +15,7 @@ export function ProductPage() {
   const { data: product, products, isLoading } = useProduct(id);
   const navigate = useNavigate();
   const router = useRouter();
-  // Was `products.slice(0, 4)` — the same four rows on all 253 pages, and
+  // Was `products.slice(0, 4)` - the same four rows on all 253 pages, and
   // because the four oldest products are confidential-price sets, every page
   // showed nothing but "Ask for Price". Now scored by category, country, type,
   // price bracket and stock.
@@ -70,7 +70,7 @@ export function ProductPage() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative md:grid md:grid-cols-[minmax(0,5fr)_7fr] md:gap-8 lg:gap-10"
         >
-          {/* Floating back arrow — overlaid on the product image (top-left).
+          {/* Floating back arrow - overlaid on the product image (top-left).
               Uses browser "back" so it returns to where the user was in the
               shop (preserving scroll position), with a /shop fallback. */}
           <button
@@ -82,12 +82,12 @@ export function ProductPage() {
             <ArrowLeft size={18} />
           </button>
 
-          {/* Product image — full-width on top on mobile, left column on desktop */}
+          {/* Product image - full-width on top on mobile, left column on desktop */}
           <div className="md:max-w-[440px]">
             <ProductGallery productName={product.name} images={product.images} />
           </div>
 
-          {/* Product info — below the image on mobile, right column on desktop */}
+          {/* Product info - below the image on mobile, right column on desktop */}
           <div className="px-5 pb-8 pt-4 md:px-0 md:pb-0 md:pt-2">
             <ProductInfo product={product} />
           </div>

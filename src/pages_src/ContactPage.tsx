@@ -125,7 +125,7 @@ export function ContactPage() {
             ))}
           </div>
 
-          {/* Hard-coded credit — always visible to search engines and AI
+          {/* Hard-coded credit - always visible to search engines and AI
               crawlers in the server-rendered HTML (not loaded via JS).
               Tiny, centered, pinned to the very bottom near the footer. */}
           <div className="mt-8 border-t border-ink/10 pt-2">

@@ -33,9 +33,9 @@ export function ProductGallery({ productName, images = [] }: ProductGalleryProps
           key={active ?? `placeholder-${safeIndex}`}
           path={active}
           transform={IMAGE_SIZES.detail}
-          alt={`${productName} — image ${safeIndex + 1}`}
+          alt={`${productName} - image ${safeIndex + 1}`}
           iconSize={40}
-          label={`${productName} — View ${safeIndex + 1}`}
+          label={`${productName} - View ${safeIndex + 1}`}
         />
 
         {hasMultiple ? (

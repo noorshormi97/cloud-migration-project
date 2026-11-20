@@ -290,7 +290,7 @@ export function SendMessageSection() {
                     Thank you for sending us a message!
                   </p>
                   <p className="mt-3 font-sans text-sm font-light text-ink/70">
-                    We’ve opened WhatsApp with your note — send it there and we’ll reply shortly.
+                    We’ve opened WhatsApp with your note - send it there and we’ll reply shortly.
                   </p>
                   <button
                     type="button"

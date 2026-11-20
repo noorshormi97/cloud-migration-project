@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { formatPrice } from '@/lib/store';
 
 // Exactly the values of the database enum public.order_status. The old list
-// also contained 'Completed', which the database rejects — selecting it always
+// also contained 'Completed', which the database rejects - selecting it always
 // failed silently.
 type Status = 'Pending' | 'Confirmed' | 'Cancelled' | 'Shipped' | 'Delivered';
 
@@ -87,7 +87,7 @@ export function AdminOrders() {
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
 
   // Confirmation runs through the database routine so the analytics record and
-  // the status change happen together — retries can't create duplicates.
+  // the status change happen together - retries can't create duplicates.
   const confirmOrder = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.rpc('confirm_order_with_analytics', { _order_id: id });
@@ -221,7 +221,7 @@ export function AdminOrders() {
           <div className="mt-3 space-y-1 text-right font-sans text-sm text-ink/70">
             <p>Subtotal: {formatPrice(Number(order.subtotal))}</p>
             <p>
-              Courier: {order.courier || '—'} · Delivery{' '}
+              Courier: {order.courier || ' - '} · Delivery{' '}
               {formatPrice(displayDeliveryCharge)}
             </p>
           </div>

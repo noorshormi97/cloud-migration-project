@@ -19,13 +19,13 @@ interface ProductCardProps {
   // First visible cards should load their image eagerly/high-priority.
   priority?: boolean;
   // Where the card links to (defaults to the shop product page) and which
-  // cart bucket "Add to Cart" uses — lets New Arrivals / Start Collecting
+  // cart bucket "Add to Cart" uses - lets New Arrivals / Start Collecting
   // reuse this card for their own standalone pages.
   href?: string;
   cartKind?: CartItemKind;
 }
 
-// Compact product card — small square image, tight text, small button so many
+// Compact product card - small square image, tight text, small button so many
 // cards fit in the grid (2 columns on mobile). Keeps link + add-to-cart.
 function ProductCardBase({
   product,

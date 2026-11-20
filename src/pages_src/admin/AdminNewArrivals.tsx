@@ -198,7 +198,7 @@ export function AdminNewArrivals() {
   return (
     <div className="space-y-6">
       <p className="font-sans text-sm font-light text-ink/60">
-        New Arrivals is its own catalogue, separate from the shop — each item has its own stock,
+        New Arrivals is its own catalogue, separate from the shop - each item has its own stock,
         images and product page.
       </p>
 

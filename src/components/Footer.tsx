@@ -101,7 +101,7 @@ export function Footer() {
             ) : null}
           </div>
 
-          {/* Developer credit — mobile only, sits directly under WhatsApp.
+          {/* Developer credit - mobile only, sits directly under WhatsApp.
               Logo on one side, the profile links on the other. Same real
               anchors as the desktop block, so Google reads it identically. */}
           <div className="mt-5 border-t border-ink/10 pt-4 md:hidden">
@@ -116,7 +116,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Developer credit — desktop only, sits in the right-side space */}
+        {/* Developer credit - desktop only, sits in the right-side space */}
         <div className="hidden md:flex md:flex-col md:items-center">
           <p className="font-sans text-xs font-medium uppercase tracking-widest text-ink/50">
             Developed by

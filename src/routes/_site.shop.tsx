@@ -69,7 +69,7 @@ export const Route = createFileRoute("/_site/shop")({
         {
           name: "description",
           content:
-            "Shop authentic collectible coins, banknotes and stamps — Bangladeshi and foreign. Browse rare banknotes, vintage coins and stamps, sorted by category, with delivery across Bangladesh.",
+            "Shop authentic collectible coins, banknotes and stamps - Bangladeshi and foreign. Browse rare banknotes, vintage coins and stamps, sorted by category, with delivery across Bangladesh.",
         },
         { property: "og:type", content: "website" },
         { property: "og:url", content: canonicalUrl("/shop") },
@@ -80,7 +80,7 @@ export const Route = createFileRoute("/_site/shop")({
         {
           property: "og:description",
           content:
-            "Browse and buy authentic collectible coins, banknotes and stamps — Bangladeshi and foreign.",
+            "Browse and buy authentic collectible coins, banknotes and stamps - Bangladeshi and foreign.",
         },
         { property: "og:image", content: OG_IMAGE },
       ],

@@ -116,7 +116,7 @@ export function AdminAnalytics() {
 
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  // Erases only the analytics tables — orders, products and stock stay intact.
+  // Erases only the analytics tables - orders, products and stock stay intact.
   const deleteAnalytics = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.rpc('delete_analytics');

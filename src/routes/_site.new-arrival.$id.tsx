@@ -48,11 +48,11 @@ export const Route = createFileRoute("/_site/new-arrival/$id")({
   head: ({ loaderData }) => {
     const item = loaderData?.item ?? null;
     const url = canonicalUrl(`/new-arrival/${item?.id ?? ""}`);
-    const title = item ? `${item.name} — New Arrival | ${SITE_NAME}` : `New Arrival | ${SITE_NAME}`;
+    const title = item ? `${item.name} - New Arrival | ${SITE_NAME}` : `New Arrival | ${SITE_NAME}`;
     const description = item
       ? `${item.name}${item.country ? ` from ${item.country}` : ""}${
           item.year ? `, ${item.year}` : ""
-        } — a new arrival at ${SITE_NAME}.`
+        } - a new arrival at ${SITE_NAME}.`
       : `Newly arrived collectible coins, banknotes and stamps at ${SITE_NAME}.`;
     return {
       meta: [

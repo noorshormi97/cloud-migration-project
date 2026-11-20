@@ -1,7 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 
-// Store terms — pricing, payment, delivery and returns.
+// Store terms - pricing, payment, delivery and returns.
 const policies = [
   {
     title: 'Fixed Price',

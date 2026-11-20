@@ -47,10 +47,10 @@ export const Route = createFileRoute("/_site/start-collecting/$id")({
     const item = loaderData?.item ?? null;
     const url = canonicalUrl(`/start-collecting/${item?.id ?? ""}`);
     const title = item
-      ? `${item.name} — Start Collecting | ${SITE_NAME}`
+      ? `${item.name} - Start Collecting | ${SITE_NAME}`
       : `Start Collecting | ${SITE_NAME}`;
     const description = item
-      ? `${item.name} — an affordable collectible to start your collection at ${SITE_NAME}.`
+      ? `${item.name} - an affordable collectible to start your collection at ${SITE_NAME}.`
       : `Affordable collectibles for new collectors at ${SITE_NAME}.`;
     return {
       meta: [

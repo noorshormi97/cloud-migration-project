@@ -1,7 +1,7 @@
 import { Link } from '@/lib/router-compat';
 
 // ============================================================================
-// BlogTeaser — a small, separate homepage section that lets visitors enter the
+// BlogTeaser - a small, separate homepage section that lets visitors enter the
 // full /blog page. Kept compact and visually consistent with the site (brand
 // background, ink borders, Times/Archivo typography).
 // ============================================================================
@@ -18,7 +18,7 @@ export function BlogTeaser() {
         </h2>
         <p className="mx-auto mt-3 max-w-md font-sans text-sm font-light leading-relaxed text-ink/70">
           Guides and stories on Bangladeshi taka notes, their value, and
-          collecting world coins — in our own words.
+          collecting world coins - in our own words.
         </p>
         <Link
           to="/blog"

@@ -11,7 +11,7 @@ interface ProductGridProps {
   cartKind?: CartItemKind;
 }
 
-// Compact product grid — 2 columns on mobile (like banknotecoinstamp.com),
+// Compact product grid - 2 columns on mobile (like banknotecoinstamp.com),
 // scaling up to 2 / 3 / 4 columns on larger screens. Tighter gaps so more
 // cards are visible at once.
 function ProductGridBase({ products, hrefFor, cartKind }: ProductGridProps) {

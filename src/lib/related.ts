@@ -2,7 +2,7 @@ import type { Product } from "@/data/products";
 import { isInStock } from "@/lib/store";
 
 /**
- * A price of 0 means "ask us" — a deliberate state, not missing data.
+ * A price of 0 means "ask us" - a deliberate state, not missing data.
  *
  * Defined here so this file depends on nothing new. store.ts exports the very
  * same rule once the confidential-price update is applied, so these files can
@@ -17,7 +17,7 @@ function isAskPrice(price: number): boolean {
 /**
  * Picking "Related Collectibles".
  *
- * The old version was `products.filter(p => p.id !== current.id).slice(0, 4)` —
+ * The old version was `products.filter(p => p.id !== current.id).slice(0, 4)` -
  * literally the first four rows in the table. Every one of the 253 product
  * pages showed the same four items, and because the four oldest products all
  * happen to be confidential-price sets, every page was a wall of
@@ -53,7 +53,7 @@ function norm(value: string | null | undefined): string {
 
 /**
  * Small deterministic hash. Used only to break ties, so two different product
- * pages with equally-good candidates don't show an identical row — while the
+ * pages with equally-good candidates don't show an identical row - while the
  * same page always renders the same picks (important for SSR/hydration).
  */
 function tieBreak(seed: string): number {
@@ -117,7 +117,7 @@ export function getRelatedProducts(
     picked.push(item);
   }
 
-  // Not enough priced products to fill the row (a small category, say) — top it
+  // Not enough priced products to fill the row (a small category, say) - top it
   // up rather than showing three cards. Better a full row than a gap.
   for (const item of held) {
     if (picked.length >= count) break;

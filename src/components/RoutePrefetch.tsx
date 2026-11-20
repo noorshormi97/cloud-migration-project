@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from '@tanstack/react-router';
 
 // ============================================================================
-// RoutePrefetch — background route preloading.
+// RoutePrefetch - background route preloading.
 //
 // Renders nothing. On the client it prefetches the given route (its lazy JS
 // chunk + loader) so that when the user later navigates there the page is
@@ -14,7 +14,7 @@ import { useRouter } from '@tanstack/react-router';
 //   - It defers until the browser is idle (requestIdleCallback), so it never
 //     fights the user for the main thread while the current page is drawing.
 //   - Each page only preloads the ONE route the user is most likely to hit
-//     next, and failures are silently ignored — so we never block the UI.
+//     next, and failures are silently ignored - so we never block the UI.
 // ============================================================================
 
 function scheduleIdle(cb: () => void): () => void {
@@ -49,7 +49,7 @@ export function RoutePrefetch({ to, params, after = 0 }: RoutePrefetchProps) {
       void (router as any)
         .preloadRoute({ to, params })
         .catch(() => {
-          /* ignore — preloading is best-effort */
+          /* ignore - preloading is best-effort */
         });
     };
 

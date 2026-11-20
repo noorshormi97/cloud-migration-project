@@ -2,7 +2,7 @@ import type { Product } from "@/data/products";
 import { isInStock } from "@/lib/store";
 
 /**
- * A price of 0 means "ask us" — a deliberate state, not missing data.
+ * A price of 0 means "ask us" - a deliberate state, not missing data.
  *
  * Defined here so this file depends on nothing new. store.ts exports the very
  * same rule once the confidential-price update is applied, so these files can
@@ -19,7 +19,7 @@ function isAskPrice(price: number): boolean {
  *
  * The shop used to render products in the order the database returned them
  * (oldest first). The oldest items happen to be the confidential-price sets,
- * so the first twelve cards a visitor saw were all "Ask for Price" — one of
+ * so the first twelve cards a visitor saw were all "Ask for Price" - one of
  * them out of stock. That reads as a shop hiding its prices.
  *
  * Nothing is removed or demoted out of sight. Confidential-price pieces are
@@ -31,7 +31,7 @@ function isAskPrice(price: number): boolean {
 /** Widest the grid ever gets (xl:grid-cols-4), so this many = one full row. */
 const COLUMNS = 4;
 
-/** No confidential-price card before this point — the opening stays priced. */
+/** No confidential-price card before this point - the opening stays priced. */
 const HEAD_ROWS = 2;
 
 /** Stop placing them near the very end so they don't form a tail either. */
@@ -48,13 +48,13 @@ export function orderShopProducts(products: Product[]): Product[] {
     else priced.push(product);
   }
 
-  // Nothing to weave — keep the original order.
+  // Nothing to weave - keep the original order.
   if (askPrice.length === 0 || priced.length === 0) {
     return [...priced, ...askPrice, ...soldOut];
   }
 
   const total = priced.length + askPrice.length;
-  // Reserve the opening rows — but never more than a third of a short list,
+  // Reserve the opening rows - but never more than a third of a short list,
   // or there's no room left to spread anything and they bunch up again.
   const head = Math.min(
     Math.max(COLUMNS * HEAD_ROWS, Math.ceil(total * 0.12)),
@@ -90,6 +90,6 @@ export function orderShopProducts(products: Product[]): Product[] {
     }
   }
 
-  // Out of stock always last — never worth a prime slot.
+  // Out of stock always last - never worth a prime slot.
   return [...out, ...soldOut];
 }

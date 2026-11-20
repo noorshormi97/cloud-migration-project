@@ -3,7 +3,7 @@ import { BlogPage } from "@/pages_src/BlogPage";
 import { canonicalUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 // Article structured data helps Google understand these are real editorial
-// posts (and not thin filler) — useful for search and for AdSense review.
+// posts (and not thin filler) - useful for search and for AdSense review.
 function blogSchema() {
   const posts = [
     {
@@ -47,7 +47,7 @@ function blogSchema() {
 export const Route = createFileRoute("/_site/blog")({
   head: () => {
     const url = canonicalUrl("/blog");
-    const title = `Blog | Bangladeshi Banknotes & Coins — ${SITE_NAME}`;
+    const title = `Blog | Bangladeshi Banknotes & Coins - ${SITE_NAME}`;
     const description =
       "Educational stories about Bangladeshi banknotes, coins and collectible currency in Bangladesh: Taka notes history, Bangladesh coins collecting, and how to identify old Bangladeshi notes.";
     return {

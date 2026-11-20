@@ -1,7 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 
-// Privacy Policy — what this store collects, why, and who else touches it.
+// Privacy Policy - what this store collects, why, and who else touches it.
 // The Site carries no advertising, so there are no ad-network or
 // ad-personalisation disclosures here. Keep it that way unless ads return.
 const privacySections = [
@@ -66,7 +66,7 @@ const privacySections = [
   {
     title: 'Developer & Maintenance',
     body: [
-      'This website was built and is maintained by Shohail Mahmud, a web developer based in Bangladesh — [@shohail-mahmud](https://github.com/shohail-mahmud) on GitHub, [@shohailmahmud09](https://instagram.com/shohailmahmud09) on Instagram.',
+      'This website was built and is maintained by Shohail Mahmud, a web developer based in Bangladesh - [@shohail-mahmud](https://github.com/shohail-mahmud) on GitHub, [@shohailmahmud09](https://instagram.com/shohailmahmud09) on Instagram.',
       'Maintenance means applying updates, fixing problems and improving the Site. There is no automated monitoring or alerting service watching the Site around the clock.',
       'Carrying out that work sometimes requires access to the systems where order data is stored. Your information is only ever accessed for the purpose of running and repairing the Site, is never used for anything else, and is never shared or sold.',
     ],

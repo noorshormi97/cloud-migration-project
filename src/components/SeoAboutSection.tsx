@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router-compat';
 
-// On-page content section — gives Google real, keyword-rich text about the
+// On-page content section - gives Google real, keyword-rich text about the
 // business on the homepage (helps the page rank for non-brand queries).
 export function SeoAboutSection() {
   return (
@@ -27,7 +27,7 @@ export function SeoAboutSection() {
           </p>
           <p>
             Whether you are a seasoned numismatist or just starting your collection, we
-            make it easy to buy banknotes online in Bangladesh — with delivery across the
+            make it easy to buy banknotes online in Bangladesh - with delivery across the
             country and friendly support on{' '}
             <Link to="/contact" className="text-ink underline underline-offset-4 hover:text-ink/70">
               WhatsApp and Instagram

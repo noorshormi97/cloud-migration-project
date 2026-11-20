@@ -12,7 +12,7 @@ function formatPrice(price: number) {
 
 interface ProductInfoProps {
   product: Product;
-  // Which cart bucket this item belongs to — shop products by default, but
+  // Which cart bucket this item belongs to - shop products by default, but
   // the New Arrivals / Start Collecting pages pass their own kind so the
   // order system charges from the right table.
   cartKind?: CartItemKind;

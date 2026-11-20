@@ -5,7 +5,7 @@ interface ProductSpecsProps {
 }
 
 export function ProductSpecs({ product }: ProductSpecsProps) {
-  // Only show spec rows that actually have a value — empty rows (e.g. a
+  // Only show spec rows that actually have a value - empty rows (e.g. a
   // missing Currency or Year) make the page look unfinished to customers
   // and to Google's content reviewers.
   const specs = [

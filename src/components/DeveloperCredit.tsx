@@ -1,13 +1,13 @@
-// DEVELOPER credit — the logo plus three profile links, no popup.
+// DEVELOPER credit - the logo plus three profile links, no popup.
 //
 // Crawlability note: these are icon-only links, so the accessible name is what
 // Google reads as the anchor text. Each one therefore carries BOTH an
 // aria-label and an <title> inside the SVG, and the person's name is spelled
-// out in every label. Nothing is hidden with `sr-only` — hidden links get
+// out in every label. Nothing is hidden with `sr-only` - hidden links get
 // discounted, which is exactly what made the old credit invisible to Google.
 //
 // IMPORTANT: this person is the DEVELOPER, not the logo designer. The word
-// "designer" must not appear here — it misleads visitors and search engines.
+// "designer" must not appear here - it misleads visitors and search engines.
 
 const INSTAGRAM_URL = 'https://instagram.com/shohailmahmud09';
 const GITHUB_URL = 'https://github.com/shohail-mahmud';
@@ -52,7 +52,7 @@ interface DeveloperCreditProps {
   /**
    * 'column' stacks logo over links (desktop sidebar).
    * 'row' puts the logo on one side and the links on the other, filling the
-   * width — used for the mobile block under WhatsApp.
+   * width - used for the mobile block under WhatsApp.
    */
   orientation?: 'column' | 'row';
 }

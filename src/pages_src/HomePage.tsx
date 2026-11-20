@@ -18,7 +18,7 @@ export function HomePage() {
       <Hero />
       <CategoryGrid />
 
-      {/* Shop All Products — centered below "Shop by Category" */}
+      {/* Shop All Products - centered below "Shop by Category" */}
       <section className="bg-brand px-6 pt-7 pb-8 md:pt-8 md:pb-10">
         <div className="mx-auto max-w-4xl text-center">
           <Link

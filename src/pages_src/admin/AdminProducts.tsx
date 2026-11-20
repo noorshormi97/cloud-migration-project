@@ -61,7 +61,7 @@ function toDraft(product: Product): Draft {
 // A category like "Bangladeshi Banknotes" already tells us the item is a
 // banknote, so the Type dropdown shouldn't sit on "Coin" waiting to be fixed by
 // hand. Returns null for categories that don't imply a type (Accessories,
-// Foreign Sets, Fantasy Items) — those keep whatever is already selected.
+// Foreign Sets, Fantasy Items) - those keep whatever is already selected.
 function typeForCategory(category: string): string | null {
   const c = category.toLowerCase();
   if (c.includes('banknote') || c.includes('note')) return 'Banknote';
@@ -85,7 +85,7 @@ export function AdminProducts() {
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['products'] });
 
-  // Search filter — matches against the product name, category, country, year,
+  // Search filter - matches against the product name, category, country, year,
   // and denomination so the admin can find a product to edit quickly.
   // Rendering every product at once produced a 17,000px page and re-rendered
   // all of them on each keystroke. Show a page at a time instead; searching
@@ -201,7 +201,7 @@ export function AdminProducts() {
   const startNew = () => {
     setEditingId('new');
     // The first category comes from the database, so the type has to be
-    // derived from THAT — not from the hardcoded fallback list. This is what
+    // derived from THAT - not from the hardcoded fallback list. This is what
     // used to leave a banknote category sitting next to Type "Coin".
     const category = categoryOptions[0] ?? emptyDraft.category;
     setDraft({

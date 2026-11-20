@@ -33,7 +33,7 @@ export function ComboPage() {
             Combo
           </h1>
           <p className="mx-auto mt-2 max-w-xl font-sans text-base font-light text-ink/70">
-            Curated banknote and coin sets — every item in the set is listed below.
+            Curated banknote and coin sets - every item in the set is listed below.
           </p>
         </motion.div>
 
@@ -102,7 +102,7 @@ export function ComboPage() {
                       <li key={item.id} className="py-1.5">
                         <p className="font-sans text-sm text-ink">
                           {item.country || 'Unspecified'}
-                          {item.denomination ? ` — ${item.denomination}` : ''}
+                          {item.denomination ? ` - ${item.denomination}` : ''}
                         </p>
                         {item.description ? (
                           <p className="font-sans text-xs font-light text-ink/60">

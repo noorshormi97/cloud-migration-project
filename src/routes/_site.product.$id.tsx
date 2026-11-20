@@ -56,7 +56,7 @@ export const Route = createFileRoute("/_site/product/$id")({
   // title, description, canonical URL and Product schema per collectible.
   // NOTE: this blocking Supabase fetch only runs during SSR. On client-side
   // navigation (clicking a product card) it's skipped, so navigation stays
-  // instant — the page component renders from the already-cached products
+  // instant - the page component renders from the already-cached products
   // instead. SEO head only matters on the first SSR load, so this is safe.
   loader: async ({ params }) => {
     if (!import.meta.env.SSR) return null;
@@ -86,7 +86,7 @@ export const Route = createFileRoute("/_site/product/$id")({
     const url = canonicalUrl(path);
 
     const title = p
-      ? `${p.name} — ${p.country} ${p.type} | ${SITE_NAME}`
+      ? `${p.name} - ${p.country} ${p.type} | ${SITE_NAME}`
       : `Collectible | ${SITE_NAME}`;
     let description = `Shop authentic collectible coins, banknotes and stamps from ${SITE_NAME}.`;
     if (p) {
@@ -94,7 +94,7 @@ export const Route = createFileRoute("/_site/product/$id")({
       if (p.condition) bits.push(`${p.condition} condition`);
       if (p.year) bits.push(p.year);
       if (p.currency) bits.push(p.currency);
-      description = `${p.name} — Authentic ${p.type.toLowerCase()} from ${p.country}${
+      description = `${p.name} - Authentic ${p.type.toLowerCase()} from ${p.country}${
         bits.length ? `, ${bits.join(", ")}` : ""
       }. Price ৳${p.price}.`;
     }

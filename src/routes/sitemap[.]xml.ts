@@ -1,4 +1,4 @@
-// Server route — serves a dynamic sitemap at /sitemap.xml with every
+// Server route - serves a dynamic sitemap at /sitemap.xml with every
 // main page, category and product, so search engines discover the catalogue.
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_URL } from "@/lib/seo";

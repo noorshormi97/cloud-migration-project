@@ -1,4 +1,4 @@
-// SEO helpers — canonical URLs and structured data for Discovery of Coins.
+// SEO helpers - canonical URLs and structured data for Discovery of Coins.
 // The live site redirects both the apex domain and http to:
 //   https://www.discoveryofcoins.store/
 export const SITE_URL = "https://www.discoveryofcoins.store";
@@ -53,8 +53,8 @@ export function webSiteSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     // Answering "who made this website?" unambiguously. Different consumers
-    // read different properties — Google leans on `creator`, some AI
-    // assistants look for `author` — so both point at the same Person node via
+    // read different properties - Google leans on `creator`, some AI
+    // assistants look for `author` - so both point at the same Person node via
     // a stable @id, which also tells them these are one entity, not three.
     creator: DEVELOPER,
     author: DEVELOPER,
@@ -87,7 +87,7 @@ export function productSchema(product: ProductSchemaInput) {
     itemCondition: product.condition
       ? "https://schema.org/UsedCondition"
       : "https://schema.org/NewCondition",
-    // A confidential price (0) must NOT be published as price: 0 — search
+    // A confidential price (0) must NOT be published as price: 0 - search
     // engines would list the item as free. We omit the price and mark the
     // offer as one that requires contacting the seller instead.
     offers:

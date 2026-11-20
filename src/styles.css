@@ -19,7 +19,7 @@
  */
 
 @theme inline {
-  /* Shared corner radius for every interactive control — buttons, chips,
+  /* Shared corner radius for every interactive control - buttons, chips,
      inputs and icon buttons. The storefront's look is deliberately sharp and
      editorial, so this is a very small softening rather than a pill shape.
      Change this ONE value to restyle every control on the site at once. */
@@ -168,7 +168,7 @@
   html {
     /* NOTE: do NOT add `scroll-behavior: smooth` here. It makes every
        programmatic scroll smooth, including the router's scroll-restoration
-       on Back — which causes the page to visibly animate from the top down to
+       on Back - which causes the page to visibly animate from the top down to
        the saved position instead of snapping straight back to where the user
        was. In-page/section scrolls that should animate set their own
        `behavior: 'smooth'` locally (e.g. the New Arrivals carousel and the

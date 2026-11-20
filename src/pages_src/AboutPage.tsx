@@ -37,14 +37,14 @@ export function AboutPage() {
             </p>
             <p>
               From Bangladeshi banknotes and commemorative issues to foreign
-              currency notes from Asia, Europe, Africa, the Americas and beyond —
+              currency notes from Asia, Europe, Africa, the Americas and beyond -
               every note in our catalogue is carefully verified for authenticity
               before it is listed for sale.
             </p>
             <p>
               Collectors across Bangladesh order from us online and receive
               delivery through our trusted courier (Shundarban). We
-              also welcome collectors abroad — reach out through our{' '}
+              also welcome collectors abroad - reach out through our{' '}
               <Link
                 to="/contact"
                 className="text-ink underline underline-offset-4 transition-colors hover:text-ink/70"

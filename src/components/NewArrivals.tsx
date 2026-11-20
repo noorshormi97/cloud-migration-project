@@ -60,12 +60,12 @@ function ArrivalCard({ item }: { item: NewArrival }) {
   );
 
   // Card widths: one full card on mobile (no partial peek), then 2 / 3 / 4
-  // across sm / lg / xl — each width subtracts its share of the 24px gap so
+  // across sm / lg / xl - each width subtracts its share of the 24px gap so
   // every snap point lands exactly on one card.
   const liClass =
     "w-full shrink-0 snap-start sm:w-[calc(50%_-_12px)] lg:w-[calc(33.333%_-_16px)] xl:w-[calc(25%_-_18px)]";
 
-  // Every card opens the item's own detail page — New Arrivals is a
+  // Every card opens the item's own detail page - New Arrivals is a
   // standalone section with its own stock, separate from the shop.
   return (
     <li className={liClass}>

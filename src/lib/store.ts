@@ -121,7 +121,7 @@ export function formatPrice(price: number) {
 }
 
 /**
- * A price of 0 is not "free" — it means the price is deliberately withheld and
+ * A price of 0 is not "free" - it means the price is deliberately withheld and
  * the buyer is asked to message us. This single rule is the source of truth so
  * every surface (cards, detail pages, combos, meta tags, structured data)
  * treats confidential pricing the same way.

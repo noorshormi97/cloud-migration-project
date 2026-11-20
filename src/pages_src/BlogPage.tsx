@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
  * Editorial blog for Discovery of Coins.
  *
  * Posts are plain data below (no CMS/database call) so the page renders
- * fully on the server — that matters for SEO and for AdSense reviewers,
+ * fully on the server - that matters for SEO and for AdSense reviewers,
  * who must be able to read real article text without running JavaScript.
  *
  * To publish a new post: add an entry to POSTS. Newest first.
@@ -37,10 +37,10 @@ const POSTS: BlogPost[] = [
       'Visiting the "Taka Haat" in Bangladesh: Inside the Market for Old Taka Notes',
     date: 'September 2026',
     intro:
-      'In Bangladesh, serious collectors of old banknotes know that the real treasure hunt does not always happen online. It happens at the "Taka Haat" — the lively market where buyers and sellers of Bangladeshi taka notes gather. In this video we walk through one of these markets to show new collectors exactly how it works.',
+      'In Bangladesh, serious collectors of old banknotes know that the real treasure hunt does not always happen online. It happens at the "Taka Haat" - the lively market where buyers and sellers of Bangladeshi taka notes gather. In this video we walk through one of these markets to show new collectors exactly how it works.',
     youtubeId: 'LVHwjs8nKoE',
     videoTitle:
-      '36 – The Taka Haat (Bangladeshi Banknote Market) — Discovery of Coins',
+      '36 – The Taka Haat (Bangladeshi Banknote Market) - Discovery of Coins',
     sections: [
       {
         heading: 'What is the Taka Haat?',
@@ -64,7 +64,7 @@ const POSTS: BlogPost[] = [
     ],
     sources: [
       {
-        label: 'Bangladesh Bank — Notes & Coins',
+        label: 'Bangladesh Bank - Notes & Coins',
         href: 'https://www.bb.org.bd/en/index.php/currency/currency',
       },
       {
@@ -82,7 +82,7 @@ const POSTS: BlogPost[] = [
       'The humble 1 Taka is the most collected note in Bangladesh, and the red 1 Taka holds a special place in collectors\u2019 hearts. Rumours sometimes claim an old one is worth a fortune. In this video we take a realistic look at how much a Bangladeshi 1 Taka note is actually worth and what determines its value.',
     youtubeId: 'x5NuwOR-E84',
     videoTitle:
-      '546 – Red 1 Taka worth 1 lakh? How much is one taka worth — Discovery of Coins',
+      '546 – Red 1 Taka worth 1 lakh? How much is one taka worth - Discovery of Coins',
     sections: [
       {
         heading: 'Why the 1 Taka is so popular',
@@ -106,7 +106,7 @@ const POSTS: BlogPost[] = [
     ],
     sources: [
       {
-        label: 'Bangladesh Bank — Notes & Coins',
+        label: 'Bangladesh Bank - Notes & Coins',
         href: 'https://www.bb.org.bd/en/index.php/currency/currency',
       },
       {
@@ -124,12 +124,12 @@ const POSTS: BlogPost[] = [
       'Collecting goes far beyond Bangladeshi notes. World coins are a fantastic branch of numismatics, and one classic example is the British One Pound coin introduced in 1983. In this video we look at the 1984 One Pound carrying the Scottish thistle and explain how collectors value UK coins.',
     youtubeId: 'WDMu2T4LKEg',
     videoTitle:
-      '17 – One Pound UK 1984 Scottish Thistle Value — Discovery of Coins',
+      '17 – One Pound UK 1984 Scottish Thistle Value - Discovery of Coins',
     sections: [
       {
         heading: 'The Scottish thistle One Pound',
         paragraphs: [
-          'When the UK introduced the round One Pound coin in 1983, it used different reverse designs for each nation — a thistle for Scotland, a leek for Wales, a flax plant for Northern Ireland and the royal arms for England. The 1984 Scottish thistle design is a popular piece for collectors of world coins and UK currency.',
+          'When the UK introduced the round One Pound coin in 1983, it used different reverse designs for each nation - a thistle for Scotland, a leek for Wales, a flax plant for Northern Ireland and the royal arms for England. The 1984 Scottish thistle design is a popular piece for collectors of world coins and UK currency.',
         ],
       },
       {
@@ -147,7 +147,7 @@ const POSTS: BlogPost[] = [
     ],
     sources: [
       {
-        label: 'Royal Mint — One Pound coin',
+        label: 'Royal Mint - One Pound coin',
         href: 'https://www.royalmint.com/',
       },
       {
@@ -264,7 +264,7 @@ export function BlogPage() {
 
           <p className="mt-4 font-sans text-base font-light leading-relaxed tracking-wide text-ink/80 md:text-lg">
             Guides and stories on Bangladeshi banknotes, taka note value and
-            collecting world coins — from the Taka Haat to valuing old
+            collecting world coins - from the Taka Haat to valuing old
             Bangladeshi notes and British One Pound coins.
           </p>
 

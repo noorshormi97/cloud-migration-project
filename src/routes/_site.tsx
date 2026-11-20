@@ -9,7 +9,7 @@ import { fetchContactDetails } from "@/lib/content";
 //
 // Every public page lives under the `/_site` layout route, so checking here
 // covers every public URL (/, /shop, /about, /contact, /combo, /product/:id,
-// /terms, /privacy, ...) with a single mechanism — no per-page duplication.
+// /terms, /privacy, ...) with a single mechanism - no per-page duplication.
 //
 // Admin routes (/admin, /admin/login) are top-level routes NOT under /_site,
 // so they are intentionally excluded here and always work. This avoids any
@@ -24,7 +24,7 @@ import { fetchContactDetails } from "@/lib/content";
 //      collecting and faqs before seeing the notice. Now Layout never mounts,
 //      so none of those queries are ever created.
 //   2. No extra round trip. The browser does not fetch the flag itself, and
-//      when maintenance is on the WhatsApp number comes down with it — so the
+//      when maintenance is on the WhatsApp number comes down with it - so the
 //      maintenance page costs the visitor ZERO database calls.
 // Contact details are only fetched when maintenance is actually on, so normal
 // visitors pay nothing for this.

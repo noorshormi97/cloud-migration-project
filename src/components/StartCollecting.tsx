@@ -10,7 +10,7 @@ function Card({ item }: { item: StartCollectingItem }) {
   const outOfStock = item.price > 0 && (!item.available || item.stock <= 0);
 
   return (
-    // Every card opens the item's own detail page — Start Collecting is a
+    // Every card opens the item's own detail page - Start Collecting is a
     // standalone section with its own stock, separate from the shop.
     <Link to={`/start-collecting/${item.id}`} className="block h-full">
       <article className="group flex h-full flex-col overflow-hidden rounded-[10px] border border-ink/10 bg-white">

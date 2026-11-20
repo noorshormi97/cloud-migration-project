@@ -44,7 +44,7 @@ function Card({ item }: { item: NewArrival }) {
     </article>
   );
 
-  // Every card opens the item's own detail page — New Arrivals is a
+  // Every card opens the item's own detail page - New Arrivals is a
   // standalone section, separate from the shop.
   return (
     <li aria-hidden={undefined} className="w-[74vw] shrink-0 sm:w-[300px] lg:w-[320px]">
